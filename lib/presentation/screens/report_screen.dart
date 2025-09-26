@@ -66,7 +66,9 @@ class ReportScreen extends StatelessWidget {
                     //Table
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
-                      child: DataTable(
+                      child:
+
+                      DataTable(
                         headingRowColor: WidgetStateProperty.all(
                           Color(0xffeafbea),
                         ),

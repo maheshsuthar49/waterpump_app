@@ -8,6 +8,8 @@ import 'package:water_pump/presentation/widgets/device_card.dart';
 import 'package:water_pump/presentation/screens/drawer_screen.dart';
 import 'package:water_pump/presentation/screens/profile_screen.dart';
 
+import '../widgets/bottomnav_screen.dart';
+
 class DashboardScreen extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final controller = Get.put(TaskController());
@@ -263,7 +265,12 @@ class DashboardScreen extends StatelessWidget {
                   itemBuilder: (context, index) {
                   return Padding(
                     padding: const EdgeInsets.symmetric(vertical: 6),
-                    child: DeviceCard(),
+                    child: InkWell(
+                        onTap: () {
+                          controller.index.value = 0;
+                          Get.to(BottomNavScreen(), transition: Transition.zoom);
+                        },
+                        child: DeviceCard()),
                   );
                 },
                 )

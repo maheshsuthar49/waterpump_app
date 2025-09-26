@@ -37,3 +37,4 @@ class TaskController extends GetxController {
     power.value = value;
   }
 }
+

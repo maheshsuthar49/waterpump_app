@@ -10,7 +10,7 @@ import 'package:water_pump/presentation/screens/scheduling_screen.dart';
 import 'package:water_pump/presentation/screens/settings_screen.dart';
 
 class BottomNavScreen extends StatelessWidget{
- final controller =  Get.put(TaskController());
+ final controller =  Get.find<TaskController>();
   final pageController = PageController();
   @override
   Widget build(BuildContext context) {
