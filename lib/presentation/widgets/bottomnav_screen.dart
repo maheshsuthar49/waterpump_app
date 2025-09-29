@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:water_pump/controller/controller.dart';
+import 'package:water_pump/model/deivces.dart';
 import 'package:water_pump/presentation/screens/device_detail.dart';
 import 'package:water_pump/presentation/screens/report_screen.dart';
 import 'package:water_pump/presentation/screens/scheduling_screen.dart';
@@ -12,6 +13,8 @@ import 'package:water_pump/presentation/screens/settings_screen.dart';
 class BottomNavScreen extends StatelessWidget{
  final controller =  Get.find<TaskController>();
   final pageController = PageController();
+  final Devices selectedDevice;
+  BottomNavScreen({required this.selectedDevice});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,10 +33,10 @@ class BottomNavScreen extends StatelessWidget{
         },
         controller: pageController,
         children: [
-            DeviceDetail(),
-            SchedulingScreen(),
-            ReportScreen(),
-            SettingsScreen()
+            DeviceDetail(device: selectedDevice,),
+            SchedulingScreen(device: selectedDevice,),
+            ReportScreen(device: selectedDevice,),
+            SettingsScreen(device: selectedDevice,)
         ],
       ),
       bottomNavigationBar:  CurvedNavigationBar(

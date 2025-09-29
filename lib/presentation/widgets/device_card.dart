@@ -6,10 +6,12 @@ import 'package:water_pump/presentation/screens/device_detail.dart';
 import 'package:water_pump/presentation/widgets/gauge2_widget.dart';
 import 'package:water_pump/presentation/widgets/gauge_widget.dart';
 
+import '../../model/deivces.dart';
 import 'bottomnav_screen.dart';
 
 class DeviceCard extends StatelessWidget {
-
+    final Devices device;
+  DeviceCard({required this.device});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -25,16 +27,17 @@ class DeviceCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
                       Icon(Icons.circle, size: 16, color: Colors.grey,),
                       SizedBox(width: 10),
-                      Text("Jyoti", style: TextStyle(fontWeight: FontWeight.bold)),
+                      Text(device.name, style: TextStyle(fontWeight: FontWeight.bold)),
                     ],
                   ),
                   SizedBox(height: 10),
-                  Text("Pune", style: TextStyle(color: Colors.grey)),
+                  Text(device.location, style: TextStyle(color: Colors.grey)),
                 ],
               ),
               Column(
@@ -45,7 +48,7 @@ class DeviceCard extends StatelessWidget {
                       color: Colors.grey.shade200,
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    child: Text("Connecting...",style: TextStyle(color: Colors.grey.shade500, fontWeight: FontWeight.bold),),
+                    child: Text(device.isConnected ? "Connected" : "Disconnected",style: TextStyle(color: device.isConnected ? Color(0xff024a06) : Colors.red, fontWeight: FontWeight.bold),),
                   ),
                   SizedBox(height: 10,),
                   Container(
@@ -60,26 +63,29 @@ class DeviceCard extends StatelessWidget {
               ),
             ],
           ),
+          if(device.isConnected)...[
           SizedBox(height: 10,),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-             Expanded(child: GaugeWidget(value: 320, label: "R")),
-             Expanded(child: GaugeWidget(value: 240, label: "Y")),
-             Expanded(child: GaugeWidget(value: 40, label: "B")),
+             Expanded(child: GaugeWidget(value: device.voltageValues[0], label: "R")),
+             Expanded(child: GaugeWidget(value: device.voltageValues[1], label: "Y")),
+             Expanded(child: GaugeWidget(value: device.voltageValues[2], label: "B")),
             ],
           ),
           SizedBox(height: 10,),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Expanded(child: GaugeTwoWidget(value1: 150, label2: "R")),
-              Expanded(child: GaugeTwoWidget(value1: 250, label2: "Y")),
-              Expanded(child: GaugeTwoWidget(value1: 350, label2: "B")),
+              Expanded(child: GaugeTwoWidget(value1: device.currentValues[0], label2: "R")),
+              Expanded(child: GaugeTwoWidget(value1: device.currentValues[1], label2: "Y")),
+              Expanded(child: GaugeTwoWidget(value1: device.currentValues[2], label2: "B")),
             ],
           )
+          ],
         ],
       ),
     );
   }
+
 }

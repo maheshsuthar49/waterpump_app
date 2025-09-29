@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:water_pump/presentation/screens/dashboard_screen.dart';
-import 'package:water_pump/presentation/screens/signup_screen.dart';
+import 'package:water_pump/presentation/screens/signin_screen.dart';
 
 import '../../controller/auth_controller.dart';
 
-class SignInScreen extends StatelessWidget {
+class SignUpScreen extends StatelessWidget {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  final authController = Get.put(AuthController());
+  final authController = Get.find<AuthController>();
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
@@ -33,9 +33,7 @@ class SignInScreen extends StatelessWidget {
                 Container(
                   height: screenHeight * 0.5,
                   width: double.infinity,
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                  ),
+                  decoration: const BoxDecoration(color: Colors.white),
                   padding: EdgeInsets.all(screenWidth * 0.08),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,7 +50,6 @@ class SignInScreen extends StatelessWidget {
                       TextFormField(
                         controller: emailController,
                         decoration: const InputDecoration(
-                          hintText: "aggromationindia@gmail.com",
                           border: UnderlineInputBorder(),
                         ),
                       ),
@@ -69,7 +66,6 @@ class SignInScreen extends StatelessWidget {
                         controller: passwordController,
                         obscureText: true,
                         decoration: const InputDecoration(
-                          hintText: "***********",
                           border: UnderlineInputBorder(),
                         ),
                       ),
@@ -78,17 +74,19 @@ class SignInScreen extends StatelessWidget {
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: () {
-                            authController.signIN(emailController.text, passwordController.text);
+                            authController.signUp(emailController.text, passwordController.text);
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Color(0xff024a06),
-                            padding: EdgeInsets.symmetric(vertical: screenHeight * 0.02),
+                            padding: EdgeInsets.symmetric(
+                              vertical: screenHeight * 0.02,
+                            ),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
                           child: const Text(
-                            "SIGN IN",
+                            "SIGN UP",
                             style: TextStyle(color: Colors.white, fontSize: 16),
                           ),
                         ),
@@ -98,13 +96,13 @@ class SignInScreen extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Text("Don't have an account? "),
+                            const Text("You have an account? "),
                             GestureDetector(
                               onTap: () {
-                                Get.off(SignUpScreen());
+                                Get.off(SignInScreen());
                               },
                               child: const Text(
-                                "Sign up",
+                                "Sign In",
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Color(0xff024a06),

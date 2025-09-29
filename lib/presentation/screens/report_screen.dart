@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:water_pump/model/deivces.dart';
 
 class ReportScreen extends StatelessWidget {
+  final Devices device;
+  ReportScreen({required this.device});
   TextEditingController dateController = TextEditingController();
   TextEditingController monthController = TextEditingController();
   @override

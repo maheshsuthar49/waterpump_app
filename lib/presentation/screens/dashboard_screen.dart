@@ -137,7 +137,7 @@ class DashboardScreen extends StatelessWidget {
                           Text("Total Devices"),
                           Center(
                             child: Text(
-                              "6",
+                              "${controller.totalDevices}",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 24,
@@ -160,7 +160,7 @@ class DashboardScreen extends StatelessWidget {
                           Text("Connected"),
                           Center(
                             child: Text(
-                              "0",
+                              "${controller.connectedDevices}",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 24,
@@ -184,7 +184,7 @@ class DashboardScreen extends StatelessWidget {
                           Text("Disconnected"),
                           Center(
                             child: Text(
-                              "6",
+                              "${controller.disconnectedDevices}",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 24,
@@ -212,7 +212,7 @@ class DashboardScreen extends StatelessWidget {
                         color: Color(0xffc3f3c3),
                       ),
                       child: Text(
-                        "0",
+                        "${controller.connectedDevices}",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
@@ -223,16 +223,38 @@ class DashboardScreen extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 8),
-                Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.all(16),
-                  height: 100,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Center(child: Text("No devices in this category.")),
-                ),
+                Obx(() {
+                  if (controller.connectedDevices == 0) {
+                    return Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.all(16),
+                      height: 100,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Center(child: Text("No devices in this category.")),
+                    );
+                  }
+                  return  ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: controller.connectedList.length,
+                    itemBuilder: (context, index) {
+                      final device = controller.connectedList[index];
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 6),
+                        child: InkWell(
+                            onTap: () {
+                              controller.index.value = 0;
+                              Get.to(() => BottomNavScreen(selectedDevice: device,), transition: Transition.zoom);
+                            },
+                            child: DeviceCard(device: device,)),
+                      );
+                    },
+                  );
+                },),
+
                 SizedBox(height: 20),
                 Row(
                   children: [
@@ -245,10 +267,10 @@ class DashboardScreen extends StatelessWidget {
                       padding: EdgeInsets.symmetric(horizontal: 8),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(16),
-                        color: Colors.grey.shade100,
+                        color: Colors.grey.shade200,
                       ),
                       child: Text(
-                        "6",
+                        "${controller.disconnectedDevices}",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
@@ -258,22 +280,37 @@ class DashboardScreen extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 10),
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: 6,
-                  itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 6),
-                    child: InkWell(
-                        onTap: () {
-                          controller.index.value = 0;
-                          Get.to(BottomNavScreen(), transition: Transition.zoom);
-                        },
-                        child: DeviceCard()),
+                Obx(() {
+                  if(controller.disconnectedDevices == 0){
+                    return Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.all(16),
+                      height: 100,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Center(child: Text("No devices in this category.")),
+                    );
+                  }
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: controller.disconnectedList.length,
+                    itemBuilder: (context, index) {
+                      final device = controller.disconnectedList[index];
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 6),
+                        child: InkWell(
+                            onTap: () {
+                              controller.index.value = 0;
+                              Get.to(() => BottomNavScreen(selectedDevice: device,), transition: Transition.zoom);
+                            },
+                            child: DeviceCard(device: device,)),
+                      );
+                    },
                   );
-                },
-                )
+                },)
               ],
             ),
           ),

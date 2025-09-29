@@ -1,15 +1,15 @@
 class Devices {
   final String name;
-  final double value;
-  final double value1;
   final bool isConnected;
   final String location;
+  final List<double> voltageValues;
+  final List<double> currentValues;
 
   Devices({
     required this.name,
-    required this.value,
-    required this.value1,
     required this.isConnected,
     required this.location,
+    required this.voltageValues,
+    required this.currentValues,
   });
 }
