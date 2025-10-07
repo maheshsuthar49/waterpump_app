@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:water_pump/controller/controller.dart';
-import 'package:water_pump/model/deivces.dart';
+import 'package:water_pump/model/devices.dart';
 import 'package:water_pump/presentation/widgets/bottomnav_screen.dart';
 
 import '../widgets/gauge2_widget.dart';
@@ -9,10 +9,11 @@ import '../widgets/gauge_widget.dart';
 
 class DeviceDetail extends StatelessWidget {
   final controller = Get.find<TaskController>();
-  final Devices device;
-  DeviceDetail({required this.device});
+  final DevicesData deviceData;
+  DeviceDetail({required this.deviceData,});
   @override
   Widget build(BuildContext context) {
+    bool isConnected = false;
     return SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -34,14 +35,14 @@ class DeviceDetail extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              device.name,
+                              deviceData.name,
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                             Text(
-                              device.location,
+                              deviceData.area,
                               style: TextStyle(fontSize: 14, color: Colors.grey),
                             ),
                           ],
@@ -54,9 +55,9 @@ class DeviceDetail extends StatelessWidget {
                             onChanged: (bool value) {
                               controller.powerOnOff(value);
                               if(value == true){
-                                Get.snackbar("${device.name}", "Device is on",);
+                                Get.snackbar("${deviceData.name}", "Device is on",);
                               }else{
-                                Get.snackbar("${device.name}", "Device is off");
+                                Get.snackbar("${deviceData.name}", "Device is off");
                               }
                             },
                           ),
@@ -66,7 +67,7 @@ class DeviceDetail extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 10),
-                if(!device.isConnected)...[
+                if(isConnected)...[
                   Card(
                     elevation: 2,
                     color: Colors.red.shade100,
@@ -98,8 +99,8 @@ class DeviceDetail extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            GaugeWidget(value: device.voltageValues[0], label: "V", height: 100,),
-                            GaugeTwoWidget(value1: device.currentValues[0], label2: "I",  height: 100,),
+                            GaugeWidget(value: 000, label: "V", height: 100,),
+                            GaugeTwoWidget(value1: 000, label2: "I",  height: 100,),
                           ],
                         ),
                       ],
@@ -125,8 +126,8 @@ class DeviceDetail extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            GaugeWidget(value: device.voltageValues[1], label: "V", height: 100,),
-                            GaugeTwoWidget(value1: device.currentValues[1], label2: "I",  height: 100,),
+                            GaugeWidget(value: 000, label: "V", height: 100,),
+                            GaugeTwoWidget(value1: 000, label2: "I",  height: 100,),
                           ],
                         ),
                       ],
@@ -152,8 +153,8 @@ class DeviceDetail extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            GaugeWidget(value: device.voltageValues[2], label: "V", height: 100,),
-                            GaugeTwoWidget(value1: device.currentValues[2], label2: "I",  height: 100,),
+                            GaugeWidget(value: 000, label: "V", height: 100,),
+                            GaugeTwoWidget(value1: 000, label2: "I",  height: 100,),
                           ],
                         ),
                       ],

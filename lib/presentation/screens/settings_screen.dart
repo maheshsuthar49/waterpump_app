@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:water_pump/model/deivces.dart';
+import 'package:water_pump/model/devices.dart';
 import 'package:water_pump/presentation/widgets/edit_device.dart';
 
 class SettingsScreen extends StatefulWidget {
-  final Devices device;
-  SettingsScreen({required this.device});
+  final DevicesData deviceData;
+  SettingsScreen({required this.deviceData});
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
 }

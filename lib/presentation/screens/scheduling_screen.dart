@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:water_pump/model/devices.dart';
 
-import '../../model/deivces.dart';
 
 class SchedulingScreen extends StatelessWidget{
-  final Devices device;
-  SchedulingScreen({required this.device});
+  final DevicesData deviceData;
+  SchedulingScreen({required this.deviceData});
   @override
   Widget build(BuildContext context) {
     return SafeArea(child: Padding(
@@ -13,7 +13,7 @@ class SchedulingScreen extends StatelessWidget{
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-         Text("Schedule for ${device.name} at ${device.location}",style: TextStyle(fontSize: 25),)
+         Text("Schedule for ${deviceData.name} at ${deviceData.area}",style: TextStyle(fontSize: 25),)
         ],
       ),
     ));

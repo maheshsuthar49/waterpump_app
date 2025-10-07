@@ -2,10 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:water_pump/controller/controller.dart';
 import 'package:water_pump/presentation/screens/signin_screen.dart';
 import 'package:water_pump/presentation/widgets/wave_clipper.dart';
 
 class WelcomeScreen extends StatelessWidget {
+  final controller = Get.put(TaskController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,7 +75,7 @@ class WelcomeScreen extends StatelessWidget {
                       ),
                       SizedBox(height: 10),
                       Text(
-                        "Thank-you for choosing\n,Agromation India. Hope you have a\ngood experience.",
+                        "Thank-you for choosing,\nAgromation India. Hope you have a\ngood experience.",
                         style: TextStyle(
                           fontSize: 16,
                           color: Colors.grey

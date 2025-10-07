@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:water_pump/controller/controller.dart';
-import 'package:water_pump/model/deivces.dart';
+
 import 'package:water_pump/presentation/widgets/device_card.dart';
 import 'package:water_pump/presentation/screens/drawer_screen.dart';
 import 'package:water_pump/presentation/screens/profile_screen.dart';
+import 'package:water_pump/services/api_service.dart';
 
 import '../widgets/bottomnav_screen.dart';
 
@@ -249,7 +250,9 @@ class DashboardScreen extends StatelessWidget {
                               controller.index.value = 0;
                               Get.to(() => BottomNavScreen(selectedDevice: device,), transition: Transition.zoom);
                             },
-                            child: DeviceCard(device: device,)),
+                            child:DeviceCard(deviceData: device)
+
+                        ),
                       );
                     },
                   );
@@ -306,7 +309,8 @@ class DashboardScreen extends StatelessWidget {
                               controller.index.value = 0;
                               Get.to(() => BottomNavScreen(selectedDevice: device,), transition: Transition.zoom);
                             },
-                            child: DeviceCard(device: device,)),
+                            child: DeviceCard(deviceData: device),
+                        )
                       );
                     },
                   );
@@ -328,9 +332,11 @@ class DashboardScreen extends StatelessWidget {
         }else{
            return FloatingActionButton(
            backgroundColor: const Color(0xff024a06),
-           onPressed: () {
-             controller.refreshData();
-           },
+             onPressed: () async {
+             final token = controller.box.read('token');
+             print("token is: $token" );
+             await controller.fetchDeviceAll(token);
+             },
            child: const Icon(Icons.refresh, color: Colors.white),
            );
          }

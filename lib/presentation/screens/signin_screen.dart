@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:water_pump/controller/controller.dart';
 import 'package:water_pump/presentation/screens/dashboard_screen.dart';
-import 'package:water_pump/presentation/screens/signup_screen.dart';
+import 'package:water_pump/services/api_service.dart';
 
-import '../../controller/auth_controller.dart';
 
 class SignInScreen extends StatelessWidget {
-  TextEditingController emailController = TextEditingController();
+  final controller =  Get.find<TaskController>();
+  TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  final authController = Get.put(AuthController());
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
@@ -42,7 +42,7 @@ class SignInScreen extends StatelessWidget {
                     children: [
                       SizedBox(height: screenHeight * 0.05),
                       const Text(
-                        "EMAIL / REGISTERED MOBILE NUMBER",
+                        "USERNAME / REGISTERED MOBILE NUMBER",
                         style: TextStyle(
                           fontSize: 14,
                           color: Colors.grey,
@@ -50,7 +50,7 @@ class SignInScreen extends StatelessWidget {
                         ),
                       ),
                       TextFormField(
-                        controller: emailController,
+                        controller: usernameController,
                         decoration: const InputDecoration(
                           hintText: "aggromationindia@gmail.com",
                           border: UnderlineInputBorder(),
@@ -77,8 +77,18 @@ class SignInScreen extends StatelessWidget {
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
-                          onPressed: () {
-                            authController.signIN(emailController.text, passwordController.text);
+                          onPressed: () async{
+                            final username = usernameController.text;
+                            final password = passwordController.text;
+                            final token = await controller.apiService.login(username, password);
+
+                            if(token != null){
+                              await controller.box.write("token", token);
+                              Get.snackbar("Success", "Login successfully");
+                              Get.offAll(DashboardScreen());
+                            }else{
+                              Get.snackbar("Error", "Invalid credentials");
+                            }
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Color(0xff024a06),
@@ -101,7 +111,6 @@ class SignInScreen extends StatelessWidget {
                             const Text("Don't have an account? "),
                             GestureDetector(
                               onTap: () {
-                                Get.off(SignUpScreen());
                               },
                               child: const Text(
                                 "Sign up",

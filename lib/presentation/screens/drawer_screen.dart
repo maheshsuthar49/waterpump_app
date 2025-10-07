@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:water_pump/presentation/screens/signin_screen.dart';
 
 class DrawerScreen extends StatelessWidget{
   @override
@@ -112,6 +115,9 @@ class DrawerScreen extends StatelessWidget{
         ListTile(
           leading: Icon(Icons.logout,color: Colors.red,),
           title: Text("Log out",style: TextStyle(color: Colors.red),),
+          onTap: () {
+            Get.offAll(SignInScreen());
+          },
         )
       ],
     );
