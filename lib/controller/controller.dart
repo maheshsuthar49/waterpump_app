@@ -2,8 +2,10 @@ import 'package:flutter/animation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:intl/intl.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'package:water_pump/controller/mqtt_controller.dart';
 import 'package:water_pump/model/devices.dart';
 import 'package:water_pump/services/api_service.dart';
 
@@ -14,10 +16,14 @@ class TaskController extends GetxController {
 
   @override
   void onInit() {
-    final token = box.read('token');
-    // TODO: implement onInit
     super.onInit();
-    fetchDeviceAll(token);
+    final token = box.read('token');
+    if (token != null && token.toString().isNotEmpty) {
+      print("Auto fetching devices with token: $token");
+      fetchDeviceAll(token);
+    } else {
+      print("No token found in GetStorage");
+    }
   }
   ///navbar
   var index = 0.obs;
@@ -32,6 +38,15 @@ class TaskController extends GetxController {
     selectedFilter.value = value;
   }
 
+  //Date formater
+  String formatDate(String isoDate){
+    try{
+      final DateTime parsedDate = DateTime.parse(isoDate);
+      return DateFormat('dd-MM-yyyy').format(parsedDate);
+    }catch (e){
+      return 'Invalid Date';
+    }
+  }
   ///Refresh screen
   var isLoading = false.obs;
 
@@ -41,6 +56,13 @@ class TaskController extends GetxController {
     isLoading.value = false;
   }
 
+  // update count
+  var countConnected = 0.obs;
+  var countDisconnected = 0.obs;
+  void updateCount(){
+    countConnected.value = devices.where((d) => d.isConnected,).length;
+    countDisconnected.value = devices.where((d) => !d.isConnected,).length;
+  }
   //switch
   var power = false.obs;
 
@@ -52,12 +74,14 @@ class TaskController extends GetxController {
   var devices= <DevicesData>[].obs;
 
   Future<void> fetchDeviceAll(String token) async{
+    final mqttController = Get.find<MqttController>();
     try{
       isLoading.value = true;
       final result = await apiService.getDevices(token);
 
       if(result != null && result.success == true){
-        devices.value = result.data;
+        devices.assignAll(result.data);
+        updateCount();
         print("device All: ${devices.length}",);
       }else{
         print("failed to fetch device");
@@ -67,22 +91,30 @@ class TaskController extends GetxController {
     }finally{
       isLoading.value = false;
     }
+
+      //subscribe for uuid
+    if(mqttController.isConnected.value){
+      for(var d in devices) {
+        mqttController.subscribeToDevice(d.uuid.toString());
+      }
+    }
   }
 
-  //var devices = <Devices>[].obs;
+  //get Report
+  Future<void> fetchReport({required String id,required String from, required String to }) async{
+    final token = box.read("token");
+    if(token == null){
+      print("No token found");
+      return;
+    }
+
+    await apiService.getReport(token: token, id: id, from: from, to: to);
+  }
+
 
   //helper getter for connectedDevice or disconnected
   int get totalDevices => devices.length;
 
-  int get connectedDevices =>
-      devices
-          .where((d) => d.isConnected)
-          .length;
-
-  int get disconnectedDevices =>
-      devices
-          .where((d) => !d.isConnected)
-          .length;
 
   List<DevicesData> get connectedList =>
       devices.where((d) => d.isConnected).toList();

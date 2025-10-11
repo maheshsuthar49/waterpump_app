@@ -21,7 +21,7 @@ class GaugeTwoWidget extends StatelessWidget {
             axes: <RadialAxis>[
               RadialAxis(
                 minimum: 0,
-                maximum: 500,
+                maximum: 60,
                 startAngle: 180,
                 endAngle: 0,
                 showLabels: false,

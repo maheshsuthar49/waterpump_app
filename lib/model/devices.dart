@@ -20,6 +20,10 @@ class Device {
 }
 
 class DevicesData {
+  List<int>? ai;
+  List<int>? di;
+  List<int>? doo; // here is do according to mqtt but dart do is function
+  List<int>? flt;
   DevicesData({
     required this.id,
     required this.uuid,
@@ -36,7 +40,12 @@ class DevicesData {
     required this.area,
     required this.flowMultiplier,
     required this.underloadLimit,
-  }){isConnected = false;} //temprory
+  }){isConnected = false;
+    ai = [];
+    di = [];
+    doo = [];
+    flt = [];
+  }
   late final int id;
   late final int uuid;
   late final int alertMode;
@@ -63,8 +72,8 @@ class DevicesData {
     registeredDate = json['registered_date'];
     version = json['version'];
     model = null;
-    lat = json['lat'];
-    lng = json['lng'];
+    lat = (json['lat'] as num).toDouble();
+    lng = (json['lng'] as num).toDouble();
     userId = json['user_id'];
     name = json['name'];
     area = json['area'];

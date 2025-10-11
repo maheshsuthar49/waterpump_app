@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:water_pump/controller/controller.dart';
+import 'package:water_pump/controller/mqtt_controller.dart';
 
 import 'package:water_pump/presentation/widgets/device_card.dart';
 import 'package:water_pump/presentation/screens/drawer_screen.dart';
@@ -13,7 +14,8 @@ import '../widgets/bottomnav_screen.dart';
 
 class DashboardScreen extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  final controller = Get.put(TaskController());
+  final controller = Get.find<TaskController>();
+  final mqttController = Get.find<MqttController>();
 
   @override
   Widget build(BuildContext context) {
@@ -39,9 +41,7 @@ class DashboardScreen extends StatelessWidget {
                       },
                       child: CircleAvatar(
                         radius: 24,
-                        backgroundImage: NetworkImage(
-                          "https://images.pexels.com/photos/3689532/pexels-photo-3689532.jpeg",
-                        ),
+                        backgroundImage: AssetImage("assets/images/agromation.jpg")
                       ),
                     ),
                     Text(
@@ -54,7 +54,7 @@ class DashboardScreen extends StatelessWidget {
                     ),
                     GestureDetector(
                       onTap: (){
-                        Get.to(ProfileScreen());
+
                       },
                       child: Icon(
                         Icons.notifications_none,
@@ -137,13 +137,13 @@ class DashboardScreen extends StatelessWidget {
                         children: [
                           Text("Total Devices"),
                           Center(
-                            child: Text(
-                              "${controller.totalDevices}",
+                            child: Obx(() =>  Text(
+                              "${controller.devices.length}",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 24,
                               ),
-                            ),
+                            ),)
                           ),
                         ],
                       ),
@@ -160,14 +160,14 @@ class DashboardScreen extends StatelessWidget {
                         children: [
                           Text("Connected"),
                           Center(
-                            child: Text(
-                              "${controller.connectedDevices}",
+                            child:Obx(() => Text(
+                              "${controller.countConnected.value}",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 24,
                                 color: Colors.green,
                               ),
-                            ),
+                            ),)
                           ),
                         ],
                       ),
@@ -184,14 +184,14 @@ class DashboardScreen extends StatelessWidget {
                         children: [
                           Text("Disconnected"),
                           Center(
-                            child: Text(
-                              "${controller.disconnectedDevices}",
+                            child:Obx(() =>  Text(
+                              "${controller.countDisconnected.value}",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 24,
                                 color: Colors.red,
                               ),
-                            ),
+                            ),)
                           ),
                         ],
                       ),
@@ -212,20 +212,32 @@ class DashboardScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(16),
                         color: Color(0xffc3f3c3),
                       ),
-                      child: Text(
-                        "${controller.connectedDevices}",
+                      child:Obx(() =>  Text(
+                        "${controller.countConnected.value}",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
                           color: Colors.green,
                         ),
-                      ),
+                      ),)
                     ),
                   ],
                 ),
                 SizedBox(height: 8),
                 Obx(() {
-                  if (controller.connectedDevices == 0) {
+                  if(mqttController.isConnected == false){
+                     return Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.all(16),
+                      height: 100,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Center(child: CircularProgressIndicator(color: Color(0xff024a06),)),
+                    );
+                  }
+                  if (controller.connectedList.isEmpty) {
                     return Container(
                       width: double.infinity,
                       padding: EdgeInsets.all(16),
@@ -272,19 +284,19 @@ class DashboardScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(16),
                         color: Colors.grey.shade200,
                       ),
-                      child: Text(
-                        "${controller.disconnectedDevices}",
+                      child:Obx(() =>  Text(
+                        "${controller.countDisconnected.value}",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
                         ),
-                      ),
+                      ),)
                     ),
                   ],
                 ),
                 SizedBox(height: 10),
                 Obx(() {
-                  if(controller.disconnectedDevices == 0){
+                  if(controller.disconnectedList == 0){
                     return Container(
                       width: double.infinity,
                       padding: EdgeInsets.all(16),
@@ -320,7 +332,8 @@ class DashboardScreen extends StatelessWidget {
           ),
         ),
       ),
-      floatingActionButton: Obx(() {
+      floatingActionButton:
+      Obx(() {
          if(controller.isLoading.value){
           return FloatingActionButton(
             backgroundColor: Colors.grey,
@@ -340,6 +353,7 @@ class DashboardScreen extends StatelessWidget {
            child: const Icon(Icons.refresh, color: Colors.white),
            );
          }
+
       },),
 
     );

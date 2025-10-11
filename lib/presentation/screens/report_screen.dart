@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
+import 'package:water_pump/controller/controller.dart';
 import 'package:water_pump/model/devices.dart';
 
 class ReportScreen extends StatelessWidget {
+  final controller = Get.find<TaskController>();
   final DevicesData deviceData;
   ReportScreen({required this.deviceData});
-  TextEditingController dateController = TextEditingController();
+  TextEditingController fromDateController = TextEditingController();
+  TextEditingController toDateController = TextEditingController();
   TextEditingController monthController = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -37,7 +42,7 @@ class ReportScreen extends StatelessWidget {
                   children: [
                     SizedBox(height: 10),
                     TextFormField(
-                      controller: dateController,
+                      controller: fromDateController,
                       keyboardType: TextInputType.datetime,
                       validator: (String? value) {
                         if (value!.isEmpty) {
@@ -51,13 +56,43 @@ class ReportScreen extends StatelessWidget {
                           firstDate: DateTime(2022),
                           lastDate: DateTime(2050),
                         ).then((value) {
-                          dateController.text = DateFormat.yMMMd().format(
+                          fromDateController.text = DateFormat.yMMMd().format(
                             (value!),
                           );
-                        },);
+                        });
                       },
                       decoration: InputDecoration(
-                        labelText: "Select Date",
+                        labelText: "From Date",
+                        border: OutlineInputBorder(),
+                        suffixIcon: Icon(
+                          Icons.calendar_month,
+                          color: Colors.grey.shade600,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    TextFormField(
+                      controller: toDateController,
+                      keyboardType: TextInputType.datetime,
+                      validator: (String? value) {
+                        if (value!.isEmpty) {
+                          return "Please select date";
+                        }
+                      },
+                      readOnly: true,
+                      onTap: () {
+                        showDatePicker(
+                          context: context,
+                          firstDate: DateTime(2022),
+                          lastDate: DateTime(2050),
+                        ).then((value) {
+                          toDateController.text = DateFormat.yMMMd().format(
+                            (value!),
+                          );
+                        });
+                      },
+                      decoration: InputDecoration(
+                        labelText: "To Date",
                         border: OutlineInputBorder(),
                         suffixIcon: Icon(
                           Icons.calendar_month,
@@ -69,9 +104,7 @@ class ReportScreen extends StatelessWidget {
                     //Table
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
-                      child:
-
-                      DataTable(
+                      child: DataTable(
                         headingRowColor: WidgetStateProperty.all(
                           Color(0xffeafbea),
                         ),
@@ -181,7 +214,20 @@ class ReportScreen extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(8),
                               ),
                             ),
-                            onPressed: () {},
+                            onPressed: () async {
+                              final fromDate = DateFormat("dd-MM-yyyy").format(
+                                DateFormat.yMMMd().parse(fromDateController.text),
+                              );
+                              final toDate = DateFormat("dd-MM-yyyy").format(
+                                DateFormat.yMMMd().parse(toDateController.text),
+                              );
+                              final id = deviceData.id.toString();
+
+                              await controller.fetchReport(id: deviceData.id.toString(), from: fromDate, to: toDate);
+                              print("Print device id: $id");
+                              print("Print device from date: $fromDate");
+                              print("Print device to date: $toDate");
+                            },
                             child: Text("Get"),
                           ),
                         ),
@@ -250,7 +296,7 @@ class ReportScreen extends StatelessWidget {
                           monthController.text = DateFormat.yMMM().format(
                             (date!),
                           );
-                        },);
+                        });
                       },
                       decoration: InputDecoration(
                         labelText: "Select Month",

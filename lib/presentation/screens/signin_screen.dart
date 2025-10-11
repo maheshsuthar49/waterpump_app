@@ -25,10 +25,7 @@ class SignInScreen extends StatelessWidget {
                 Container(
                   height: screenHeight * 0.5,
                   width: double.infinity,
-                  child: Image.network(
-                    "https://images.pexels.com/photos/1658967/pexels-photo-1658967.jpeg",
-                    fit: BoxFit.cover,
-                  ),
+                  child: Image.asset("assets/images/sigin.jpg",fit: BoxFit.cover,)
                 ),
                 Container(
                   height: screenHeight * 0.5,
@@ -85,6 +82,7 @@ class SignInScreen extends StatelessWidget {
                             if(token != null){
                               await controller.box.write("token", token);
                               Get.snackbar("Success", "Login successfully");
+                              await controller.fetchDeviceAll(token);
                               Get.offAll(DashboardScreen());
                             }else{
                               Get.snackbar("Error", "Invalid credentials");
@@ -135,9 +133,7 @@ class SignInScreen extends StatelessWidget {
               child: Center(
                 child: CircleAvatar(
                   radius: screenWidth * 0.12,
-                  backgroundImage: NetworkImage(
-                    "https://images.pexels.com/photos/3689532/pexels-photo-3689532.jpeg",
-                  ),
+                  backgroundImage: AssetImage("assets/images/agromation.jpg")
                 ),
               ),
             ),

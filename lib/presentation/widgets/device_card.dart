@@ -14,7 +14,7 @@ class DeviceCard extends StatelessWidget {
     const DeviceCard({required this.deviceData, Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    bool isConnected = false;
+    bool isConnected = deviceData.isConnected;
     return Container(
       padding: EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -46,7 +46,7 @@ class DeviceCard extends StatelessWidget {
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 8, vertical: 6),
                     decoration: BoxDecoration(
-                      color: Colors.grey.shade200,
+                      color: isConnected ? Colors.green.shade100 : Colors.red.shade100,
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text(isConnected ? "Connected" : "Disconnected",style: TextStyle(color: isConnected ? Color(0xff024a06) : Colors.red, fontWeight: FontWeight.bold),),
@@ -69,18 +69,18 @@ class DeviceCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-             Expanded(child: GaugeWidget(value: 000, label: "R")),
-             Expanded(child: GaugeWidget(value: 000, label: "Y")),
-             Expanded(child: GaugeWidget(value: 320, label: "B")),
+             Expanded(child: GaugeWidget(value:deviceData.ai?[0].toDouble() ?? 0, label: "R")),
+             Expanded(child: GaugeWidget(value: deviceData.ai?[1].toDouble() ?? 0, label: "Y")),
+             Expanded(child: GaugeWidget(value: deviceData.ai?[2].toDouble() ?? 0, label: "B")),
             ],
           ),
           SizedBox(height: 10,),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Expanded(child: GaugeTwoWidget(value1: 111, label2: "R")),
-              Expanded(child: GaugeTwoWidget(value1: 150, label2: "Y")),
-              Expanded(child: GaugeTwoWidget(value1: 150, label2: "B")),
+              Expanded(child: GaugeTwoWidget(value1: deviceData.ai?[3].toDouble() ?? 0, label2: "R")),
+              Expanded(child: GaugeTwoWidget(value1: deviceData.ai?[4].toDouble() ?? 0, label2: "Y")),
+              Expanded(child: GaugeTwoWidget(value1: deviceData.ai?[5].toDouble() ?? 0, label2: "B")),
             ],
           )
           ],

@@ -1,12 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:water_pump/controller/controller.dart';
+import 'package:water_pump/model/devices.dart';
 import 'package:water_pump/shared/component.dart';
 
 class EditDevice extends StatelessWidget {
   TextEditingController DeviceNameController = TextEditingController();
   TextEditingController DeviceLocController = TextEditingController();
   TextEditingController DeviceFlowController = TextEditingController();
+  final controller = Get.find<TaskController>();
+  final DevicesData devicesData;
+  EditDevice({required this.devicesData});
   @override
   Widget build(BuildContext context) {
+  DeviceNameController.text = devicesData.name;
+  DeviceLocController.text = devicesData.area;
+  DeviceFlowController.text = devicesData.flowMultiplier.toString();
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -25,7 +35,7 @@ class EditDevice extends StatelessWidget {
                   ),
                   SizedBox(height: 10),
                   Text(
-                    "Jan 1,2027",
+                    controller.formatDate(devicesData.expDate),
                     style: TextStyle(fontSize: 16, color: Colors.grey),
                   ),
                   SizedBox(height: 10),

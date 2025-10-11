@@ -9,7 +9,7 @@ class GaugeWidget extends StatelessWidget {
   final double width;
   @override
   Widget build(BuildContext context) {
-    Color pointerColor = value > 320 ? Colors.red : Color(0xff4c8750);
+    Color pointerColor = value > 400 ? Colors.red : Color(0xff4c8750);
     return Column(
       children: [
         Container(
@@ -21,7 +21,7 @@ class GaugeWidget extends StatelessWidget {
             axes: <RadialAxis>[
               RadialAxis(
                 minimum: 0,
-                maximum: 500,
+                maximum: 400,
                 startAngle: 180,
                 endAngle: 0,
                 showLabels: false,

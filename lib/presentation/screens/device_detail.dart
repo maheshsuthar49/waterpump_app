@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:water_pump/controller/controller.dart';
+import 'package:water_pump/controller/mqtt_controller.dart';
 import 'package:water_pump/model/devices.dart';
 import 'package:water_pump/presentation/widgets/bottomnav_screen.dart';
 
@@ -9,16 +10,16 @@ import '../widgets/gauge_widget.dart';
 
 class DeviceDetail extends StatelessWidget {
   final controller = Get.find<TaskController>();
+  final mqttController = Get.find<MqttController>();
   final DevicesData deviceData;
   DeviceDetail({required this.deviceData,});
   @override
   Widget build(BuildContext context) {
-    bool isConnected = false;
     return SafeArea(
-        child: SingleChildScrollView(
+        child:  SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Column(
+            child: Obx(() => Column(
               children: [
                 Card(
                   color: Colors.grey.shade100,
@@ -47,27 +48,27 @@ class DeviceDetail extends StatelessWidget {
                             ),
                           ],
                         ),
-                        Obx(
-                          () => Switch(
+                         Switch(
                             activeColor: Color(0xff024a06),
 
                             value: controller.power.value,
                             onChanged: (bool value) {
                               controller.powerOnOff(value);
                               if(value == true){
-                                Get.snackbar("${deviceData.name}", "Device is on",);
+                                Get.snackbar("${deviceData.name}", "Device is on",duration: Duration(seconds: 1));
                               }else{
-                                Get.snackbar("${deviceData.name}", "Device is off");
+                                Get.snackbar("${deviceData.name}", "Device is off",duration: Duration(seconds: 1));
                               }
                             },
                           ),
-                        ),
                       ],
                     ),
                   ),
                 ),
                 SizedBox(height: 10),
-                if(isConnected)...[
+
+
+                if(!deviceData.isConnected)...[
                   Card(
                     elevation: 2,
                     color: Colors.red.shade100,
@@ -99,8 +100,8 @@ class DeviceDetail extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            GaugeWidget(value: 000, label: "V", height: 100,),
-                            GaugeTwoWidget(value1: 000, label2: "I",  height: 100,),
+                            GaugeWidget(value: deviceData.ai?[0].toDouble() ?? 0, label: "V", height: 100,),
+                            GaugeTwoWidget(value1: deviceData.ai?[3].toDouble() ?? 0, label2: "I",  height: 100,),
                           ],
                         ),
                       ],
@@ -126,8 +127,8 @@ class DeviceDetail extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            GaugeWidget(value: 000, label: "V", height: 100,),
-                            GaugeTwoWidget(value1: 000, label2: "I",  height: 100,),
+                            GaugeWidget(value: deviceData.ai?[1].toDouble() ?? 0, label: "V", height: 100,),
+                            GaugeTwoWidget(value1: deviceData.ai?[4].toDouble() ?? 0, label2: "I",  height: 100,),
                           ],
                         ),
                       ],
@@ -153,8 +154,8 @@ class DeviceDetail extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            GaugeWidget(value: 000, label: "V", height: 100,),
-                            GaugeTwoWidget(value1: 000, label2: "I",  height: 100,),
+                            GaugeWidget(value: deviceData.ai?[2].toDouble() ?? 0, label: "V", height: 100,),
+                            GaugeTwoWidget(value1: deviceData.ai?[5].toDouble() ?? 0, label2: "I",  height: 100,),
                           ],
                         ),
                       ],
@@ -162,7 +163,7 @@ class DeviceDetail extends StatelessWidget {
                   ),
                 ),
               ],
-            ),
+            ),),
           ),
         ),
       );

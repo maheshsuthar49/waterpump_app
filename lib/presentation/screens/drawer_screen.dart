@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:water_pump/controller/controller.dart';
+import 'package:water_pump/model/devices.dart';
 import 'package:water_pump/presentation/screens/signin_screen.dart';
 
 class DrawerScreen extends StatelessWidget{
+  final controller = Get.find<TaskController>();
+
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -17,10 +21,8 @@ class DrawerScreen extends StatelessWidget{
             Row(
               children: [CircleAvatar(
                 radius: 24,
-                backgroundImage: NetworkImage(
-                  "https://images.pexels.com/photos/3689532/pexels-photo-3689532.jpeg",
-                ),
-              ), SizedBox(width: 10,), Text("AGGROMATION INDIA PVT.\nLMT.", style: TextStyle(fontWeight: FontWeight.bold),)],
+                backgroundImage: AssetImage("assets/images/agromation.jpg")
+              ), SizedBox(width: 10,), Text("AGROMATION INDIA PVT.\nLMT.", style: TextStyle(fontWeight: FontWeight.bold),)],
             ),
             SizedBox(height: 10,),
             Row(
@@ -59,32 +61,12 @@ class DrawerScreen extends StatelessWidget{
          iconColor: Colors.grey.shade600,
           title: Text("Your Devices"),
         leading: Icon(Icons.devices,color: Colors.grey.shade600,),
-          children: [
-            ListTile(
-              leading: Icon(Icons.add_circle_outline, color: Colors.blue,),
-              title: Text("Add New Device", style: TextStyle(color: Colors.blue),),
-            ),
-            ListTile(
-              leading: Icon(Icons.circle, size: 10,color: Colors.grey,),
-              title: Text("Jyoti"),
-            ),
-            ListTile(
-              leading: Icon(Icons.circle, size: 10,color: Colors.grey,),
-              title: Text("ofc test"),
-            ),
-            ListTile(
-              leading: Icon(Icons.circle, size: 10,color: Colors.grey,),
-              title: Text("test"),
-            ),
-            ListTile(
-              leading: Icon(Icons.circle, size: 10,color: Colors.grey,),
-              title: Text("PUPM10"),
-            ),
-            ListTile(
-              leading: Icon(Icons.circle, size: 10,color: Colors.grey,),
-              title: Text("PUMP2"),
-            )
-          ],
+          children: controller.devices.map((device) {
+            return  ListTile(
+              leading: Icon(Icons.circle, size: 10,color: device.isConnected ? Color(0xff024a06) : Colors.grey,),
+              title: Text(device.name),
+            );
+          },).toList()
         ),
         ListTile(
           leading: Icon(Icons.info, color: Colors.grey.shade600,),
@@ -116,7 +98,8 @@ class DrawerScreen extends StatelessWidget{
           leading: Icon(Icons.logout,color: Colors.red,),
           title: Text("Log out",style: TextStyle(color: Colors.red),),
           onTap: () {
-            Get.offAll(SignInScreen());
+            controller.box.remove('token');
+            Get.offAll(SignInScreen(), transition: Transition.leftToRight);
           },
         )
       ],

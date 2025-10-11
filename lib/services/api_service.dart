@@ -38,7 +38,7 @@ class ApiService {
     try {
       final response = await _dio.get(
         "/getDevices",
-        options: Options(headers: {"Authorization": "$token"}),
+        options: Options(headers: {"Authorization": " $token"}),
       );
       
       if (response.statusCode == 200) {
@@ -54,4 +54,27 @@ class ApiService {
     }
     return null;
   }
+
+  //get Report
+
+Future<void> getReport ({required String token, required String id, required String from, required String to }) async{
+    try{
+      final response = await _dio.post("/getReports",
+        data: {
+        "id": id,
+          "from": from,
+          "to":to,
+        },
+          options: Options(headers: {"Authorization": " $token"}),
+      );
+
+      if(response.statusCode == 200){
+        print("Report get from: ${response.data}");
+      }else{
+        print("Failed to get report:  ${response.statusCode}");
+      }
+    }catch (e){
+      print("Error to get report: $e");
+    }
+}
 }

@@ -3,13 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:water_pump/controller/controller.dart';
+import 'package:water_pump/presentation/screens/dashboard_screen.dart';
 import 'package:water_pump/presentation/screens/signin_screen.dart';
 import 'package:water_pump/presentation/widgets/wave_clipper.dart';
 
 class WelcomeScreen extends StatelessWidget {
-  final controller = Get.put(TaskController());
+  final controller = Get.find<TaskController>();
   @override
   Widget build(BuildContext context) {
+    Future.delayed(Duration(milliseconds: 500), () async {
+      final token = controller.box.read("token");
+      if (token != null && token.toString().isNotEmpty) {
+        await controller.fetchDeviceAll(token);
+        Get.offAll(() => DashboardScreen(), transition: Transition.fadeIn);
+      } else {
+        print("Token not found");
+      }
+    });
     return Scaffold(
       body: Stack(
         children: [
@@ -18,9 +28,7 @@ class WelcomeScreen extends StatelessWidget {
             height: MediaQuery.of(context).size.height * 0.6,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: NetworkImage(
-                  "https://images.pexels.com/photos/33906822/pexels-photo-33906822.jpeg",
-                ),
+                image: AssetImage("assets/images/welcom.jpeg"),
                 fit: BoxFit.cover,
               ),
             ),
@@ -31,9 +39,7 @@ class WelcomeScreen extends StatelessWidget {
                   SizedBox(height: 50),
                   CircleAvatar(
                     radius: 50,
-                    backgroundImage: NetworkImage(
-                      "https://images.pexels.com/photos/3689532/pexels-photo-3689532.jpeg",
-                    ),
+                    backgroundImage: AssetImage("assets/images/agromation.jpg"),
                   ),
                   SizedBox(height: 20),
                   Text(
@@ -76,27 +82,38 @@ class WelcomeScreen extends StatelessWidget {
                       SizedBox(height: 10),
                       Text(
                         "Thank-you for choosing,\nAgromation India. Hope you have a\ngood experience.",
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.grey
-                        ),
+                        style: TextStyle(fontSize: 16, color: Colors.grey),
                       ),
                       const Spacer(),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          const Text('Continue', style: TextStyle(fontWeight: FontWeight.w500, fontSize: 18),),
-                          SizedBox(width: 10,),
-                          FloatingActionButton(onPressed: (){
-                            Get.to(SignInScreen(), transition: Transition.rightToLeft);
-                          },
+                          const Text(
+                            'Continue',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 18,
+                            ),
+                          ),
+                          SizedBox(width: 10),
+                          FloatingActionButton(
+                            onPressed: () {
+                              Get.to(
+                                SignInScreen(),
+                                transition: Transition.rightToLeft,
+                              );
+                            },
                             backgroundColor: Color(0xff024a06),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(50)
+                              borderRadius: BorderRadius.circular(50),
                             ),
-                            child: Icon(Icons.arrow_forward,color: Colors.white,),)
+                            child: Icon(
+                              Icons.arrow_forward,
+                              color: Colors.white,
+                            ),
+                          ),
                         ],
-                      )
+                      ),
                     ],
                   ),
                 ),

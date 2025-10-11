@@ -48,7 +48,7 @@ class _SettingsScreenState extends State<SettingsScreen>
             child: TabBarView(
                 controller: tabController,
                 children: [
-                  EditDevice(),
+                  EditDevice(devicesData: widget.deviceData,),
 
               /// 2. Device Config
               Center(
