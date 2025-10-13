@@ -2,8 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:water_pump/controller/controller.dart';
 import 'package:water_pump/controller/mqtt_controller.dart';
+import 'package:water_pump/presentation/screens/map_screen.dart';
 
 import 'package:water_pump/presentation/widgets/device_card.dart';
 import 'package:water_pump/presentation/screens/drawer_screen.dart';
@@ -75,6 +77,7 @@ class DashboardScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(25),
                         ),
                         child: TextField(
+                          onChanged: (value) => controller.updateSearchQuery(value),
                           decoration: InputDecoration(
                             prefixIcon: Icon(CupertinoIcons.search),
                             hintText: "Search..",
@@ -95,7 +98,6 @@ class DashboardScreen extends StatelessWidget {
                         const PopupMenuItem(value: "All", child: Text("All")),
                         const PopupMenuItem(value: "Running", child: Text("Running")),
                         const PopupMenuItem(value: "Stopped", child: Text("Stopped")),
-                        const PopupMenuItem(value: "Faulted", child: Text("Faulted")),
                       ],
                       child: Container(
                         // height: 45,
@@ -252,9 +254,9 @@ class DashboardScreen extends StatelessWidget {
                   return  ListView.builder(
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
-                    itemCount: controller.connectedList.length,
+                    itemCount: controller.filteredConnectedList.length,
                     itemBuilder: (context, index) {
-                      final device = controller.connectedList[index];
+                      final device = controller.filteredConnectedList[index];
                       return Padding(
                         padding: const EdgeInsets.symmetric(vertical: 6),
                         child: InkWell(
@@ -311,9 +313,9 @@ class DashboardScreen extends StatelessWidget {
                   return ListView.builder(
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
-                    itemCount: controller.disconnectedList.length,
+                    itemCount: controller.filteredDisconnectedList.length,
                     itemBuilder: (context, index) {
-                      final device = controller.disconnectedList[index];
+                      final device = controller.filteredDisconnectedList[index];
                       return Padding(
                         padding: const EdgeInsets.symmetric(vertical: 6),
                         child: InkWell(
@@ -332,29 +334,46 @@ class DashboardScreen extends StatelessWidget {
           ),
         ),
       ),
-      floatingActionButton:
-      Obx(() {
-         if(controller.isLoading.value){
-          return FloatingActionButton(
-            backgroundColor: Colors.grey,
-            onPressed: () {},
-            child: CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-            ),
-          );
-        }else{
-           return FloatingActionButton(
-           backgroundColor: const Color(0xff024a06),
-             onPressed: () async {
-             final token = controller.box.read('token');
-             print("token is: $token" );
-             await controller.fetchDeviceAll(token);
-             },
-           child: const Icon(Icons.refresh, color: Colors.white),
-           );
-         }
+      floatingActionButton: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          FloatingActionButton(
+            heroTag: "mapTag",
+          backgroundColor: Colors.green.shade100,
+      onPressed: () {
 
-      },),
+              Get.to(()=> MapScreen(), transition: Transition.fadeIn, );
+
+      },
+      child: const Icon(Icons.map, color: Color(0xff024a06)),
+    ),
+          SizedBox(height: 10,),
+          Obx(() {
+            if(controller.isLoading.value){
+              return FloatingActionButton(
+                backgroundColor: Colors.grey,
+                onPressed: () {},
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                ),
+              );
+            }else{
+              return FloatingActionButton(
+                heroTag: "refreshTag",
+                backgroundColor: const Color(0xff024a06),
+                onPressed: () async {
+                  final token = controller.box.read('token');
+                  print("token is: $token" );
+                  await controller.fetchDeviceAll(token);
+                },
+                child: const Icon(Icons.refresh, color: Colors.white),
+              );
+            }
+
+          },),
+        ],
+      )
+
 
     );
   }

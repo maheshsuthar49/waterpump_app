@@ -11,8 +11,9 @@ class WelcomeScreen extends StatelessWidget {
   final controller = Get.find<TaskController>();
   @override
   Widget build(BuildContext context) {
-    Future.delayed(Duration(milliseconds: 500), () async {
-      final token = controller.box.read("token");
+    final token = controller.box.read("token");
+    Future.delayed(Duration(seconds: 2), () async {
+
       if (token != null && token.toString().isNotEmpty) {
         await controller.fetchDeviceAll(token);
         Get.offAll(() => DashboardScreen(), transition: Transition.fadeIn);
@@ -88,30 +89,34 @@ class WelcomeScreen extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          const Text(
-                            'Continue',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 18,
+                          if(token == null)...[
+                            Text(
+                              'Continue',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 18,
+                              ),
                             ),
-                          ),
+                          ],
                           SizedBox(width: 10),
-                          FloatingActionButton(
-                            onPressed: () {
-                              Get.to(
-                                SignInScreen(),
-                                transition: Transition.rightToLeft,
-                              );
-                            },
-                            backgroundColor: Color(0xff024a06),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(50),
+                          if(token == null)...[
+                            FloatingActionButton(
+                              onPressed: () {
+                                Get.to(
+                                  SignInScreen(),
+                                  transition: Transition.rightToLeft,
+                                );
+                              },
+                              backgroundColor: Color(0xff024a06),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              child: Icon(
+                                Icons.arrow_forward,
+                                color: Colors.white,
+                              ),
                             ),
-                            child: Icon(
-                              Icons.arrow_forward,
-                              color: Colors.white,
-                            ),
-                          ),
+    ]
                         ],
                       ),
                     ],

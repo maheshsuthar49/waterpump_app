@@ -71,12 +71,27 @@ class MqttController extends GetxController {
     }
   }
 
-  void publish(String topic, String message) {
-    if (isConnected.value) {
-      final builder = MqttClientPayloadBuilder();
-      builder.addString(message);
-      client.publishMessage(topic, MqttQos.atLeastOnce, builder.payload!);
+  void GetDataPublish(String uuid, int value) {
+  if(isConnected.value){
+    final fullTopic = '$maintopic/$topic/$uuid';
+    final Map<String, dynamic> command = {
+      "type": "control",
+      "id": 1,
+      "key": 1,
+      "value": value,
+    };
+    final String payload = jsonEncode(command);
+    final builder = MqttClientPayloadBuilder();
+    builder.addString(payload);
+    try{
+      client.publishMessage(fullTopic, MqttQos.atLeastOnce, builder.payload!);
+      print("Published command to $fullTopic : $payload");
+    }catch(e){
+      print("Published failed : $e");
     }
+  }else{
+    print("Mqtt not Connected , Cannot published Command");
+  }
   }
 
   void connect() {
@@ -92,8 +107,9 @@ class MqttController extends GetxController {
     isConnected.value = true;
     client.updates!.listen((List<MqttReceivedMessage<MqttMessage>> c) {
       final MqttPublishMessage recMess = c[0].payload as MqttPublishMessage;
-      final String message =
-      MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
+      final String message = MqttPublishPayload.bytesToStringAsString(
+        recMess.payload.message,
+      );
       latestMessage.value = message;
 
       try {
@@ -102,14 +118,15 @@ class MqttController extends GetxController {
           final deviceList = jsonData['devices'] as List;
           final controller = Get.find<TaskController>();
 
-
           final fullTopic = c[0].topic; // e.g., vidani/mc/862360073397494/data
           final topicParts = fullTopic.split('/');
           final mqttUuid = int.tryParse(topicParts[2]);
 
           if (mqttUuid != null) {
             // find Uuid in Api Devices.
-            final index = controller.devices.indexWhere((d) => d.uuid == mqttUuid);
+            final index = controller.devices.indexWhere(
+              (d) => d.uuid == mqttUuid,
+            );
             if (index != -1) {
               final device = controller.devices[index];
               final dev = deviceList[0];
@@ -124,7 +141,8 @@ class MqttController extends GetxController {
               controller.updateCount();
               // Debug print
               print(
-                  "Updated Device: ${device.name}, UUID: ${device.uuid}, AI: ${device.ai},AI = 1 : ${device.ai?[0]}, DI: ${device.di}, DO: ${device.doo}, FLT: ${device.flt}");
+                "Updated Device: ${device.name}, UUID: ${device.uuid}, AI: ${device.ai},AI = 1 : ${device.ai?[0]}, DI: ${device.di}, DO: ${device.doo}, FLT: ${device.flt}",
+              );
             }
           }
         }
@@ -132,7 +150,6 @@ class MqttController extends GetxController {
         print("Mqtt message parse error: $e");
       }
     });
-
   }
 
   void onDisconnected() {
@@ -147,5 +164,4 @@ class MqttController extends GetxController {
   void pong() {
     print('Ping response received');
   }
-
 }

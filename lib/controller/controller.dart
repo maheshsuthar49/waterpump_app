@@ -18,6 +18,7 @@ class TaskController extends GetxController {
   void onInit() {
     super.onInit();
     final token = box.read('token');
+
     if (token != null && token.toString().isNotEmpty) {
       print("Auto fetching devices with token: $token");
       fetchDeviceAll(token);
@@ -56,6 +57,11 @@ class TaskController extends GetxController {
     isLoading.value = false;
   }
 
+//SearchBox
+  var searchQuery  = ''.obs;
+  void updateSearchQuery(String value){
+    searchQuery.value = value.toLowerCase();
+  }
   // update count
   var countConnected = 0.obs;
   var countDisconnected = 0.obs;
@@ -122,4 +128,17 @@ class TaskController extends GetxController {
   List<DevicesData> get disconnectedList =>
       devices.where((d) => !d.isConnected).toList();
 
+  List<DevicesData> get filteredConnectedList {
+    if (searchQuery.isEmpty) return connectedList;
+    return connectedList
+        .where((d) => d.name.toLowerCase().contains(searchQuery.value))
+        .toList();
+  }
+
+  List<DevicesData> get filteredDisconnectedList {
+    if (searchQuery.isEmpty) return disconnectedList;
+    return disconnectedList
+        .where((d) => d.name.toLowerCase().contains(searchQuery.value))
+        .toList();
+  }
 }

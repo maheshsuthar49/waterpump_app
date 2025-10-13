@@ -54,6 +54,7 @@ class DeviceDetail extends StatelessWidget {
                             value: controller.power.value,
                             onChanged: (bool value) {
                               controller.powerOnOff(value);
+                              mqttController.GetDataPublish(deviceData.uuid.toString(), value ? 1 : 0);
                               if(value == true){
                                 Get.snackbar("${deviceData.name}", "Device is on",duration: Duration(seconds: 1));
                               }else{
