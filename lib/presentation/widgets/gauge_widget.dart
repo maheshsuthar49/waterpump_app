@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 class GaugeWidget extends StatelessWidget {
-  GaugeWidget({required this.value, required this.label, this.height = 70, this.width = 100});
+  GaugeWidget({required this.value, required this.label, this.height = 100, this.width = 92});
   final double value;
   final String label;
   final double height;
@@ -22,8 +22,8 @@ class GaugeWidget extends StatelessWidget {
               RadialAxis(
                 minimum: 0,
                 maximum: 400,
-                startAngle: 180,
-                endAngle: 0,
+                startAngle: 140,
+                endAngle: 40,
                 showLabels: false,
                 showTicks: false,
                 axisLineStyle: AxisLineStyle(
@@ -36,6 +36,7 @@ class GaugeWidget extends StatelessWidget {
                   RangePointer(
                     animationType: AnimationType.bounceOut,
                     value: value,
+
                     color: pointerColor,
                     width: 0.16,
                     sizeUnit: GaugeSizeUnit.factor,
@@ -48,7 +49,7 @@ class GaugeWidget extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
-                        color: pointerColor,
+
                       ),
                     ),
                     angle: 90,
@@ -60,7 +61,7 @@ class GaugeWidget extends StatelessWidget {
           ),
         ),
         Text(
-          "(V): ${value}V",
+          "${value}V",
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 12,

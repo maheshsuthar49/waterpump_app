@@ -16,14 +16,15 @@ class GaugeTwoWidget extends StatelessWidget {
           height:height,
           width: width,
           child: SfRadialGauge(
+
             enableLoadingAnimation: true,
             animationDuration: 4500,
             axes: <RadialAxis>[
               RadialAxis(
                 minimum: 0,
                 maximum: 60,
-                startAngle: 180,
-                endAngle: 0,
+                startAngle: 140,
+                endAngle: 40,
                 showLabels: false,
                 showTicks: false,
                 axisLineStyle: AxisLineStyle(
@@ -48,7 +49,6 @@ class GaugeTwoWidget extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
-                        color: pointerColor,
                       ),
                     ),
                     angle: 90,
@@ -60,12 +60,13 @@ class GaugeTwoWidget extends StatelessWidget {
           ),
         ),
         Text(
-          "(I): ${value1}A",
+          "${value1}A",
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 12,
             color: pointerColor,
           ),
+
         ),
       ],
     );

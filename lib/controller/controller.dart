@@ -72,8 +72,19 @@ class TaskController extends GetxController {
   //switch
   var power = false.obs;
 
-  void powerOnOff(bool value) {
+  void powerOnOff(bool value, DevicesData device) {
     power.value = value;
+   Get.find<MqttController>().controlPublish(device.uuid.toString(), value ? 1 : 0);
+
+
+  }
+  void updatePowerOnOff(DevicesData device){
+    if(device.doo != null && device.doo!.isNotEmpty){
+      power.value = device.doo![0] == 1;
+    }else{
+      power.value = false;
+
+    }
   }
 
   //device list
@@ -98,7 +109,7 @@ class TaskController extends GetxController {
       isLoading.value = false;
     }
 
-      //subscribe for uuid
+    //subscribe for uuid
     if(mqttController.isConnected.value){
       for(var d in devices) {
         mqttController.subscribeToDevice(d.uuid.toString());

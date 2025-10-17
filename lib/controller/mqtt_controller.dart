@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
+import 'package:water_pump/controller/Schduling_controller.dart';
 import 'package:water_pump/controller/controller.dart';
 
 class MqttController extends GetxController {
@@ -69,30 +70,79 @@ class MqttController extends GetxController {
     } else {
       print('Mqtt not connected, cannot Subscribed');
     }
+    if (isConnected.value) {
+      final fullTopic = '$maintopic/$topic/$uuid/config';
+      try {
+        client.subscribe(fullTopic, MqttQos.atLeastOnce);
+        print("Subscribed to $fullTopic");
+      } catch (e) {
+        print("Subscribed data error: $e");
+      }
+    } else {
+      print('Mqtt not connected, cannot Subscribed');
+    }
   }
 
-  void GetDataPublish(String uuid, int value) {
-  if(isConnected.value){
-    final fullTopic = '$maintopic/$topic/$uuid';
-    final Map<String, dynamic> command = {
-      "type": "control",
-      "id": 1,
-      "key": 1,
-      "value": value,
-    };
-    final String payload = jsonEncode(command);
-    final builder = MqttClientPayloadBuilder();
-    builder.addString(payload);
-    try{
-      client.publishMessage(fullTopic, MqttQos.atLeastOnce, builder.payload!);
-      print("Published command to $fullTopic : $payload");
-    }catch(e){
-      print("Published failed : $e");
+  void get_time(String uuid){
+    if(isConnected.value){
+      final fullTopic = '$maintopic/$topic/$uuid';
+      final Map<String, dynamic> command = {"type":"command","id":1,"cmd":"get_time"};
+      final String payload = jsonEncode(command);
+      final builder = MqttClientPayloadBuilder();
+      builder.addString(payload);
+      try{
+        client.publishMessage(fullTopic, MqttQos.atLeastOnce, builder.payload!);
+        print("Published command to $fullTopic : $payload");
+      }catch (e){
+        print("Published is Failed: $e");
+      }
     }
-  }else{
-    print("Mqtt not Connected , Cannot published Command");
   }
+void set_Time ({required String uuid, required int slotIndex, required bool isEnable, required fromMinutes, required toMinutes}){
+
+    if(isConnected.value){
+      final fullTopic = '$maintopic/$topic/$uuid';
+      final valuePayload = "${slotIndex.toString().padLeft(2, '0')},${isEnable ? 1 : 0},${fromMinutes.toString().padLeft(4, "0")},${toMinutes.toString().padLeft(4, "0")}";;
+      final Map<String, dynamic> command = {
+        "type": "config",
+        "id": 1,
+        "key": "stime",
+        "value": valuePayload
+      };
+      final String payload = jsonEncode(command);
+      final builder = MqttClientPayloadBuilder();
+      builder.addString(payload);
+      try{
+        client.publishMessage(fullTopic, MqttQos.atLeastOnce, builder.payload!);
+        print("Published Command to $fullTopic : $payload");
+      }catch (e){
+        print("Published is Failed: $e");
+      }
+    }
+}
+  void controlPublish(String uuid, int value) {
+    if(isConnected.value){
+      final fullTopic = '$maintopic/$topic/$uuid';
+      final Map<String, dynamic> command = {
+        "type": "control",
+        "id": 1,
+        "key": 1,
+        "value": value,
+      };
+      final String payload = jsonEncode(command);
+      final builder = MqttClientPayloadBuilder();
+      builder.addString(payload);
+      try{
+        client.publishMessage(fullTopic, MqttQos.atLeastOnce, builder.payload!);
+        print("Published command to $fullTopic : $payload");
+      }catch(e){
+        print("Published failed : $e");
+      }
+    }else{
+      print("Mqtt not Connected , Cannot published Command");
+    }
   }
+
 
   void connect() {
     client.connect();
@@ -110,8 +160,7 @@ class MqttController extends GetxController {
       final String message = MqttPublishPayload.bytesToStringAsString(
         recMess.payload.message,
       );
-      latestMessage.value = message;
-
+      print("Message String = $message");
       try {
         final jsonData = jsonDecode(message);
         if (jsonData["type"] == 'data') {
@@ -125,7 +174,7 @@ class MqttController extends GetxController {
           if (mqttUuid != null) {
             // find Uuid in Api Devices.
             final index = controller.devices.indexWhere(
-              (d) => d.uuid == mqttUuid,
+                  (d) => d.uuid == mqttUuid,
             );
             if (index != -1) {
               final device = controller.devices[index];
@@ -139,13 +188,21 @@ class MqttController extends GetxController {
               controller.devices[index] = device;
               controller.devices.refresh();
               controller.updateCount();
+              controller.updatePowerOnOff(device);
               // Debug print
-              print(
-                "Updated Device: ${device.name}, UUID: ${device.uuid}, AI: ${device.ai},AI = 1 : ${device.ai?[0]}, DI: ${device.di}, DO: ${device.doo}, FLT: ${device.flt}",
-              );
+              // print(
+              //   "Updated Device: ${device.name}, UUID: ${device.uuid}, AI: ${device.ai},AI = 0 : ${device.ai?[0]}, DI: ${device.di}, DO: ${device.doo}, FLT: ${device.flt}",
+              // );
             }
           }
         }
+        else if(jsonData["type"] == 'time' && jsonData['key'] == 'stime'){
+          if(Get.isRegistered<SchedulingController>()){
+            final schedulingController = Get.find<SchedulingController>();
+            schedulingController.processScheduleData(jsonData['value']);
+          }
+        }
+
       } catch (e) {
         print("Mqtt message parse error: $e");
       }

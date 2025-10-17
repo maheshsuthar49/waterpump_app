@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:water_pump/controller/controller.dart';
 import 'package:water_pump/model/devices.dart';
+import 'package:water_pump/presentation/screens/dashboard_screen.dart';
+import 'package:water_pump/presentation/screens/device_detail.dart';
 import 'package:water_pump/presentation/screens/signin_screen.dart';
 
 class DrawerScreen extends StatelessWidget{
@@ -65,6 +67,7 @@ class DrawerScreen extends StatelessWidget{
             return  ListTile(
               leading: Icon(Icons.circle, size: 10,color: device.isConnected ? Color(0xff024a06) : Colors.grey,),
               title: Text(device.name),
+
             );
           },).toList()
         ),

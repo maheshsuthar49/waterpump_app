@@ -10,8 +10,8 @@ import 'package:water_pump/presentation/widgets/gauge_widget.dart';
 import 'bottomnav_screen.dart';
 
 class DeviceCard extends StatelessWidget {
-    final DevicesData deviceData;
-    const DeviceCard({required this.deviceData, Key? key}) : super(key: key);
+  final DevicesData deviceData;
+  const DeviceCard({required this.deviceData, Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     bool isConnected = deviceData.isConnected;
@@ -20,7 +20,7 @@ class DeviceCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.grey.shade100,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.grey.shade300)
+        border: Border.all(color: Colors.grey.shade300),
       ),
       child: Column(
         children: [
@@ -32,9 +32,12 @@ class DeviceCard extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Icon(Icons.circle, size: 16, color: Colors.grey,),
+                      Icon(Icons.circle, size: 16, color: Colors.grey),
                       SizedBox(width: 10),
-                      Text(deviceData.name, style: TextStyle(fontWeight: FontWeight.bold)),
+                      Text(
+                        deviceData.name,
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
                     ],
                   ),
                   SizedBox(height: 10),
@@ -46,47 +49,98 @@ class DeviceCard extends StatelessWidget {
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 8, vertical: 6),
                     decoration: BoxDecoration(
-                      color: isConnected ? Colors.green.shade100 : Colors.red.shade100,
+                      color: isConnected
+                          ? Colors.green.shade100
+                          : Colors.red.shade100,
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    child: Text(isConnected ? "Connected" : "Disconnected",style: TextStyle(color: isConnected ? Color(0xff024a06) : Colors.red, fontWeight: FontWeight.bold),),
+                    child: Text(
+                      isConnected ? "Connected" : "Disconnected",
+                      style: TextStyle(
+                        color: isConnected ? Color(0xff024a06) : Colors.red,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(height: 10),
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 8, vertical: 6),
                     decoration: BoxDecoration(
                       color: Colors.grey.shade300,
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    child: Text("Type: MANUAL",),
+                    child: Text("Type: MANUAL"),
                   ),
                 ],
               ),
             ],
           ),
-          if(isConnected)...[
-          SizedBox(height: 10,),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-             Expanded(child: GaugeWidget(value:deviceData.ai?[0].toDouble() ?? 0, label: "R")),
-             Expanded(child: GaugeWidget(value: deviceData.ai?[1].toDouble() ?? 0, label: "Y")),
-             Expanded(child: GaugeWidget(value: deviceData.ai?[2].toDouble() ?? 0, label: "B")),
-            ],
-          ),
-          SizedBox(height: 10,),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(child: GaugeTwoWidget(value1: deviceData.ai?[3].toDouble() ?? 0, label2: "R")),
-              Expanded(child: GaugeTwoWidget(value1: deviceData.ai?[4].toDouble() ?? 0, label2: "Y")),
-              Expanded(child: GaugeTwoWidget(value1: deviceData.ai?[5].toDouble() ?? 0, label2: "B")),
-            ],
-          )
+          if (isConnected) ...[
+            SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Stack(
+                    children: [
+                      GaugeWidget(
+                        value: deviceData.ai?[0].toDouble() ?? 0,
+                        label: "",
+                      ),
+                      Positioned(
+                        top: 15,
+                        right: 5,
+                        child: GaugeTwoWidget(
+                          value1: deviceData.ai?[3].toDouble() ?? 0,
+                          label2: "R",
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Stack(
+                    children: [
+                      GaugeWidget(
+                        value: deviceData.ai?[1].toDouble() ?? 0,
+                        label: "",
+                      ),
+                      Positioned(
+                        top: 15,
+                        right: 5,
+                        child: GaugeTwoWidget(
+                          value1: deviceData.ai?[4].toDouble() ?? 0,
+                          label2: "Y",
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Stack(
+                    children: [
+                      GaugeWidget(
+                        value: deviceData.ai?[2].toDouble() ?? 0,
+                        label: "",
+                      ),
+                      Positioned(
+                        top: 15,
+                        right: 5,
+                        child: GaugeTwoWidget(
+                          value1: deviceData.ai?[5].toDouble() ?? 0,
+                          label2: "B",
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+              ],
+            ),
+
           ],
         ],
       ),
     );
   }
-
 }

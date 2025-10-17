@@ -14,9 +14,9 @@ class EditDevice extends StatelessWidget {
   EditDevice({required this.devicesData});
   @override
   Widget build(BuildContext context) {
-  DeviceNameController.text = devicesData.name;
-  DeviceLocController.text = devicesData.area;
-  DeviceFlowController.text = devicesData.flowMultiplier.toString();
+    DeviceNameController.text = devicesData.name;
+    DeviceLocController.text = devicesData.area;
+    DeviceFlowController.text = devicesData.flowMultiplier.toString();
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: ListView(
@@ -32,7 +32,10 @@ class EditDevice extends StatelessWidget {
                   children: [
                     Text(
                       "Service Expire",
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     SizedBox(height: 10),
                     Text(
@@ -42,7 +45,10 @@ class EditDevice extends StatelessWidget {
                     SizedBox(height: 10),
                     Text(
                       "Device Name",
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     CustomTextFormField(
                       controller: DeviceNameController,
@@ -52,7 +58,10 @@ class EditDevice extends StatelessWidget {
                     SizedBox(height: 10),
                     Text(
                       "Location",
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     CustomTextFormField(
                       controller: DeviceLocController,
@@ -62,7 +71,10 @@ class EditDevice extends StatelessWidget {
                     SizedBox(height: 10),
                     Text(
                       "Flow Multiplier",
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     CustomTextFormField(
                       controller: DeviceFlowController,
@@ -89,9 +101,8 @@ class EditDevice extends StatelessWidget {
               ),
             ),
           ),
-
         ],
-      )
+      ),
     );
   }
 }

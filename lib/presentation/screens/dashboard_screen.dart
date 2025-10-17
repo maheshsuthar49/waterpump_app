@@ -5,6 +5,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:water_pump/controller/controller.dart';
 import 'package:water_pump/controller/mqtt_controller.dart';
+import 'package:water_pump/model/devices.dart';
 import 'package:water_pump/presentation/screens/map_screen.dart';
 
 import 'package:water_pump/presentation/widgets/device_card.dart';
@@ -25,6 +26,7 @@ class DashboardScreen extends StatelessWidget {
       key: _scaffoldKey,
       backgroundColor: Color(0xffeafbea),
       drawer: Drawer(
+
          backgroundColor: Color(0xffeafbea),
         child: DrawerScreen(),
       ),

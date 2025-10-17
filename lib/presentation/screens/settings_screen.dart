@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:water_pump/model/devices.dart';
+import 'package:water_pump/presentation/widgets/anlog_limits.dart';
+import 'package:water_pump/presentation/widgets/device_config.dart';
 import 'package:water_pump/presentation/widgets/edit_device.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -50,21 +52,9 @@ class _SettingsScreenState extends State<SettingsScreen>
                 children: [
                   EditDevice(devicesData: widget.deviceData,),
 
-              /// 2. Device Config
-              Center(
-                child: Text(
-                  "Device Config Content",
-                  style: TextStyle(fontSize: 18),
-                ),
-              ),
+                  DeviceConfig(devicesData: widget.deviceData),
 
-              /// 3. Analog Limits
-              Center(
-                child: Text(
-                  "Analog Limits Content",
-                  style: TextStyle(fontSize: 18),
-                ),
-              ),
+                  AnalogLimits()
             ]),
           )
         ],

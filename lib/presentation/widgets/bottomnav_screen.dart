@@ -22,8 +22,9 @@ class BottomNavScreen extends StatelessWidget{
       appBar: AppBar(
         title: Text(
           "Device Detail",
-          style: TextStyle(fontWeight: FontWeight.w500),
+          style: TextStyle(fontWeight: FontWeight.w500,color: Color(0xff024a06)),
         ),
+        backgroundColor: Colors.white,
         centerTitle: true,
       ),
       body: PageView(

@@ -49,7 +49,7 @@ class SignInScreen extends StatelessWidget {
                       TextFormField(
                         controller: usernameController,
                         decoration: const InputDecoration(
-                          hintText: "aggromationindia@gmail.com",
+                          hintText: "Enter Username",
                           border: UnderlineInputBorder(),
                         ),
                       ),

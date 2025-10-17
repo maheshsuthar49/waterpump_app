@@ -5,13 +5,23 @@ import 'package:intl/intl.dart';
 import 'package:water_pump/controller/controller.dart';
 import 'package:water_pump/model/devices.dart';
 
-class ReportScreen extends StatelessWidget {
-  final controller = Get.find<TaskController>();
+class ReportScreen extends StatefulWidget {
   final DevicesData deviceData;
   ReportScreen({required this.deviceData});
+
+  @override
+  State<ReportScreen> createState() => _ReportScreenState();
+}
+
+class _ReportScreenState extends State<ReportScreen> {
+  final controller = Get.find<TaskController>();
+
   TextEditingController fromDateController = TextEditingController();
+
   TextEditingController toDateController = TextEditingController();
+
   TextEditingController monthController = TextEditingController();
+  int?  expendedTileIndex;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -25,6 +35,14 @@ class ReportScreen extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ExpansionTile(
+                  key: UniqueKey(),
+                  initiallyExpanded: expendedTileIndex == 0,
+                  onExpansionChanged: (expanded) {
+                    setState(() {
+                      expendedTileIndex = expanded ? 0 : null;
+
+                    });
+                  },
                   collapsedShape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16),
                   ),
@@ -221,9 +239,9 @@ class ReportScreen extends StatelessWidget {
                               final toDate = DateFormat("dd-MM-yyyy").format(
                                 DateFormat.yMMMd().parse(toDateController.text),
                               );
-                              final id = deviceData.id.toString();
+                              final id = widget.deviceData.id.toString();
 
-                              await controller.fetchReport(id: deviceData.id.toString(), from: fromDate, to: toDate);
+                              await controller.fetchReport(id: widget.deviceData.id.toString(), from: fromDate, to: toDate);
                               print("Print device id: $id");
                               print("Print device from date: $fromDate");
                               print("Print device to date: $toDate");
@@ -259,6 +277,14 @@ class ReportScreen extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ExpansionTile(
+                  key: UniqueKey(),
+                  initiallyExpanded: expendedTileIndex == 1,
+                  onExpansionChanged: (expended) {
+                    setState(() {
+                      expendedTileIndex = expended ? 1 : null;
+
+                    });
+                  },
                   collapsedShape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16),
                   ),
@@ -428,6 +454,7 @@ class ReportScreen extends StatelessWidget {
                 ),
               ),
             ),
+
           ],
         ),
       ),
