@@ -228,6 +228,29 @@ void deviceConfig(String uuid, String key, String value){
     }
   }
 
+  analogLimitMulti(String uuid , String value){
+    final fullTopic = "$maintopic/$topic/$uuid";
+    final Map<String, dynamic> command = {
+      "type": "config",
+      "id": 1,
+      "key": "multpl",
+      "value": value,
+    };
+    final String payload = jsonEncode(command);
+    final builder = MqttClientPayloadBuilder();
+    builder.addString(payload);
+    if(isConnected.value){
+      try{
+        client.publishMessage(fullTopic, MqttQos.atLeastOnce, builder.payload!);
+        print("Publish Config command to $fullTopic : $payload");
+      }catch (e){
+        print("Config published failed: $e ");
+      }
+    }else{
+      print("Mqtt is not connected, cannot send config command");
+    }
+  }
+
   void connect() {
     client.connect();
   }
@@ -289,6 +312,7 @@ void deviceConfig(String uuid, String key, String value){
           if (Get.isRegistered<AnalogLimitController>()) {
             final analogController = Get.find<AnalogLimitController>();
             analogController.updateAnalogLimitData(jsonData);
+
           }
         }
       } catch (e) {

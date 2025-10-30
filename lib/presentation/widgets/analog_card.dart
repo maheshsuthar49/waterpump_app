@@ -13,6 +13,7 @@ class AnalogLimitCard extends StatefulWidget{
   final TextEditingController minController;
   final TextEditingController maxController;
   final TextEditingController multiController;
+  final bool isCardUpdate;
 
   const AnalogLimitCard({
     Key? key,
@@ -27,7 +28,8 @@ class AnalogLimitCard extends StatefulWidget{
     required this.onUpdatePressedMulti,
     required this.minController,
     required this.maxController,
-    required this.multiController
+    required this.multiController,
+    required this.isCardUpdate
 }) : super(key: key);
 
   @override
@@ -37,97 +39,117 @@ class AnalogLimitCard extends StatefulWidget{
 class _AnalogLimitCardState extends State<AnalogLimitCard> {
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 2,
-      color: Colors.grey.shade100,
-      child: Padding(padding: EdgeInsets.all(8.0),
-      child: ExpansionTile(
-          key: UniqueKey(),
-          initiallyExpanded: widget.isExpended,
-          onExpansionChanged: widget.onExpansionChanged,
-          collapsedShape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-          shape: RoundedRectangleBorder(side: BorderSide.none),
-          iconColor: Colors.grey.shade600,
-          title: Text(widget.title! , style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: widget.titleColor),),
-          leading: Icon(widget.icon),
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Stack(
+      children: [
+      Opacity(
+        opacity: widget.isCardUpdate ? 0.5 : 1.0,
+        child: AbsorbPointer(
+          absorbing: widget.isCardUpdate,
+          child: Card(
+          elevation: 2,
+          color: Colors.grey.shade100,
+          child: Padding(padding: EdgeInsets.all(8.0),
+            child: ExpansionTile(
+              key: UniqueKey(),
+              initiallyExpanded: widget.isExpended,
+              onExpansionChanged: widget.onExpansionChanged,
+              collapsedShape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              shape: RoundedRectangleBorder(side: BorderSide.none),
+              iconColor: Colors.grey.shade600,
+              title: Text(widget.title! , style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: widget.titleColor),),
+              leading: Icon(widget.icon),
               children: [
-                Text( "Status",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 18,
-                  ),),
-                Switch(
-                  value: widget.switchValue,
-                  onChanged: (value) async{
-                    bool confirm = await _showConfirmationDialog(context, "Are you sure you want turn ${value ? 'On' : 'Off'}");
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text( "Status",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 18,
+                      ),),
+                    Switch(
+                      value: widget.switchValue,
+                      onChanged: (value) async{
+                        bool confirm = await _showConfirmationDialog(context, "Are you sure you want turn ${value ? 'On' : 'Off'}");
                         if(confirm && widget.onSwitchChanged != null){
                           widget.onSwitchChanged!(value);
                         }
-                  },
-                  thumbColor: MaterialStateProperty.resolveWith<Color?>(
-                        (states) {
-                      if (states.contains(MaterialState.selected)) {
-                        return const Color(0xff024a06);
-                      }
-                      return Colors.grey.shade400;
-                    },
-                  ),
-                  trackColor: MaterialStateProperty.resolveWith<Color?>(
-                        (states) {
-                      if (states.contains(MaterialState.selected)) {
-                        return const Color(0xff024a06).withOpacity(0.4);
-                      }
-                      return Colors.grey.shade300;
-                    },
+                      },
+                      thumbColor: MaterialStateProperty.resolveWith<Color?>(
+                            (states) {
+                          if (states.contains(MaterialState.selected)) {
+                            return const Color(0xff024a06);
+                          }
+                          return Colors.grey.shade400;
+                        },
+                      ),
+                      trackColor: MaterialStateProperty.resolveWith<Color?>(
+                            (states) {
+                          if (states.contains(MaterialState.selected)) {
+                            return const Color(0xff024a06).withOpacity(0.4);
+                          }
+                          return Colors.grey.shade300;
+                        },
+                      ),
+                    ),
+          
+                  ],
+                ),
+                const Divider(height: 4,),
+                _buildTextField("Minimum", widget.minController, (value){} ),
+                _buildTextField("Maximum", widget.maxController, (value){}),
+                SizedBox(height: 10,),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xff024a06),
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    onPressed: widget.onUpdatePressedMaxMin,
+                    child: Text("Update"),
                   ),
                 ),
-
+                _buildTextField("Multiplier", widget.multiController, (value){}),
+                SizedBox(height: 10,),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xff024a06),
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    onPressed: widget.onUpdatePressedMulti,
+                    child: Text("Update"),
+                  ),
+                ),
               ],
+          
             ),
-            const Divider(height: 4,),
-            _buildTextField("Minimum", widget.minController, (value){} ),
-            _buildTextField("Maximum", widget.maxController, (value){}),
-            SizedBox(height: 10,),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xff024a06),
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-                onPressed: widget.onUpdatePressedMaxMin,
-                child: Text("Update"),
+          ),
               ),
-            ),
-            _buildTextField("Multiplier", widget.multiController, (value){}),
-            SizedBox(height: 10,),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xff024a06),
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-                onPressed: widget.onUpdatePressedMulti,
-                child: Text("Update"),
-              ),
-            ),
-          ],
-
+        ),
       ),
-      ),
+        if(widget.isCardUpdate)
+          Positioned.fill(child: Center(
+            child: Container(
+              width: 30,
+              height: 30,
+              child: CircularProgressIndicator(color: Color(0xff024a06),),
+            ),
+          ))
+      ],
     );
+
+      
   }
 
   Future<bool> _showConfirmationDialog(BuildContext context, String message) async {

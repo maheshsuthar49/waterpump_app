@@ -73,7 +73,7 @@ class _AnalogLimitsState extends State<AnalogLimits> {
       }
 
       final limits = analogLimitController.analogLimits;
-
+      final cardUpdate = analogLimitController.cardUpdate;
       return Padding(
         padding: EdgeInsets.all(16.0),
         child: ListView(
@@ -90,31 +90,36 @@ class _AnalogLimitsState extends State<AnalogLimits> {
                 });
               },
               switchValue: limits[0][0] == "1",
+              isCardUpdate: cardUpdate[0],
               onSwitchChanged: (value) {
                 final keyIndex = 0;
+                analogLimitController.cardUpdate[keyIndex] = true;
                 final enable = value ? 1 : 0;
                 final min = _minControllers[keyIndex].text.padLeft(4, '0');
                 final max = _maxControllers[keyIndex].text.padLeft(4, '0');
                 final commandVal =
                     "${keyIndex.toString().padLeft(2, '0')},$enable,$min,$max";
-                mqttController.analogLimitsConfig(
-                  widget.devicesData.uuid.toString(),
-                  commandVal,
-                );
+                analogLimitController.updateAnalogLimits(widget.devicesData.uuid.toString(), commandVal);
+
               },
               onUpdatePressedMaxMin: () {
                 final keyIndex = 0;
+                analogLimitController.cardUpdate[keyIndex] = true;
                 final enable = limits[keyIndex][0];
                 final min = _minControllers[keyIndex].text.padLeft(4, '0');
                 final max = _maxControllers[keyIndex].text.padLeft(4, '0');
                 final commandVal =
                     "${keyIndex.toString().padLeft(2, '0')},$enable,$min,$max";
-                mqttController.analogLimitsConfig(
-                  widget.devicesData.uuid.toString(),
-                  commandVal,
-                );
+                analogLimitController.updateAnalogLimits(widget.devicesData.uuid.toString(), commandVal);
+
               },
-              onUpdatePressedMulti: () {},
+              onUpdatePressedMulti: () {
+                final keyIndex = 0;
+                analogLimitController.cardUpdate[keyIndex] = true;
+                final multi = _multiControllers[keyIndex].text.padLeft(4, '0');
+                final commandVal = "${keyIndex.toString().padLeft(2, '0')},0,$multi";
+                analogLimitController.updateAnalogLimitMulti(widget.devicesData.uuid.toString(), commandVal);
+              },
               minController: _minControllers[0],
               maxController: _maxControllers[0],
               multiController: _multiControllers[0],
@@ -133,6 +138,7 @@ class _AnalogLimitsState extends State<AnalogLimits> {
               switchValue: limits[1][0] == "1",
               onSwitchChanged: (value) async{
                 final keyIndex = 1;
+                analogLimitController.cardUpdate[keyIndex] = true;
                 final enable = value ? 1 : 0;
                 final min = _minControllers[keyIndex].text.padLeft(4, '0');
                 final max = _maxControllers[keyIndex].text.padLeft(4, '0');
@@ -145,6 +151,8 @@ class _AnalogLimitsState extends State<AnalogLimits> {
               },
               onUpdatePressedMaxMin: () {
                 final keyIndex = 1;
+                analogLimitController.cardUpdate[keyIndex] = true;
+
                 final enable = limits[keyIndex][0];
                 final min = _minControllers[keyIndex].text.padLeft(4, '0');
                 final max = _maxControllers[keyIndex].text.padLeft(4, '0');
@@ -154,10 +162,16 @@ class _AnalogLimitsState extends State<AnalogLimits> {
                   commandVal,
                 );
               },
-              onUpdatePressedMulti: () {},
+              onUpdatePressedMulti: () {
+                final keyIndex = 1;
+                analogLimitController.cardUpdate[keyIndex] = true;
+                final multi = _multiControllers[keyIndex].text.padLeft(4, '0');
+                final commandVal = "${keyIndex.toString().padLeft(2, '0')},0,$multi";
+                analogLimitController.updateAnalogLimitMulti(widget.devicesData.uuid.toString(), commandVal);
+              },
               minController: _minControllers[1],
               maxController: _maxControllers[1],
-              multiController: TextEditingController(text: limits[1][3]),
+              multiController: _multiControllers[1], isCardUpdate: cardUpdate[1],
             ), //1
             SizedBox(height: 10),
             AnalogLimitCard(
@@ -173,6 +187,7 @@ class _AnalogLimitsState extends State<AnalogLimits> {
               switchValue: limits[2][0] == '1',
               onSwitchChanged: (value) {
                 final keyIndex = 2;
+                analogLimitController.cardUpdate[keyIndex] = true;
                 final enable = value ? 1 : 0;
                 final min = _minControllers[keyIndex].text.padLeft(4, '0');
                 final max = _maxControllers[keyIndex].text.padLeft(4, '0');
@@ -185,6 +200,7 @@ class _AnalogLimitsState extends State<AnalogLimits> {
               },
               onUpdatePressedMaxMin: () {
                 final keyIndex = 2;
+                analogLimitController.cardUpdate[keyIndex] = true;
                 final enable = limits[keyIndex][0];
                 final min = _minControllers[keyIndex].text.padLeft(4, '0');
                 final max = _maxControllers[keyIndex].text.padLeft(4, '0');
@@ -195,10 +211,17 @@ class _AnalogLimitsState extends State<AnalogLimits> {
                   commandVal,
                 );
               },
-              onUpdatePressedMulti: () {},
+              onUpdatePressedMulti: () {
+                final keyIndex = 2;
+                analogLimitController.cardUpdate[keyIndex] = true;
+                final multi = _multiControllers[keyIndex].text.padLeft(4, '0');
+                final commandVal = "${keyIndex.toString().padLeft(2, '0')},0,$multi";
+                analogLimitController.updateAnalogLimitMulti(widget.devicesData.uuid.toString(), commandVal);
+              },
               minController: _minControllers[2],
               maxController: _maxControllers[2],
-              multiController: _multiControllers[2]
+              multiController: _multiControllers[2],
+              isCardUpdate: cardUpdate[2],
             ), //2
             SizedBox(height: 10),
             AnalogLimitCard(
@@ -214,6 +237,7 @@ class _AnalogLimitsState extends State<AnalogLimits> {
               switchValue: limits[3][0] == "1",
               onSwitchChanged: (value) {
                 final keyIndex = 3;
+                analogLimitController.cardUpdate[keyIndex] = true;
                 final enable = value ? 1 : 0;
                 final min = _minControllers[keyIndex].text.padLeft(4, '0');
                 final max = _maxControllers[keyIndex].text.padLeft(4, '0');
@@ -226,6 +250,7 @@ class _AnalogLimitsState extends State<AnalogLimits> {
               },
               onUpdatePressedMaxMin: () {
                 final keyIndex = 3;
+                analogLimitController.cardUpdate[keyIndex] = true;
                 final enable = limits[keyIndex][0];
                 final min = _minControllers[keyIndex].text.padLeft(4, '0');
                 final max = _maxControllers[keyIndex].text.padLeft(4, '0');
@@ -236,10 +261,17 @@ class _AnalogLimitsState extends State<AnalogLimits> {
                   commandVal,
                 );
               },
-              onUpdatePressedMulti: () {},
+              onUpdatePressedMulti: () {
+                final keyIndex = 3;
+                analogLimitController.cardUpdate[keyIndex] = true;
+                final multi = _multiControllers[keyIndex].text.padLeft(4, '0');
+                final commandVal = "${keyIndex.toString().padLeft(2, '0')},0,$multi";
+                analogLimitController.updateAnalogLimitMulti(widget.devicesData.uuid.toString(), commandVal);
+              },
               minController: _minControllers[3],
               maxController: _maxControllers[3],
-              multiController: _multiControllers[3],
+              multiController: _multiControllers[3], 
+              isCardUpdate: cardUpdate[3],
             ), //3
             SizedBox(height: 10),
             AnalogLimitCard(
@@ -255,6 +287,7 @@ class _AnalogLimitsState extends State<AnalogLimits> {
               switchValue: limits[4][0] == '1',
               onSwitchChanged: (value) {
                 final keyIndex = 4;
+                analogLimitController.cardUpdate[keyIndex] = true;
                 final enable = value ? 1 : 0;
                 final min = _minControllers[keyIndex].text.padLeft(4, '0');
                 final max = _maxControllers[keyIndex].text.padLeft(4, '0');
@@ -267,6 +300,7 @@ class _AnalogLimitsState extends State<AnalogLimits> {
               },
               onUpdatePressedMaxMin: () {
                 final keyIndex = 4;
+                analogLimitController.cardUpdate[keyIndex] = true;
                 final enable = limits[keyIndex][0];
                 final min = _minControllers[keyIndex].text.padLeft(4, '0');
                 final max = _maxControllers[keyIndex].text.padLeft(4, '0');
@@ -277,10 +311,17 @@ class _AnalogLimitsState extends State<AnalogLimits> {
                   commandVal,
                 );
               },
-              onUpdatePressedMulti: () {},
+              onUpdatePressedMulti: () {
+                final keyIndex = 4;
+                analogLimitController.cardUpdate[keyIndex] = true;
+                final multi = _multiControllers[keyIndex].text.padLeft(4, '0');
+                final commandVal = "${keyIndex.toString().padLeft(2, '0')},0,$multi";
+                analogLimitController.updateAnalogLimitMulti(widget.devicesData.uuid.toString(), commandVal);
+              },
               minController: _minControllers[4],
               maxController: _maxControllers[4],
               multiController: _multiControllers[4],
+              isCardUpdate: cardUpdate[4],
             ), //4
             SizedBox(height: 10),
             AnalogLimitCard(
@@ -296,6 +337,7 @@ class _AnalogLimitsState extends State<AnalogLimits> {
               switchValue: limits[5][0] == '1',
               onSwitchChanged: (value) {
                 final keyIndex = 5;
+                analogLimitController.cardUpdate[keyIndex] = true;
                 final enable = value ? 1 : 0;
                 final min = _minControllers[keyIndex].text.padLeft(4, '0');
                 final max = _maxControllers[keyIndex].text.padLeft(4, '0');
@@ -308,6 +350,7 @@ class _AnalogLimitsState extends State<AnalogLimits> {
               },
               onUpdatePressedMaxMin: () {
                 final keyIndex = 5;
+                analogLimitController.cardUpdate[keyIndex] = true;
                 final enable = limits[keyIndex][0];
                 final min = _minControllers[keyIndex].text.padLeft(4, '0');
                 final max = _maxControllers[keyIndex].text.padLeft(4, '0');
@@ -318,10 +361,17 @@ class _AnalogLimitsState extends State<AnalogLimits> {
                   commandVal,
                 );
               },
-              onUpdatePressedMulti: () {},
+              onUpdatePressedMulti: () {
+                final keyIndex = 5;
+                analogLimitController.cardUpdate[keyIndex] = true;
+                final multi = _multiControllers[keyIndex].text.padLeft(4, '0');
+                final commandVal = "${keyIndex.toString().padLeft(2, '0')},0,$multi";
+                analogLimitController.updateAnalogLimitMulti(widget.devicesData.uuid.toString(), commandVal);
+              },
               minController: _minControllers[5],
               maxController: _maxControllers[5],
               multiController: _multiControllers[5],
+              isCardUpdate: cardUpdate[5],
             ), //5
             SizedBox(height: 10),
             AnalogLimitCard(
@@ -337,6 +387,7 @@ class _AnalogLimitsState extends State<AnalogLimits> {
               switchValue: limits[6][0] == '1',
               onSwitchChanged: (value) {
                 final keyIndex = 6;
+                analogLimitController.cardUpdate[keyIndex] = true;
                 final enable = value ? 1 : 0;
                 final min = _minControllers[keyIndex].text.padLeft(4, '0');
                 final max = _maxControllers[keyIndex].text.padLeft(4, '0');
@@ -349,6 +400,7 @@ class _AnalogLimitsState extends State<AnalogLimits> {
               },
               onUpdatePressedMaxMin: () {
                 final keyIndex = 6;
+                analogLimitController.cardUpdate[keyIndex] = true;
                 final enable = limits[keyIndex][0];
                 final min = _minControllers[keyIndex].text.padLeft(4, '0');
                 final max = _maxControllers[keyIndex].text.padLeft(4, '0');
@@ -359,10 +411,17 @@ class _AnalogLimitsState extends State<AnalogLimits> {
                   commandVal,
                 );
               },
-              onUpdatePressedMulti: () {},
+              onUpdatePressedMulti: () {
+                final keyIndex = 6;
+                analogLimitController.cardUpdate[keyIndex] = true;
+                final multi = _multiControllers[keyIndex].text.padLeft(4, '0');
+                final commandVal = "${keyIndex.toString().padLeft(2, '0')},0,$multi";
+                analogLimitController.updateAnalogLimitMulti(widget.devicesData.uuid.toString(), commandVal);
+              },
               minController: _minControllers[6],
               maxController: _maxControllers[6],
               multiController: _multiControllers[6],
+              isCardUpdate: cardUpdate[6],
             ), //6
             SizedBox(height: 10),
             AnalogLimitCard(
@@ -378,6 +437,7 @@ class _AnalogLimitsState extends State<AnalogLimits> {
               switchValue: limits[7][0] == '1',
               onSwitchChanged: (value) {
                 final keyIndex = 7;
+                analogLimitController.cardUpdate[keyIndex] = true;
                 final enable = value ? 1 : 0;
                 final min = _minControllers[keyIndex].text.padLeft(4, '0');
                 final max = _maxControllers[keyIndex].text.padLeft(4, '0');
@@ -390,6 +450,7 @@ class _AnalogLimitsState extends State<AnalogLimits> {
               },
               onUpdatePressedMaxMin: () {
                 final keyIndex = 7;
+                analogLimitController.cardUpdate[keyIndex] = true;
                 final enable = limits[keyIndex][0];
                 final min = _minControllers[keyIndex].text.padLeft(4, '0');
                 final max = _maxControllers[keyIndex].text.padLeft(4, '0');
@@ -400,10 +461,16 @@ class _AnalogLimitsState extends State<AnalogLimits> {
                   commandVal,
                 );
               },
-              onUpdatePressedMulti: () {},
+              onUpdatePressedMulti: () {
+                final keyIndex = 7;
+                analogLimitController.cardUpdate[keyIndex] = true;
+                final multi = _multiControllers[keyIndex].text.padLeft(4, '0');
+                final commandVal = "${keyIndex.toString().padLeft(2, '0')},0,$multi";
+                analogLimitController.updateAnalogLimitMulti(widget.devicesData.uuid.toString(), commandVal);
+              },
               minController:_minControllers[7],
               maxController: _maxControllers[7],
-              multiController: _multiControllers[7],
+              multiController: _multiControllers[7], isCardUpdate: cardUpdate[7],
             ), //7
             SizedBox(height: 10),
             AnalogLimitCard(
@@ -419,6 +486,7 @@ class _AnalogLimitsState extends State<AnalogLimits> {
               switchValue: limits[8][0] == '1',
               onSwitchChanged: (value) {
                 final keyIndex = 8;
+                analogLimitController.cardUpdate[keyIndex] = true;
                 final enable = value ? 1 : 0;
                 final min = _minControllers[keyIndex].text.padLeft(4, '0');
                 final max = _maxControllers[keyIndex].text.padLeft(4, '0');
@@ -431,6 +499,7 @@ class _AnalogLimitsState extends State<AnalogLimits> {
               },
               onUpdatePressedMaxMin: () {
                 final keyIndex = 8;
+                analogLimitController.cardUpdate[keyIndex] = true;
                 final enable = limits[keyIndex][0];
                 final min = _minControllers[keyIndex].text.padLeft(4, '0');
                 final max = _maxControllers[keyIndex].text.padLeft(4, '0');
@@ -441,10 +510,16 @@ class _AnalogLimitsState extends State<AnalogLimits> {
                   commandVal,
                 );
               },
-              onUpdatePressedMulti: () {},
+              onUpdatePressedMulti: () {
+                final keyIndex = 8;
+                analogLimitController.cardUpdate[keyIndex] = true;
+                final multi = _multiControllers[keyIndex].text.padLeft(4, '0');
+                final commandVal = "${keyIndex.toString().padLeft(2, '0')},0,$multi";
+                analogLimitController.updateAnalogLimitMulti(widget.devicesData.uuid.toString(), commandVal);
+              },
               minController: _minControllers[8],
               maxController:_maxControllers[8],
-              multiController: _multiControllers[8],
+              multiController: _multiControllers[8], isCardUpdate: cardUpdate[8],
             ), //8
             SizedBox(height: 10),
             AnalogLimitCard(
@@ -460,6 +535,7 @@ class _AnalogLimitsState extends State<AnalogLimits> {
               switchValue: limits[9][0] == '1',
               onSwitchChanged: (value) {
                 final keyIndex = 9;
+                analogLimitController.cardUpdate[keyIndex] = true;
                 final enable = value ? 1 : 0;
                 final min = _minControllers[keyIndex].text.padLeft(4, '0');
                 final max = _maxControllers[keyIndex].text.padLeft(4, '0');
@@ -472,6 +548,7 @@ class _AnalogLimitsState extends State<AnalogLimits> {
               },
               onUpdatePressedMaxMin: () {
                 final keyIndex = 9;
+                analogLimitController.cardUpdate[keyIndex] = true;
                 final enable = limits[keyIndex][0];
                 final min = _minControllers[keyIndex].text.padLeft(4, '0');
                 final max = _maxControllers[keyIndex].text.padLeft(4, '0');
@@ -482,10 +559,16 @@ class _AnalogLimitsState extends State<AnalogLimits> {
                   commandVal,
                 );
               },
-              onUpdatePressedMulti: () {},
+              onUpdatePressedMulti: () {
+                final keyIndex = 9;
+                analogLimitController.cardUpdate[keyIndex] = true;
+                final multi = _multiControllers[keyIndex].text.padLeft(4, '0');
+                final commandVal = "${keyIndex.toString().padLeft(2, '0')},0,$multi";
+                analogLimitController.updateAnalogLimitMulti(widget.devicesData.uuid.toString(), commandVal);
+              },
               minController: _minControllers[9],
               maxController: _maxControllers[9],
-              multiController: _multiControllers[9],
+              multiController: _multiControllers[9], isCardUpdate: cardUpdate[9],
             ), //9
             SizedBox(height: 10),
             AnalogLimitCard(
@@ -501,6 +584,7 @@ class _AnalogLimitsState extends State<AnalogLimits> {
               switchValue: limits[10][0] == '1',
               onSwitchChanged: (value) {
                 final keyIndex = 10;
+                analogLimitController.cardUpdate[keyIndex] = true;
                 final enable = value ? 1 : 0;
                 final min = _minControllers[keyIndex].text.padLeft(4, '0');
                 final max = _maxControllers[keyIndex].text.padLeft(4, '0');
@@ -513,6 +597,7 @@ class _AnalogLimitsState extends State<AnalogLimits> {
               },
               onUpdatePressedMaxMin: () {
                 final keyIndex = 10;
+                analogLimitController.cardUpdate[keyIndex] = true;
                 final enable = limits[keyIndex][0];
                 final min = _minControllers[keyIndex].text.padLeft(4, '0');
                 final max = _maxControllers[keyIndex].text.padLeft(4, '0');
@@ -523,10 +608,16 @@ class _AnalogLimitsState extends State<AnalogLimits> {
                   commandVal,
                 );
               },
-              onUpdatePressedMulti: () {},
+              onUpdatePressedMulti: () {
+                final keyIndex = 10;
+                analogLimitController.cardUpdate[keyIndex] = true;
+                final multi = _multiControllers[keyIndex].text.padLeft(4, '0');
+                final commandVal = "${keyIndex.toString().padLeft(2, '0')},0,$multi";
+                analogLimitController.updateAnalogLimitMulti(widget.devicesData.uuid.toString(), commandVal);
+              },
               minController: _minControllers[10],
               maxController: _maxControllers[10],
-              multiController: _multiControllers[10],
+              multiController: _multiControllers[10], isCardUpdate: cardUpdate[10],
             ), //10
             SizedBox(height: 10),
             AnalogLimitCard(
@@ -542,6 +633,7 @@ class _AnalogLimitsState extends State<AnalogLimits> {
               switchValue: limits[11][0] == '1',
               onSwitchChanged: (value) {
                 final keyIndex = 11;
+                analogLimitController.cardUpdate[keyIndex] = true;
                 final enable = value ? 1 : 0;
                 final min = _minControllers[keyIndex].text.padLeft(4, '0');
                 final max = _maxControllers[keyIndex].text.padLeft(4, '0');
@@ -554,6 +646,7 @@ class _AnalogLimitsState extends State<AnalogLimits> {
               },
               onUpdatePressedMaxMin: () {
                 final keyIndex = 11;
+                analogLimitController.cardUpdate[keyIndex] = true;
                 final enable = limits[keyIndex][0];
                 final min = _minControllers[keyIndex].text.padLeft(4, '0');
                 final max = _maxControllers[keyIndex].text.padLeft(4, '0');
@@ -564,10 +657,16 @@ class _AnalogLimitsState extends State<AnalogLimits> {
                   commandVal,
                 );
               },
-              onUpdatePressedMulti: () {},
+              onUpdatePressedMulti: () {
+                final keyIndex = 11;
+                analogLimitController.cardUpdate[keyIndex] = true;
+                final multi = _multiControllers[keyIndex].text.padLeft(4, '0');
+                final commandVal = "${keyIndex.toString().padLeft(2, '0')},0,$multi";
+                analogLimitController.updateAnalogLimitMulti(widget.devicesData.uuid.toString(), commandVal);
+              },
               minController: _minControllers[11],
               maxController: _maxControllers[11],
-              multiController:_multiControllers[11],
+              multiController:_multiControllers[11], isCardUpdate: cardUpdate[11],
             ), //11
             SizedBox(height: 10),
             AnalogLimitCard(
@@ -583,6 +682,7 @@ class _AnalogLimitsState extends State<AnalogLimits> {
               switchValue: limits[12][0] == '1',
               onSwitchChanged: (value) {
                 final keyIndex = 12;
+                analogLimitController.cardUpdate[keyIndex] = true;
                 final enable = value ? 1 : 0;
                 final min = _minControllers[keyIndex].text.padLeft(4, '0');
                 final max = _maxControllers[keyIndex].text.padLeft(4, '0');
@@ -595,6 +695,7 @@ class _AnalogLimitsState extends State<AnalogLimits> {
               },
               onUpdatePressedMaxMin: () {
                 final keyIndex = 12;
+                analogLimitController.cardUpdate[keyIndex] = true;
                 final enable = limits[keyIndex][0];
                 final min = _minControllers[keyIndex].text.padLeft(4, '0');
                 final max = _maxControllers[keyIndex].text.padLeft(4, '0');
@@ -605,10 +706,16 @@ class _AnalogLimitsState extends State<AnalogLimits> {
                   commandVal,
                 );
               },
-              onUpdatePressedMulti: () {},
+              onUpdatePressedMulti: () {
+                final keyIndex = 12;
+                analogLimitController.cardUpdate[keyIndex] = true;
+                final multi = _multiControllers[keyIndex].text.padLeft(4, '0');
+                final commandVal = "${keyIndex.toString().padLeft(2, '0')},0,$multi";
+                analogLimitController.updateAnalogLimitMulti(widget.devicesData.uuid.toString(), commandVal);
+              },
               minController: _minControllers[12],
               maxController: _maxControllers[12],
-              multiController:_multiControllers[12],
+              multiController:_multiControllers[12], isCardUpdate: cardUpdate[12],
             ), //12
             SizedBox(height: 10),
             AnalogLimitCard(
@@ -624,6 +731,7 @@ class _AnalogLimitsState extends State<AnalogLimits> {
               switchValue: limits[13][0] == '1',
               onSwitchChanged: (value) {
                 final keyIndex = 13;
+                analogLimitController.cardUpdate[keyIndex] = true;
                 final enable = value ? 1 : 0;
                 final min = _minControllers[keyIndex].text.padLeft(4, '0');
                 final max = _maxControllers[keyIndex].text.padLeft(4, '0');
@@ -636,6 +744,7 @@ class _AnalogLimitsState extends State<AnalogLimits> {
               },
               onUpdatePressedMaxMin: () {
                 final keyIndex = 13;
+                analogLimitController.cardUpdate[keyIndex] = true;
                 final enable = limits[keyIndex][0];
                 final min = _minControllers[keyIndex].text.padLeft(4, '0');
                 final max = _maxControllers[keyIndex].text.padLeft(4, '0');
@@ -646,10 +755,16 @@ class _AnalogLimitsState extends State<AnalogLimits> {
                   commandVal,
                 );
               },
-              onUpdatePressedMulti: () {},
+              onUpdatePressedMulti: () {
+                final keyIndex = 13;
+                analogLimitController.cardUpdate[keyIndex] = true;
+                final multi = _multiControllers[keyIndex].text.padLeft(4, '0');
+                final commandVal = "${keyIndex.toString().padLeft(2, '0')},0,$multi";
+                analogLimitController.updateAnalogLimitMulti(widget.devicesData.uuid.toString(), commandVal);
+              },
               minController: _minControllers[13],
               maxController: _maxControllers[13],
-              multiController: _multiControllers[13],
+              multiController: _multiControllers[13], isCardUpdate: cardUpdate[13],
             ), //13
             SizedBox(height: 10),
             AnalogLimitCard(
@@ -665,6 +780,7 @@ class _AnalogLimitsState extends State<AnalogLimits> {
               switchValue: limits[14][0] == '1',
               onSwitchChanged: (value) {
                 final keyIndex = 14;
+                analogLimitController.cardUpdate[keyIndex] = true;
                 final enable = value ? 1 : 0;
                 final min = _minControllers[keyIndex].text.padLeft(4, '0');
                 final max = _maxControllers[keyIndex].text.padLeft(4, '0');
@@ -677,6 +793,7 @@ class _AnalogLimitsState extends State<AnalogLimits> {
               },
               onUpdatePressedMaxMin: () {
                 final keyIndex = 14;
+                analogLimitController.cardUpdate[keyIndex] = true;
                 final enable = limits[keyIndex][0];
                 final min = _minControllers[keyIndex].text.padLeft(4, '0');
                 final max = _maxControllers[keyIndex].text.padLeft(4, '0');
@@ -687,10 +804,16 @@ class _AnalogLimitsState extends State<AnalogLimits> {
                   commandVal,
                 );
               },
-              onUpdatePressedMulti: () {},
+              onUpdatePressedMulti: () {
+                final keyIndex = 14;
+                analogLimitController.cardUpdate[keyIndex] = true;
+                final multi = _multiControllers[keyIndex].text.padLeft(4, '0');
+                final commandVal = "${keyIndex.toString().padLeft(2, '0')},0,$multi";
+                analogLimitController.updateAnalogLimitMulti(widget.devicesData.uuid.toString(), commandVal);
+              },
               minController: _minControllers[14],
               maxController: _maxControllers[14],
-              multiController: _multiControllers[14],
+              multiController: _multiControllers[14], isCardUpdate: cardUpdate[14],
             ), //14
             SizedBox(height: 10),
             AnalogLimitCard(
@@ -706,6 +829,7 @@ class _AnalogLimitsState extends State<AnalogLimits> {
               switchValue: limits[15][0] == '1',
               onSwitchChanged: (value) {
                 final keyIndex = 15;
+                analogLimitController.cardUpdate[keyIndex] = true;
                 final enable = value ? 1 : 0;
                 final min = _minControllers[keyIndex].text.padLeft(4, '0');
                 final max = _maxControllers[keyIndex].text.padLeft(4, '0');
@@ -718,6 +842,7 @@ class _AnalogLimitsState extends State<AnalogLimits> {
               },
               onUpdatePressedMaxMin: () {
                 final keyIndex = 15;
+                analogLimitController.cardUpdate[keyIndex] = true;
                 final enable = limits[keyIndex][0];
                 final min = _minControllers[keyIndex].text.padLeft(4, '0');
                 final max = _maxControllers[keyIndex].text.padLeft(4, '0');
@@ -728,10 +853,16 @@ class _AnalogLimitsState extends State<AnalogLimits> {
                   commandVal,
                 );
               },
-              onUpdatePressedMulti: () {},
+              onUpdatePressedMulti: () {
+                final keyIndex = 15;
+                analogLimitController.cardUpdate[keyIndex] = true;
+                final multi = _multiControllers[keyIndex].text.padLeft(4, '0');
+                final commandVal = "${keyIndex.toString().padLeft(2, '0')},0,$multi";
+                analogLimitController.updateAnalogLimitMulti(widget.devicesData.uuid.toString(), commandVal);
+              },
               minController: _minControllers[15],
               maxController: _maxControllers[15],
-              multiController: _multiControllers[15],
+              multiController: _multiControllers[15], isCardUpdate: cardUpdate[15],
             ), //15
             SizedBox(height: 10),
             AnalogLimitCard(
@@ -747,6 +878,7 @@ class _AnalogLimitsState extends State<AnalogLimits> {
               switchValue: limits[16][0] == '1',
               onSwitchChanged: (value) {
                 final keyIndex = 16;
+                analogLimitController.cardUpdate[keyIndex] = true;
                 final enable = value ? 1 : 0;
                 final min = _minControllers[keyIndex].text.padLeft(4, '0');
                 final max = _maxControllers[keyIndex].text.padLeft(4, '0');
@@ -759,6 +891,7 @@ class _AnalogLimitsState extends State<AnalogLimits> {
               },
               onUpdatePressedMaxMin: () {
                 final keyIndex = 16;
+                analogLimitController.cardUpdate[keyIndex] = true;
                 final enable = limits[keyIndex][0];
                 final min = _minControllers[keyIndex].text.padLeft(4, '0');
                 final max = _maxControllers[keyIndex].text.padLeft(4, '0');
@@ -769,10 +902,16 @@ class _AnalogLimitsState extends State<AnalogLimits> {
                   commandVal,
                 );
               },
-              onUpdatePressedMulti: () {},
+              onUpdatePressedMulti: () {
+                final keyIndex = 16;
+                analogLimitController.cardUpdate[keyIndex] = true;
+                final multi = _multiControllers[keyIndex].text.padLeft(4, '0');
+                final commandVal = "${keyIndex.toString().padLeft(2, '0')},0,$multi";
+                analogLimitController.updateAnalogLimitMulti(widget.devicesData.uuid.toString(), commandVal);
+              },
               minController: _minControllers[16],
               maxController: _maxControllers[16],
-              multiController: _multiControllers[16],
+              multiController: _multiControllers[16], isCardUpdate: cardUpdate[16],
             ), //16
             SizedBox(height: 10),
             AnalogLimitCard(
@@ -788,6 +927,7 @@ class _AnalogLimitsState extends State<AnalogLimits> {
               switchValue: limits[17][0] == '1',
               onSwitchChanged: (value) {
                 final keyIndex = 17;
+                analogLimitController.cardUpdate[keyIndex] = true;
                 final enable = value ? 1 : 0;
                 final min = _minControllers[keyIndex].text.padLeft(4, '0');
                 final max = _maxControllers[keyIndex].text.padLeft(4, '0');
@@ -800,6 +940,7 @@ class _AnalogLimitsState extends State<AnalogLimits> {
               },
               onUpdatePressedMaxMin: () {
                 final keyIndex = 17;
+                analogLimitController.cardUpdate[keyIndex] = true;
                 final enable = limits[keyIndex][0];
                 final min = _minControllers[keyIndex].text.padLeft(4, '0');
                 final max = _maxControllers[keyIndex].text.padLeft(4, '0');
@@ -810,10 +951,16 @@ class _AnalogLimitsState extends State<AnalogLimits> {
                   commandVal,
                 );
               },
-              onUpdatePressedMulti: () {},
+              onUpdatePressedMulti: () {
+                final keyIndex = 17;
+                analogLimitController.cardUpdate[keyIndex] = true;
+                final multi = _multiControllers[keyIndex].text.padLeft(4, '0');
+                final commandVal = "${keyIndex.toString().padLeft(2, '0')},0,$multi";
+                analogLimitController.updateAnalogLimitMulti(widget.devicesData.uuid.toString(), commandVal);
+              },
               minController: _minControllers[17],
               maxController: _maxControllers[17],
-              multiController: _multiControllers[17],
+              multiController: _multiControllers[17], isCardUpdate: cardUpdate[17],
             ), //17
             SizedBox(height: 10),
             AnalogLimitCard(
@@ -829,6 +976,7 @@ class _AnalogLimitsState extends State<AnalogLimits> {
               switchValue: limits[18][0] == '1',
               onSwitchChanged: (value) {
                 final keyIndex = 18;
+                analogLimitController.cardUpdate[keyIndex] = true;
                 final enable = value ? 1 : 0;
                 final min = _minControllers[keyIndex].text.padLeft(4, '0');
                 final max = _maxControllers[keyIndex].text.padLeft(4, '0');
@@ -841,6 +989,7 @@ class _AnalogLimitsState extends State<AnalogLimits> {
               },
               onUpdatePressedMaxMin: () {
                 final keyIndex = 18;
+                analogLimitController.cardUpdate[keyIndex] = true;
                 final enable = limits[keyIndex][0];
                 final min = _minControllers[keyIndex].text.padLeft(4, '0');
                 final max = _maxControllers[keyIndex].text.padLeft(4, '0');
@@ -851,10 +1000,16 @@ class _AnalogLimitsState extends State<AnalogLimits> {
                   commandVal,
                 );
               },
-              onUpdatePressedMulti: () {},
+              onUpdatePressedMulti: () {
+                final keyIndex = 18;
+                analogLimitController.cardUpdate[keyIndex] = true;
+                final multi = _multiControllers[keyIndex].text.padLeft(4, '0');
+                final commandVal = "${keyIndex.toString().padLeft(2, '0')},0,$multi";
+                analogLimitController.updateAnalogLimitMulti(widget.devicesData.uuid.toString(), commandVal);
+              },
               minController: _minControllers[18],
               maxController: _maxControllers[18],
-              multiController: _multiControllers[18],
+              multiController: _multiControllers[18], isCardUpdate: cardUpdate[18],
             ), //18
             SizedBox(height: 10),
             AnalogLimitCard(
@@ -870,6 +1025,7 @@ class _AnalogLimitsState extends State<AnalogLimits> {
               switchValue: limits[19][0] == '1',
               onSwitchChanged: (value) {
                 final keyIndex = 19;
+                analogLimitController.cardUpdate[keyIndex] = true;
                 final enable = value ? 1 : 0;
                 final min = _minControllers[keyIndex].text.padLeft(4, '0');
                 final max = _maxControllers[keyIndex].text.padLeft(4, '0');
@@ -882,6 +1038,7 @@ class _AnalogLimitsState extends State<AnalogLimits> {
               },
               onUpdatePressedMaxMin: () {
                 final keyIndex = 19;
+                analogLimitController.cardUpdate[keyIndex] = true;
                 final enable = limits[keyIndex][0];
                 final min = _minControllers[keyIndex].text.padLeft(4, '0');
                 final max = _maxControllers[keyIndex].text.padLeft(4, '0');
@@ -892,10 +1049,16 @@ class _AnalogLimitsState extends State<AnalogLimits> {
                   commandVal,
                 );
               },
-              onUpdatePressedMulti: () {},
+              onUpdatePressedMulti: () {
+                final keyIndex = 19;
+                analogLimitController.cardUpdate[keyIndex] = true;
+                final multi = _multiControllers[keyIndex].text.padLeft(4, '0');
+                final commandVal = "${keyIndex.toString().padLeft(2, '0')},0,$multi";
+                analogLimitController.updateAnalogLimitMulti(widget.devicesData.uuid.toString(), commandVal);
+              },
               minController: _minControllers[19],
               maxController: _maxControllers[19],
-              multiController: _multiControllers[19]
+              multiController: _multiControllers[19], isCardUpdate: cardUpdate[19],
             ),
           ],
         ),
