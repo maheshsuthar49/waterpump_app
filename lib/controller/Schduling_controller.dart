@@ -71,7 +71,7 @@ void processScheduleData(List<dynamic> scheduleValues){
 }
 
 //update  schedule
-  void updateSchedule(String uuid, int slotIndex){
+  Future<void> updateSchedule(String uuid, int slotIndex) async{
     final slot = slots[slotIndex];
     final fromTime = fromTimeController[slotIndex].text;
     final toTime = toTimeController[slotIndex].text;
@@ -80,6 +80,9 @@ void processScheduleData(List<dynamic> scheduleValues){
     final toMinutes = _HHmmToMinutes(toTime);
 
     mqttController.set_Time(uuid: uuid, slotIndex: slotIndex, isEnable: slot.isEnable.value, fromMinutes: fromMinutes, toMinutes: toMinutes);
+
+    await Future.delayed(Duration(seconds: 1));
+    fetchSchedule(uuid);
   }
 
 

@@ -4,7 +4,10 @@ import 'package:get/get.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
 import 'package:water_pump/controller/Schduling_controller.dart';
+import 'package:water_pump/controller/configController.dart';
 import 'package:water_pump/controller/controller.dart';
+
+import 'analoglimit_controller.dart';
 
 class MqttController extends GetxController {
   var latestMessage = "".obs;
@@ -83,45 +86,58 @@ class MqttController extends GetxController {
     }
   }
 
-  void get_time(String uuid){
-    if(isConnected.value){
+  void get_time(String uuid) {
+    if (isConnected.value) {
       final fullTopic = '$maintopic/$topic/$uuid';
-      final Map<String, dynamic> command = {"type":"command","id":1,"cmd":"get_time"};
-      final String payload = jsonEncode(command);
-      final builder = MqttClientPayloadBuilder();
-      builder.addString(payload);
-      try{
-        client.publishMessage(fullTopic, MqttQos.atLeastOnce, builder.payload!);
-        print("Published command to $fullTopic : $payload");
-      }catch (e){
-        print("Published is Failed: $e");
-      }
-    }
-  }
-void set_Time ({required String uuid, required int slotIndex, required bool isEnable, required fromMinutes, required toMinutes}){
-
-    if(isConnected.value){
-      final fullTopic = '$maintopic/$topic/$uuid';
-      final valuePayload = "${slotIndex.toString().padLeft(2, '0')},${isEnable ? 1 : 0},${fromMinutes.toString().padLeft(4, "0")},${toMinutes.toString().padLeft(4, "0")}";;
       final Map<String, dynamic> command = {
-        "type": "config",
+        "type": "command",
         "id": 1,
-        "key": "stime",
-        "value": valuePayload
+        "cmd": "get_time",
       };
       final String payload = jsonEncode(command);
       final builder = MqttClientPayloadBuilder();
       builder.addString(payload);
-      try{
+      try {
         client.publishMessage(fullTopic, MqttQos.atLeastOnce, builder.payload!);
-        print("Published Command to $fullTopic : $payload");
-      }catch (e){
+        print("Published command to $fullTopic : $payload");
+      } catch (e) {
         print("Published is Failed: $e");
       }
     }
-}
+  }
+
+  void set_Time({
+    required String uuid,
+    required int slotIndex,
+    required bool isEnable,
+    required fromMinutes,
+    required toMinutes,
+  }) {
+    if (isConnected.value) {
+      final fullTopic = '$maintopic/$topic/$uuid';
+      final valuePayload =
+          "${slotIndex.toString().padLeft(2, '0')},${isEnable ? 1 : 0},${fromMinutes.toString().padLeft(4, "0")},${toMinutes.toString().padLeft(4, "0")}";
+      ;
+      final Map<String, dynamic> command = {
+        "type": "config",
+        "id": 1,
+        "key": "stime",
+        "value": valuePayload,
+      };
+      final String payload = jsonEncode(command);
+      final builder = MqttClientPayloadBuilder();
+      builder.addString(payload);
+      try {
+        client.publishMessage(fullTopic, MqttQos.atLeastOnce, builder.payload!);
+        print("Published Command to $fullTopic : $payload");
+      } catch (e) {
+        print("Published is Failed: $e");
+      }
+    }
+  }
+
   void controlPublish(String uuid, int value) {
-    if(isConnected.value){
+    if (isConnected.value) {
       final fullTopic = '$maintopic/$topic/$uuid';
       final Map<String, dynamic> command = {
         "type": "control",
@@ -132,17 +148,85 @@ void set_Time ({required String uuid, required int slotIndex, required bool isEn
       final String payload = jsonEncode(command);
       final builder = MqttClientPayloadBuilder();
       builder.addString(payload);
-      try{
+      try {
         client.publishMessage(fullTopic, MqttQos.atLeastOnce, builder.payload!);
         print("Published command to $fullTopic : $payload");
-      }catch(e){
+      } catch (e) {
         print("Published failed : $e");
       }
-    }else{
+    } else {
       print("Mqtt not Connected , Cannot published Command");
     }
   }
 
+///Device Config
+void get_config (String uuid){
+    if(isConnected.value){
+      final fullTopic = '$maintopic/$topic/$uuid';
+      final Map<String, dynamic> command = {
+        "type": "command",
+        "id": 1,
+        "cmd": "get_config",
+      };
+      final String payload = jsonEncode(command);
+      final builder = MqttClientPayloadBuilder();
+      builder.addString(payload);
+      try {
+        client.publishMessage(fullTopic, MqttQos.atLeastOnce, builder.payload!);
+        print("Published command to $fullTopic : $payload");
+      } catch (e) {
+        print("Published is Failed: $e");
+      }
+    }
+}
+void deviceConfig(String uuid, String key, String value){
+    if(isConnected.value){
+      final fullTopic = "$maintopic/$topic/$uuid";
+      final Map<String, dynamic> command = {
+        "type": "config",
+        "id": 1,
+        "key": key,
+        "value": value,
+      };
+      final String payload = jsonEncode(command);
+      final builder = MqttClientPayloadBuilder();
+      builder.addString(payload);
+      try{
+        client.publishMessage(fullTopic, MqttQos.atLeastOnce, builder.payload!);
+        print("Published config command to $fullTopic : $payload");
+      }catch (e){
+        print("Config published failed: $e");
+      }
+    }else{
+      print("Mqtt not connected, cannot send config command");
+
+    }
+}
+
+///Analog Limit
+  analogLimitsConfig(String uuid , String value) {
+    final fullTopic = "$maintopic/$topic/$uuid";
+    final Map<String, dynamic> command = {
+      "type": "config",
+      "id": 1,
+      "key": "analog",
+      "value": value,
+    };
+    final String payload = jsonEncode(command);
+    final builder = MqttClientPayloadBuilder();
+    builder.addString(payload);
+    if (isConnected.value) {
+      try {
+        client.publishMessage(fullTopic, MqttQos.atLeastOnce, builder.payload!);
+        print("Published config command to $fullTopic : $payload");
+      } catch (e) {
+        print("Config published failed: $e");
+      }
+    }else{
+      print("Mqtt not connected, cannot send config command");
+
+    }
+  }
 
   void connect() {
     client.connect();
@@ -167,14 +251,14 @@ void set_Time ({required String uuid, required int slotIndex, required bool isEn
           final deviceList = jsonData['devices'] as List;
           final controller = Get.find<TaskController>();
 
-          final fullTopic = c[0].topic; // e.g., vidani/mc/862360073397494/data
+          final fullTopic = c[0].topic;
           final topicParts = fullTopic.split('/');
           final mqttUuid = int.tryParse(topicParts[2]);
 
           if (mqttUuid != null) {
             // find Uuid in Api Devices.
             final index = controller.devices.indexWhere(
-                  (d) => d.uuid == mqttUuid,
+              (d) => d.uuid == mqttUuid,
             );
             if (index != -1) {
               final device = controller.devices[index];
@@ -189,20 +273,24 @@ void set_Time ({required String uuid, required int slotIndex, required bool isEn
               controller.devices.refresh();
               controller.updateCount();
               controller.updatePowerOnOff(device);
-              // Debug print
-              // print(
-              //   "Updated Device: ${device.name}, UUID: ${device.uuid}, AI: ${device.ai},AI = 0 : ${device.ai?[0]}, DI: ${device.di}, DO: ${device.doo}, FLT: ${device.flt}",
-              // );
             }
           }
-        }
-        else if(jsonData["type"] == 'time' && jsonData['key'] == 'stime'){
-          if(Get.isRegistered<SchedulingController>()){
+        } else if (jsonData["type"] == 'time' && jsonData['key'] == 'stime') {
+          if (Get.isRegistered<SchedulingController>()) {
             final schedulingController = Get.find<SchedulingController>();
             schedulingController.processScheduleData(jsonData['value']);
           }
-        }
+        }else if(jsonData["type"] == 'config'){
+          if (Get.isRegistered<ConfigController>()) {
+            final configController = Get.find<ConfigController>();
+            configController.updateConfig(jsonData);
+          }
 
+          if (Get.isRegistered<AnalogLimitController>()) {
+            final analogController = Get.find<AnalogLimitController>();
+            analogController.updateAnalogLimitData(jsonData);
+          }
+        }
       } catch (e) {
         print("Mqtt message parse error: $e");
       }

@@ -229,18 +229,7 @@ class DashboardScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 8),
                 Obx(() {
-                  if(mqttController.isConnected == false){
-                     return Container(
-                      width: double.infinity,
-                      padding: EdgeInsets.all(16),
-                      height: 100,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Center(child: CircularProgressIndicator(color: Color(0xff024a06),)),
-                    );
-                  }
+
                   if (controller.connectedList.isEmpty) {
                     return Container(
                       width: double.infinity,
@@ -366,7 +355,13 @@ class DashboardScreen extends StatelessWidget {
                 onPressed: () async {
                   final token = controller.box.read('token');
                   print("token is: $token" );
+
+                  if(!mqttController.isConnected.value){
+                    mqttController.connect();
+                  }
                   await controller.fetchDeviceAll(token);
+
+
                 },
                 child: const Icon(Icons.refresh, color: Colors.white),
               );

@@ -54,7 +54,7 @@ class _SettingsScreenState extends State<SettingsScreen>
 
                   DeviceConfig(devicesData: widget.deviceData),
 
-                  AnalogLimits()
+                  AnalogLimits(devicesData: widget.deviceData,)
             ]),
           )
         ],
