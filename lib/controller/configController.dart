@@ -4,6 +4,7 @@ import 'package:water_pump/controller/mqtt_controller.dart';
 
 class ConfigController extends GetxController {
   final MqttController mqttController = Get.find<MqttController>();
+  var isConfigUpdate = false.obs;
   var isLoading = true.obs;
   var amode = false.obs;
   var timer = false.obs;
@@ -14,18 +15,21 @@ class ConfigController extends GetxController {
     mqttController.get_config(uuid);
   }
 
-  void updateConfig(Map<String, dynamic> jsonData){
+  void updateConfig(Map<String, dynamic> jsonData) {
     amode.value = (jsonData["amode"] ?? '0') == '1';
     timer.value = (jsonData["timer"] ?? '0') == '1';
     prot.value = (jsonData["prot"] ?? '0') == '1';
     lpt.value = jsonData["lpt"] ?? '0';
     time.value = jsonData["time"] ?? '';
-  isLoading.value = false;
+    isLoading.value = false;
+    isConfigUpdate.value = false;
   }
 
-  void updateConfigVal(String uuid, String key, String value){
+  void updateConfigVal(String uuid, String key, String value) {
+    isConfigUpdate.value = true;
     mqttController.deviceConfig(uuid, key, value);
+    Future.delayed(Duration(seconds: 1),(){
+        fetchConfig(uuid);
+    });
   }
-
-
 }
