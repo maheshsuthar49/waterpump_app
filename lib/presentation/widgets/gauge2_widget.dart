@@ -2,19 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 class GaugeTwoWidget extends StatelessWidget {
-  GaugeTwoWidget({required this.value1, required this.label2, this.height = 70, this.width = 100 });
+  GaugeTwoWidget({required this.value1, required this.label2, this.height, this.width });
   final double value1;
   final String label2;
-  final double height;
-  final double width;
+  final double? height;
+  final double? width;
   @override
   Widget build(BuildContext context) {
     Color pointerColor = value1 > 320 ? Colors.red : Colors.blue;
     return Column(
       children: [
         Container(
-          height:height,
-          width: width,
+          height:height ,
+          width: width ,
           child: SfRadialGauge(
 
             enableLoadingAnimation: true,

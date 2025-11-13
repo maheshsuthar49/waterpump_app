@@ -15,15 +15,22 @@ class BottomNavScreen extends StatelessWidget{
   final pageController = PageController();
   final DevicesData selectedDevice;
   BottomNavScreen({required this.selectedDevice});
+  final List<String> titles = [
+    "Device Detail",
+    "Schedule",
+    "Report",
+    "Settings"
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xffffffff),
       appBar: AppBar(
-        title: Text(
-          "Device Detail",
+        title: Obx(() =>Text(
+          titles[controller.index.value],
           style: TextStyle(fontWeight: FontWeight.w500,color: Color(0xff024a06)),
-        ),
+        ), ),
+
         backgroundColor: Colors.white,
         centerTitle: true,
       ),

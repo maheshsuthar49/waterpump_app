@@ -57,9 +57,9 @@ class ApiService {
 
   //get Report
 
-Future<void> getReport ({required String token, required String id, required String from, required String to }) async{
+Future<List<Map<String, dynamic>>?> getReport ({required String token, required String id, required String from, required String to }) async{
     try{
-      final response = await _dio.post("/getReports",
+      final response = await _dio.post("/getReportData",
         data: {
         "id": id,
           "from": from,
@@ -70,11 +70,18 @@ Future<void> getReport ({required String token, required String id, required Str
 
       if(response.statusCode == 200){
         print("Report get from: ${response.data}");
+        final responseData =  response.data is String
+        ? jsonDecode(response.data) : response.data;
+        if(responseData['success'] == true && responseData['data'] != null){
+          List<Map<String, dynamic>> dataList = List<Map<String, dynamic>>.from(responseData['data']);
+          return dataList;
+        }
       }else{
         print("Failed to get report:  ${response.statusCode}");
       }
     }catch (e){
       print("Error to get report: $e");
     }
+    return null;
 }
 }

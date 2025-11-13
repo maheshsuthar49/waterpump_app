@@ -13,16 +13,25 @@ class AnalogLimitController extends GetxController{
   }
 
   Future<void> updateAnalogLimits( String uuid, String value) async {
+      final parts = value.split(",");
+      final index = int.tryParse(parts[0]);
+
+      if(index == null) return;
+      cardUpdate[index] = true;
+      cardUpdate.refresh();
 
     mqttController.analogLimitsConfig(uuid, value);
 
-    await Future.delayed(Duration(seconds: 3));
-    fetchAnalogConfig(uuid);
   }
   Future<void> updateAnalogLimitMulti(String uuid, String value)async{
+    final parts = value.split(",");
+    final index = int.tryParse(parts[0]);
+
+    if(index == null) return;
+    cardUpdate[index] = true;
+    cardUpdate.refresh();
     mqttController.analogLimitMulti(uuid, value);
-    await Future.delayed(Duration(seconds: 3));
-    fetchAnalogConfig(uuid);
+
   }
   void updateAnalogLimitData(Map<String, dynamic> jsonData) {
     if (jsonData.containsKey("analog_limit")) {
@@ -33,6 +42,7 @@ class AnalogLimitController extends GetxController{
       for(int i =0 ; i < cardUpdate.length; i++){
         cardUpdate[i] = false;
       }
+      cardUpdate.refresh();
     }
     isLoading.value = false;
   }

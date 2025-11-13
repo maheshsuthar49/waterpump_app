@@ -112,14 +112,15 @@ class _AnalogLimitCardState extends State<AnalogLimitCard> {
                       ),
                     ),
                     onPressed: widget.onUpdatePressedMaxMin,
-                    child: Text("Update"),
+                    child: Text("Update",style: TextStyle(fontSize: 16)),
                   ),
                 ),
                 _buildTextField("Multiplier", widget.multiController, (value){}),
                 SizedBox(height: 10,),
                 SizedBox(
                   width: double.infinity,
-                  child: ElevatedButton(
+                  child:
+                  ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xff024a06),
                       foregroundColor: Colors.white,
@@ -128,7 +129,7 @@ class _AnalogLimitCardState extends State<AnalogLimitCard> {
                       ),
                     ),
                     onPressed: widget.onUpdatePressedMulti,
-                    child: Text("Update"),
+                    child: Text("Update", style: TextStyle(fontSize: 16),),
                   ),
                 ),
               ],
@@ -140,7 +141,7 @@ class _AnalogLimitCardState extends State<AnalogLimitCard> {
       ),
         if(widget.isCardUpdate)
           Positioned.fill(child: Center(
-            child: Container(
+            child: SizedBox(
               width: 30,
               height: 30,
               child: CircularProgressIndicator(color: Color(0xff024a06),),

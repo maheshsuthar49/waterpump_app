@@ -7,12 +7,15 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:water_pump/controller/mqtt_controller.dart';
 import 'package:water_pump/model/devices.dart';
+import 'package:water_pump/model/reports_data.dart';
 import 'package:water_pump/services/api_service.dart';
 
 class TaskController extends GetxController {
 
   final ApiService apiService = ApiService();
   final box = GetStorage();
+  var isReportLoading = false.obs;
+  var reportsDataList = <ReportsData>[].obs;
 
   @override
   void onInit() {
@@ -125,7 +128,21 @@ class TaskController extends GetxController {
       return;
     }
 
-    await apiService.getReport(token: token, id: id, from: from, to: to);
+    try{
+      isReportLoading.value = true;
+      reportsDataList.clear();
+      final List<Map<String, dynamic>>? result =
+          await apiService.getReport(token: token, id: id, from: from, to: to);
+      if(result != null){
+        reportsDataList.value = result.map((json) => ReportsData.fromjson(json)).toList();
+      }else{
+        print("Failed to fetch or Report was empty");
+      }
+    }catch (e){
+      print("Error in fetch report : $e");
+    }finally{
+      isReportLoading.value = false;
+    }
   }
 
 

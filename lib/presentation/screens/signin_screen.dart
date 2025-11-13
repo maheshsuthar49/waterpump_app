@@ -17,7 +17,7 @@ class SignInScreen extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       body: SingleChildScrollView(
-        child: Stack(
+        child: Stack(alignment: Alignment.center,
           clipBehavior: Clip.none,
           children: [
             Column(
@@ -29,113 +29,106 @@ class SignInScreen extends StatelessWidget {
                 ),
                 Container(
                   height: screenHeight * 0.5,
-                  width: double.infinity,
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                  ),
-                  padding: EdgeInsets.all(screenWidth * 0.08),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(height: screenHeight * 0.05),
-                      const Text(
-                        "USERNAME / REGISTERED MOBILE NUMBER",
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      TextFormField(
-                        controller: usernameController,
-                        decoration: const InputDecoration(
-                          hintText: "Enter Username",
-                          border: UnderlineInputBorder(),
-                        ),
-                      ),
-                      SizedBox(height: screenHeight * 0.02),
-                      const Text(
-                        "PASSWORD",
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      TextFormField(
-                        controller: passwordController,
-                        obscureText: true,
-                        decoration: const InputDecoration(
-                          hintText: "***********",
-                          border: UnderlineInputBorder(),
-                        ),
-                      ),
-                      SizedBox(height: screenHeight * 0.05),
-                      SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: () async{
-                            final username = usernameController.text;
-                            final password = passwordController.text;
-                            final token = await controller.apiService.login(username, password);
-
-                            if(token != null){
-                              await controller.box.write("token", token);
-                              Get.snackbar("Success", "Login successfully");
-                              await controller.fetchDeviceAll(token);
-                              Get.offAll(DashboardScreen());
-                            }else{
-                              Get.snackbar("Error", "Invalid credentials");
-                            }
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0xff024a06),
-                            padding: EdgeInsets.symmetric(vertical: screenHeight * 0.02),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                          child: const Text(
-                            "SIGN IN",
-                            style: TextStyle(color: Colors.white, fontSize: 16),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: screenHeight * 0.02),
-                      Expanded(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Text("Don't have an account? "),
-                            GestureDetector(
-                              onTap: () {
-                              },
-                              child: const Text(
-                                "Sign up",
+                  color: Colors.white,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height: screenHeight * 0.05),
+                              const Text(
+                                "USERNAME / REGISTERED MOBILE NUMBER",
                                 style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.grey,
                                   fontWeight: FontWeight.bold,
-                                  color: Color(0xff024a06),
                                 ),
                               ),
+                              TextFormField(
+                                controller: usernameController,
+                                decoration: const InputDecoration(
+                                  hintText: "Enter Username",
+                                  border: UnderlineInputBorder(),
+                                ),
+                              ),
+                        SizedBox(height: screenHeight * 0.02),
+                              const Text(
+                                "PASSWORD",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              TextFormField(
+                                controller: passwordController,
+                                obscureText: true,
+                                decoration: const InputDecoration(
+                                  hintText: "***********",
+                                  border: UnderlineInputBorder(),
+                                ),
+                              ),
+                        SizedBox(height: screenHeight * 0.05),
+                              SizedBox(
+                                width: double.infinity,
+                                child: ElevatedButton(
+                                  onPressed: () async{
+                                    final username = usernameController.text;
+                                    final password = passwordController.text;
+                                    final token = await controller.apiService.login(username, password);
+            
+                                    if(token != null){
+                                      await controller.box.write("token", token);
+                                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Login successfully",style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),backgroundColor: Colors.white,));
+                                      await controller.fetchDeviceAll(token);
+                                      Get.offAll(DashboardScreen());
+                                    }else{
+                                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Invalid credentials",style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),backgroundColor: Colors.white,));
+                                    }
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Color(0xff024a06),
+                                    padding: EdgeInsets.symmetric(vertical: screenHeight * 0.02),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                  child: const Text(
+                                    "SIGN IN",
+                                    style: TextStyle(color: Colors.white, fontSize: 16),
+                                  ),
+                                ),
+                              ),
+            
+                    Expanded(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text("Don't have an account? "),
+                          GestureDetector(
+                            onTap: () {
+                            },
+                            child: const Text(
+                              "Sign up",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xff024a06),
+                              ),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
+                      ],
+                    ),
                   ),
-                ),
+                )
+            
               ],
             ),
-            Positioned(
-              top: screenHeight * 0.45,
-              left: 0,
-              right: 0,
-              child: Center(
-                child: CircleAvatar(
-                  radius: screenWidth * 0.12,
-                  backgroundImage: AssetImage("assets/images/agromation.jpg")
-                ),
-              ),
+            CircleAvatar(
+              radius: 50,
+              backgroundImage: AssetImage("assets/images/agromation.jpg")
             ),
           ],
         ),

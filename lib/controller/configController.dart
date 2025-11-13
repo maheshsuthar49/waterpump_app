@@ -28,8 +28,6 @@ class ConfigController extends GetxController {
   void updateConfigVal(String uuid, String key, String value) {
     isConfigUpdate.value = true;
     mqttController.deviceConfig(uuid, key, value);
-    Future.delayed(Duration(seconds: 1),(){
-        fetchConfig(uuid);
-    });
+
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:water_pump/controller/Schduling_controller.dart';
+import 'package:water_pump/shared/custome_button.dart';
 
 class scheduleSlotCard extends StatelessWidget {
   final int slotIndex;
@@ -43,19 +44,9 @@ class scheduleSlotCard extends StatelessWidget {
               SizedBox(height: 10),
               SizedBox(
                 width: double.infinity,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xff024a06),
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  onPressed: () {
-                    schedulingController.updateSchedule(deviceUuid, slotIndex);
-                  },
-                  child: Text("Update"),
-                ),
+                child: CustomButton(text: "Update", onPressed: () {
+                  schedulingController.updateSchedule(deviceUuid, slotIndex);
+                },)
               ),
             ],
           ),

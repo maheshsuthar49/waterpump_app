@@ -14,6 +14,7 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreenState extends State<MapScreen> {
+  bool isMapLoading = true;
   final Completer<GoogleMapController> _mapController = Completer();
   Uint8List? markerIcon;
 
@@ -29,19 +30,38 @@ class _MapScreenState extends State<MapScreen> {
   @override
   void initState() {
     super.initState();
-    if(controller.isLoading == false && controller.devices.isNotEmpty){
-      loadMarker();
-    }
+
+      loadMap();
+
   }
 
   Future<void> loadMarker() async{
-    final Uint8List icon = await getBytesFromAssets("assets/images/pump.png", 50);
-      setState(() {
-        markerIcon = icon;
-        addDeviceMarker();
-      });
+
+    if(controller.isLoading == false && controller.devices.isNotEmpty){
+      try{
+        final Uint8List icon = await getBytesFromAssets("assets/images/pump.png", 50);
+        setState(() {
+          markerIcon = icon;
+          addDeviceMarker();
+        });
+      }catch (e){
+          print("Error loading marker icon : $e");
+      }
+    }
+
   }
 
+  Future<void> loadMap() async{
+    Future.delayed(Duration(seconds: 1));
+
+    Future<void> delayFuture = Future.delayed(Duration(seconds: 1));
+    Future<void> loadFutureMarker = loadMarker();
+    await Future.wait([delayFuture, loadFutureMarker]);
+
+    setState(() {
+      isMapLoading = false;
+    });
+}
   //convert image assets to unit8List
   Future<Uint8List> getBytesFromAssets(String path, int width) async {
     ByteData data = await rootBundle.load(path);
@@ -76,16 +96,28 @@ class _MapScreenState extends State<MapScreen> {
   }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body:
-    GoogleMap(initialCameraPosition: _cameraPosition,
-      mapType: MapType.normal,
-      markers: Set<Marker>.of(_marker),
-      zoomControlsEnabled: false,
+    return Scaffold(
+        appBar: AppBar(
+          title: Text(
+            "Devices Location",
+            style: TextStyle(fontWeight: FontWeight.w500,color: Color(0xff024a06), ),
+          ),
+          backgroundColor: Colors.white,
+          centerTitle: true,
+        ),
+        body:
+        isMapLoading ? Center(child: CircularProgressIndicator(color: Color(0xff024a06),),) :
+    SafeArea(
+      child: GoogleMap(initialCameraPosition: _cameraPosition,
+        mapType: MapType.normal,
+        markers: Set<Marker>.of(_marker),
+        zoomControlsEnabled: false,
 
-      onMapCreated: (GoogleMapController controller) {
-      _mapController.complete(controller);
+        onMapCreated: (GoogleMapController controller) {
+        _mapController.complete(controller);
 
-      },
+        },
+      ),
     ));
   }
 }

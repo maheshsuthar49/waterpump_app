@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
@@ -263,6 +264,7 @@ void deviceConfig(String uuid, String key, String value){
     print("Connected to Mqtt broker!");
     isConnected.value = true;
     client.updates!.listen((List<MqttReceivedMessage<MqttMessage>> c) {
+
       final MqttPublishMessage recMess = c[0].payload as MqttPublishMessage;
       final String message = MqttPublishPayload.bytesToStringAsString(
         recMess.payload.message,
@@ -286,16 +288,22 @@ void deviceConfig(String uuid, String key, String value){
             if (index != -1) {
               final device = controller.devices[index];
               final dev = deviceList[0];
-              device.ai = List<int>.from(dev["ai"]);
-              device.di = List<int>.from(dev["di"]);
-              device.doo = List<int>.from(dev["do"]);
-              device.flt = List<int>.from(dev["flt"]);
-              device.isConnected = true;
+              bool hasChanged = false;
 
-              controller.devices[index] = device;
-              controller.devices.refresh();
-              controller.updateCount();
-              controller.updatePowerOnOff(device);
+              //compare each field - if value change so update list
+              if(!listEquals(device.ai, List<int>.from(dev["ai"])) || !listEquals(device.di, List<int>.from(dev["di"])) || !listEquals(device.doo, List<int>.from(dev["do"])) || !listEquals(device.flt, List<int>.from(dev["flt"]))){
+                device.ai = List<int>.from(dev["ai"]);
+                device.di = List<int>.from(dev["di"]);
+                device.doo = List<int>.from(dev["do"]);
+                device.flt = List<int>.from(dev["flt"]);
+                device.isConnected = true;
+                hasChanged = true;
+              }
+              if(hasChanged){
+                controller.devices[index] = device;
+                controller.updateCount();
+                controller.updatePowerOnOff(device);
+              }
             }
           }
         } else if (jsonData["type"] == 'time' && jsonData['key'] == 'stime') {

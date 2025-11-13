@@ -4,6 +4,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:water_pump/controller/controller.dart';
 import 'package:water_pump/model/devices.dart';
 import 'package:water_pump/shared/component.dart';
+import 'package:water_pump/shared/custome_button.dart';
 
 class EditDevice extends StatelessWidget {
   TextEditingController DeviceNameController = TextEditingController();
@@ -84,17 +85,9 @@ class EditDevice extends StatelessWidget {
                     SizedBox(height: 10),
                     SizedBox(
                       width: double.infinity,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xff024a06),
-                          foregroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                        onPressed: () {},
-                        child: Text("Update"),
-                      ),
+                      child: CustomButton(text: "Update", onPressed: () {
+
+                      },),
                     ),
                   ],
                 ),

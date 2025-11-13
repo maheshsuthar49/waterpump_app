@@ -24,7 +24,7 @@ class DrawerScreen extends StatelessWidget{
               children: [CircleAvatar(
                 radius: 24,
                 backgroundImage: AssetImage("assets/images/agromation.jpg")
-              ), SizedBox(width: 10,), Text("AGROMATION INDIA PVT.\nLMT.", style: TextStyle(fontWeight: FontWeight.bold),)],
+              ), SizedBox(width: 10,), Flexible(fit: FlexFit.tight, child: Text("AGROMATION INDIA PVT.LMT.", style: TextStyle(fontWeight: FontWeight.bold),))],
             ),
             SizedBox(height: 10,),
             Row(
@@ -35,7 +35,7 @@ class DrawerScreen extends StatelessWidget{
                   child: Icon(Icons.person, color: Colors.white,),
                 ), 
                 SizedBox(width: 10,),
-                Text("MAHESH KUMAR SUTHAR",style: TextStyle(fontWeight: FontWeight.bold),),
+                Flexible(fit: FlexFit.tight, child: Text("MAHESH KUMAR SUTHAR",style: TextStyle(fontWeight: FontWeight.bold),)),
                 Icon(Icons.verified_user, color: Color(0xff024a06),size: 18,)
               ],
             ),

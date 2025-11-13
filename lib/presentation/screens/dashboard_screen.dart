@@ -6,6 +6,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:water_pump/controller/controller.dart';
 import 'package:water_pump/controller/mqtt_controller.dart';
 import 'package:water_pump/model/devices.dart';
+import 'package:water_pump/presentation/screens/flutter_map.dart';
 import 'package:water_pump/presentation/screens/map_screen.dart';
 
 import 'package:water_pump/presentation/widgets/device_card.dart';
@@ -22,6 +23,7 @@ class DashboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Color(0xffeafbea),
@@ -333,7 +335,7 @@ class DashboardScreen extends StatelessWidget {
           backgroundColor: Colors.green.shade100,
       onPressed: () {
 
-              Get.to(()=> MapScreen(), transition: Transition.fadeIn, );
+              Get.to(()=> FMaps(), transition: Transition.fadeIn, );
 
       },
       child: const Icon(Icons.map, color: Color(0xff024a06)),

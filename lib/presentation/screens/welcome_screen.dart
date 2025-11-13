@@ -9,8 +9,11 @@ import 'package:water_pump/presentation/widgets/wave_clipper.dart';
 
 class WelcomeScreen extends StatelessWidget {
   final controller = Get.find<TaskController>();
+
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
     final token = controller.box.read("token");
     Future.delayed(Duration(seconds: 2), () async {
 
@@ -26,31 +29,34 @@ class WelcomeScreen extends StatelessWidget {
         children: [
           //top background Image
           Container(
-            height: MediaQuery.of(context).size.height * 0.6,
+            height: screenHeight * 0.6,
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: AssetImage("assets/images/welcom.jpeg"),
                 fit: BoxFit.cover,
               ),
             ),
-            child: const Center(
+            child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(height: 50),
+                  SizedBox(height: screenHeight * 0.07,),
                   CircleAvatar(
                     radius: 50,
                     backgroundImage: AssetImage("assets/images/agromation.jpg"),
                   ),
-                  SizedBox(height: 20),
-                  Text(
-                    'IoT WATER PUMP\nCONTROLLER\nBY\nAGRROMATION\nINDIA',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                      height: 1.3,
+                  SizedBox(height: screenHeight * 0.05),
+                  Flexible(
+                    fit: FlexFit.tight,
+                    child: Text(
+                      'IoT WATER PUMP\nCONTROLLER\nBY\nAGRROMATION\nINDIA',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                        height: 1.3,
+                      ),
                     ),
                   ),
                 ],
@@ -65,7 +71,7 @@ class WelcomeScreen extends StatelessWidget {
               clipper: WaveClipper(),
               child: Container(
                 color: Colors.white,
-                height: MediaQuery.of(context).size.height * 0.5,
+                height:screenHeight * 0.5,
                 child: Padding(
                   padding: const EdgeInsets.all(32.0),
                   child: Column(
@@ -76,11 +82,11 @@ class WelcomeScreen extends StatelessWidget {
                       Text(
                         "Wellcome",
                         style: TextStyle(
-                          fontSize: 32,
+                          fontSize: 36,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      SizedBox(height: 10),
+                      SizedBox(height: 10,),
                       Text(
                         "Thank-you for choosing,\nAgromation India. Hope you have a\ngood experience.",
                         style: TextStyle(fontSize: 16, color: Colors.grey),

@@ -82,54 +82,57 @@ class DeviceCard extends StatelessWidget {
               children: [
                 Expanded(
                   child: Stack(
+                    alignment: Alignment.center,
                     children: [
                       GaugeWidget(
                         value: deviceData.ai?[0].toDouble() ?? 0,
                         label: "",
+                        height: 95,
+                        width: 95,
                       ),
-                      Positioned(
-                        top: 15,
-                        right: 5,
-                        child: GaugeTwoWidget(
-                          value1: deviceData.ai?[3].toDouble() ?? 0,
-                          label2: "R",
-                        ),
+                      GaugeTwoWidget(
+                        value1: deviceData.ai?[3].toDouble() ?? 0,
+                        label2: "R",
+                        height: 70,
+                        width: 92,
                       ),
                     ],
                   ),
                 ),
                 Expanded(
                   child: Stack(
+                    alignment: Alignment.center,
                     children: [
                       GaugeWidget(
                         value: deviceData.ai?[1].toDouble() ?? 0,
                         label: "",
+                        height: 95,
+                        width: 95,
                       ),
-                      Positioned(
-                        top: 15,
-                        right: 5,
-                        child: GaugeTwoWidget(
-                          value1: deviceData.ai?[4].toDouble() ?? 0,
-                          label2: "Y",
-                        ),
+                      GaugeTwoWidget(
+                        value1: deviceData.ai?[4].toDouble() ?? 0,
+                        label2: "Y",
+                        height: 70,
+                        width: 92,
                       ),
                     ],
                   ),
                 ),
                 Expanded(
                   child: Stack(
+                    alignment: Alignment.center,
                     children: [
                       GaugeWidget(
                         value: deviceData.ai?[2].toDouble() ?? 0,
                         label: "",
+                        height: 95,
+                        width: 95,
                       ),
-                      Positioned(
-                        top: 15,
-                        right: 5,
-                        child: GaugeTwoWidget(
-                          value1: deviceData.ai?[5].toDouble() ?? 0,
-                          label2: "B",
-                        ),
+                      GaugeTwoWidget(
+                        value1: deviceData.ai?[5].toDouble() ?? 0,
+                        label2: "B",
+                        height: 70,
+                        width: 92,
                       ),
                     ],
                   ),
