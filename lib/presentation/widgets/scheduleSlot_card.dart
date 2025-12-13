@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:water_pump/controller/Schduling_controller.dart';
 import 'package:water_pump/shared/custome_button.dart';
 
@@ -37,11 +36,11 @@ class scheduleSlotCard extends StatelessWidget {
                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                children: [
                  _slotTimeField(context, 'Form', schedulingController.fromTimeController[slotIndex]),
-                 SizedBox(width: 10,),
+                const SizedBox(width: 10,),
                  _slotTimeField(context, "To", schedulingController.toTimeController[slotIndex])
                ],
              ),
-              SizedBox(height: 10),
+             const SizedBox(height: 10),
               SizedBox(
                 width: double.infinity,
                 child: CustomButton(text: "Update", onPressed: () {

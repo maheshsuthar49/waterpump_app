@@ -44,7 +44,7 @@ class GaugeTwoWidget extends StatelessWidget {
                 ],
                 annotations: <GaugeAnnotation>[
                   GaugeAnnotation(
-                    widget: Text(
+                    widget:  Text(
                       label2,
                       style: TextStyle(
                         fontSize: 16,

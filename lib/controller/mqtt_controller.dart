@@ -160,9 +160,9 @@ class MqttController extends GetxController {
     }
   }
 
-///Device Config
-void get_config (String uuid){
-    if(isConnected.value){
+  ///Device Config
+  void get_config(String uuid) {
+    if (isConnected.value) {
       final fullTopic = '$maintopic/$topic/$uuid';
       final Map<String, dynamic> command = {
         "type": "command",
@@ -179,9 +179,10 @@ void get_config (String uuid){
         print("Published is Failed: $e");
       }
     }
-}
-void deviceConfig(String uuid, String key, String value){
-    if(isConnected.value){
+  }
+
+  void deviceConfig(String uuid, String key, String value) {
+    if (isConnected.value) {
       final fullTopic = "$maintopic/$topic/$uuid";
       final Map<String, dynamic> command = {
         "type": "config",
@@ -192,20 +193,19 @@ void deviceConfig(String uuid, String key, String value){
       final String payload = jsonEncode(command);
       final builder = MqttClientPayloadBuilder();
       builder.addString(payload);
-      try{
+      try {
         client.publishMessage(fullTopic, MqttQos.atLeastOnce, builder.payload!);
         print("Published config command to $fullTopic : $payload");
-      }catch (e){
+      } catch (e) {
         print("Config published failed: $e");
       }
-    }else{
+    } else {
       print("Mqtt not connected, cannot send config command");
-
     }
-}
+  }
 
-///Analog Limit
-  analogLimitsConfig(String uuid , String value) {
+  ///Analog Limit
+  analogLimitsConfig(String uuid, String value) {
     final fullTopic = "$maintopic/$topic/$uuid";
     final Map<String, dynamic> command = {
       "type": "config",
@@ -223,13 +223,12 @@ void deviceConfig(String uuid, String key, String value){
       } catch (e) {
         print("Config published failed: $e");
       }
-    }else{
+    } else {
       print("Mqtt not connected, cannot send config command");
-
     }
   }
 
-  analogLimitMulti(String uuid , String value){
+  analogLimitMulti(String uuid, String value) {
     final fullTopic = "$maintopic/$topic/$uuid";
     final Map<String, dynamic> command = {
       "type": "config",
@@ -240,14 +239,14 @@ void deviceConfig(String uuid, String key, String value){
     final String payload = jsonEncode(command);
     final builder = MqttClientPayloadBuilder();
     builder.addString(payload);
-    if(isConnected.value){
-      try{
+    if (isConnected.value) {
+      try {
         client.publishMessage(fullTopic, MqttQos.atLeastOnce, builder.payload!);
         print("Publish Config command to $fullTopic : $payload");
-      }catch (e){
+      } catch (e) {
         print("Config published failed: $e ");
       }
-    }else{
+    } else {
       print("Mqtt is not connected, cannot send config command");
     }
   }
@@ -264,7 +263,6 @@ void deviceConfig(String uuid, String key, String value){
     print("Connected to Mqtt broker!");
     isConnected.value = true;
     client.updates!.listen((List<MqttReceivedMessage<MqttMessage>> c) {
-
       final MqttPublishMessage recMess = c[0].payload as MqttPublishMessage;
       final String message = MqttPublishPayload.bytesToStringAsString(
         recMess.payload.message,
@@ -291,7 +289,10 @@ void deviceConfig(String uuid, String key, String value){
               bool hasChanged = false;
 
               //compare each field - if value change so update list
-              if(!listEquals(device.ai, List<int>.from(dev["ai"])) || !listEquals(device.di, List<int>.from(dev["di"])) || !listEquals(device.doo, List<int>.from(dev["do"])) || !listEquals(device.flt, List<int>.from(dev["flt"]))){
+              if (!listEquals(device.ai, List<int>.from(dev["ai"])) ||
+                  !listEquals(device.di, List<int>.from(dev["di"])) ||
+                  !listEquals(device.doo, List<int>.from(dev["do"])) ||
+                  !listEquals(device.flt, List<int>.from(dev["flt"]))) {
                 device.ai = List<int>.from(dev["ai"]);
                 device.di = List<int>.from(dev["di"]);
                 device.doo = List<int>.from(dev["do"]);
@@ -299,7 +300,7 @@ void deviceConfig(String uuid, String key, String value){
                 device.isConnected = true;
                 hasChanged = true;
               }
-              if(hasChanged){
+              if (hasChanged) {
                 controller.devices[index] = device;
                 controller.updateCount();
                 controller.updatePowerOnOff(device);
@@ -311,7 +312,7 @@ void deviceConfig(String uuid, String key, String value){
             final schedulingController = Get.find<SchedulingController>();
             schedulingController.processScheduleData(jsonData['value']);
           }
-        }else if(jsonData["type"] == 'config'){
+        } else if (jsonData["type"] == 'config') {
           if (Get.isRegistered<ConfigController>()) {
             final configController = Get.find<ConfigController>();
             configController.updateConfig(jsonData);
@@ -320,7 +321,6 @@ void deviceConfig(String uuid, String key, String value){
           if (Get.isRegistered<AnalogLimitController>()) {
             final analogController = Get.find<AnalogLimitController>();
             analogController.updateAnalogLimitData(jsonData);
-
           }
         }
       } catch (e) {

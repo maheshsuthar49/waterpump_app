@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:water_pump/controller/analoglimit_controller.dart';
 import 'package:water_pump/controller/controller.dart';
 import 'package:water_pump/controller/mqtt_controller.dart';
@@ -100,7 +99,7 @@ class _AnalogLimitsState extends State<AnalogLimits> {
       final cardUpdate = analogLimitController.cardUpdate;
       final _ = cardUpdate.length;
       return Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: ListView.builder(
           itemCount: limits.length,
           itemBuilder: (context, index) {

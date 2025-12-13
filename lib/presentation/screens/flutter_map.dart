@@ -57,7 +57,7 @@ class _FlutterMapsState extends State<FMaps> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           "Device Location",
           style: TextStyle(
             fontWeight: FontWeight.w500,

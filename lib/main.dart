@@ -1,4 +1,6 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -9,8 +11,13 @@ import 'package:water_pump/controller/mqtt_controller.dart';
 import 'package:water_pump/presentation/screens/dashboard_screen.dart';
 import 'package:water_pump/presentation/screens/welcome_screen.dart';
 
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message,)async{
+    await Firebase.initializeApp();
+}
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   Get.put(MqttController());
   Get.put(TaskController());
   await GetStorage.init();

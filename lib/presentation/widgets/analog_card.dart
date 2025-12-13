@@ -48,7 +48,7 @@ class _AnalogLimitCardState extends State<AnalogLimitCard> {
           child: Card(
           elevation: 2,
           color: Colors.grey.shade100,
-          child: Padding(padding: EdgeInsets.all(8.0),
+          child: Padding(padding:const EdgeInsets.all(8.0),
             child: ExpansionTile(
               key: UniqueKey(),
               initiallyExpanded: widget.isExpended,
@@ -58,13 +58,13 @@ class _AnalogLimitCardState extends State<AnalogLimitCard> {
               ),
               shape: RoundedRectangleBorder(side: BorderSide.none),
               iconColor: Colors.grey.shade600,
-              title: Text(widget.title! , style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: widget.titleColor),),
+              title:  Text(widget.title! , style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: widget.titleColor),),
               leading: Icon(widget.icon),
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text( "Status",
+                   const Text( "Status",
                       style: TextStyle(
                         fontWeight: FontWeight.w700,
                         fontSize: 18,
@@ -100,7 +100,7 @@ class _AnalogLimitCardState extends State<AnalogLimitCard> {
                 const Divider(height: 4,),
                 _buildTextField("Minimum", widget.minController, (value){} ),
                 _buildTextField("Maximum", widget.maxController, (value){}),
-                SizedBox(height: 10,),
+               const SizedBox(height: 10,),
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
@@ -116,7 +116,7 @@ class _AnalogLimitCardState extends State<AnalogLimitCard> {
                   ),
                 ),
                 _buildTextField("Multiplier", widget.multiController, (value){}),
-                SizedBox(height: 10,),
+               const SizedBox(height: 10,),
                 SizedBox(
                   width: double.infinity,
                   child:
@@ -129,7 +129,7 @@ class _AnalogLimitCardState extends State<AnalogLimitCard> {
                       ),
                     ),
                     onPressed: widget.onUpdatePressedMulti,
-                    child: Text("Update", style: TextStyle(fontSize: 16),),
+                    child:const Text("Update", style: TextStyle(fontSize: 16),),
                   ),
                 ),
               ],

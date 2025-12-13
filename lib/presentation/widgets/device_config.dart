@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
 import 'package:water_pump/controller/configController.dart';
 import 'package:water_pump/controller/controller.dart';
@@ -73,11 +72,11 @@ class _DeviceConfigState extends State<DeviceConfig> {
                                     ),
                                   ],
                                 ),
-                                Divider(height: 4,),
+                              const Divider(height: 4,),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Row(children: [Icon(Icons.loop,color: Colors.grey.shade600,),SizedBox(width: 4,), Text("Looping Time", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18,),)]),
+                                    Row(children: [ Icon(Icons.loop,color: Colors.grey.shade600,),const SizedBox(width: 4,), const Text("Looping Time", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18,),)]),
                                     SizedBox(
                                       width: 50,
                                       child:
@@ -110,11 +109,11 @@ class _DeviceConfigState extends State<DeviceConfig> {
                                     )
                                   ],
                                 ),
-                                Divider(height: 4,),
+                               const Divider(height: 4,),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Row(children: [Icon(Icons.auto_mode,color: Colors.grey.shade600,),SizedBox(width: 4,), Text("Auto Mode", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18,),)]),
+                                    Row(children: [Icon(Icons.auto_mode,color: Colors.grey.shade600,),const SizedBox(width: 4,), const Text("Auto Mode", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18,),)]),
                                     Switch(
                                       activeColor: Color(0xff024a06),
                                       value: configController.amode.value,
@@ -128,11 +127,11 @@ class _DeviceConfigState extends State<DeviceConfig> {
                                     ),
                                   ],
                                 ),
-                                Divider(height: 4,),
+                                const Divider(height: 4,),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Row(children: [Icon(Icons.timer_outlined,color: Colors.grey.shade600,),SizedBox(width: 4,), Text("Timer Status", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18,),)]),
+                                    Row(children: [Icon(Icons.timer_outlined,color: Colors.grey.shade600,),const SizedBox(width: 4,), const Text("Timer Status", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18,),)]),
                                     Switch(
                                       activeColor: Color(0xff024a06),
                                       value: configController.timer.value,
@@ -145,11 +144,12 @@ class _DeviceConfigState extends State<DeviceConfig> {
                                       },
                                     ),
                                   ],
-                                ),Divider(height: 4,),
+                                ),
+                                const Divider(height: 4,),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Row(children: [Icon(Icons.access_time,color: Colors.grey.shade600,),SizedBox(width: 4,), Text("Time", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18,),)]),
+                                    Row(children: [Icon(Icons.access_time,color: Colors.grey.shade600,),const SizedBox(width: 4,), const Text("Time", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18,),)]),
                                     Padding(
                                       padding: const EdgeInsets.only(top: 10,bottom: 10,),
                                       child: Text(configController.time.value),
@@ -194,7 +194,7 @@ class _DeviceConfigState extends State<DeviceConfig> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: Text("Cancel",style: TextStyle(color: Colors.black),),
+            child: const Text("Cancel",style: TextStyle(color: Colors.black),),
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(backgroundColor: Color(0xff024a06)),

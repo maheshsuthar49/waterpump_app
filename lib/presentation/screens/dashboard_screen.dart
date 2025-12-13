@@ -1,25 +1,37 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:water_pump/controller/controller.dart';
 import 'package:water_pump/controller/mqtt_controller.dart';
-import 'package:water_pump/model/devices.dart';
 import 'package:water_pump/presentation/screens/flutter_map.dart';
-import 'package:water_pump/presentation/screens/map_screen.dart';
 
 import 'package:water_pump/presentation/widgets/device_card.dart';
 import 'package:water_pump/presentation/screens/drawer_screen.dart';
-import 'package:water_pump/presentation/screens/profile_screen.dart';
-import 'package:water_pump/services/api_service.dart';
 
 import '../widgets/bottomnav_screen.dart';
 
-class DashboardScreen extends StatelessWidget {
+class DashboardScreen extends StatefulWidget {
+  @override
+  State<DashboardScreen> createState() => _DashboardScreenState();
+}
+
+class _DashboardScreenState extends State<DashboardScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   final controller = Get.find<TaskController>();
+
   final mqttController = Get.find<MqttController>();
+
+  late FirebaseMessaging messaging; //test
+
+  @override
+  void initState() {
+    messaging = FirebaseMessaging.instance;
+    messaging.requestPermission();
+    messaging.getToken().then((token) {print("FCM token is : $token");},);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,12 +57,12 @@ class DashboardScreen extends StatelessWidget {
                       onTap: (){
                         _scaffoldKey.currentState?.openDrawer();
                       },
-                      child: CircleAvatar(
+                      child:const CircleAvatar(
                         radius: 24,
                         backgroundImage: AssetImage("assets/images/agromation.jpg")
                       ),
                     ),
-                    Text(
+                   const Text(
                       "DASHBOARD",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
@@ -62,7 +74,7 @@ class DashboardScreen extends StatelessWidget {
                       onTap: (){
 
                       },
-                      child: Icon(
+                      child: const Icon(
                         Icons.notifications_none,
                         size: 28,
                         color: Color(0xff024a06),
@@ -70,7 +82,7 @@ class DashboardScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(height: 20),
+               const SizedBox(height: 20),
                 Row(
                   children: [
                     Expanded(
@@ -117,17 +129,17 @@ class DashboardScreen extends StatelessWidget {
                         ),
                         child: Row(
                           children:  [
-                            Icon(Icons.filter_list, size: 18),
-                            SizedBox(width: 4),
+                           const Icon(Icons.filter_list, size: 18),
+                          const  SizedBox(width: 4),
                             Text(controller.selectedFilter.value, style: TextStyle(fontSize: 14),),
-                            Icon(Icons.arrow_drop_down),
+                           const Icon(Icons.arrow_drop_down),
                           ],
                         ),
                       ),
                     ),),
                   ],
                 ),
-                SizedBox(height: 20),
+               const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -141,7 +153,7 @@ class DashboardScreen extends StatelessWidget {
                       ),
                       child: Column(
                         children: [
-                          Text("Total Devices"),
+                        const  Text("Total Devices"),
                           Center(
                             child: Obx(() =>  Text(
                               "${controller.devices.length}",
@@ -164,7 +176,7 @@ class DashboardScreen extends StatelessWidget {
                       ),
                       child: Column(
                         children: [
-                          Text("Connected"),
+                        const  Text("Connected"),
                           Center(
                             child:Obx(() => Text(
                               "${controller.countConnected.value}",
@@ -188,7 +200,7 @@ class DashboardScreen extends StatelessWidget {
                       ),
                       child: Column(
                         children: [
-                          Text("Disconnected"),
+                         const Text("Disconnected"),
                           Center(
                             child:Obx(() =>  Text(
                               "${controller.countDisconnected.value}",
@@ -204,7 +216,7 @@ class DashboardScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(height: 20),
+               const SizedBox(height: 20),
                 Row(
                   children: [
                     Text(
@@ -229,9 +241,8 @@ class DashboardScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(height: 8),
+               const SizedBox(height: 8),
                 Obx(() {
-
                   if (controller.connectedList.isEmpty) {
                     return Container(
                       width: double.infinity,
@@ -257,7 +268,7 @@ class DashboardScreen extends StatelessWidget {
                               controller.index.value = 0;
                               Get.to(() => BottomNavScreen(selectedDevice: device,), transition: Transition.zoom);
                             },
-                            child:DeviceCard(deviceData: device)
+                            child:  DeviceCard(deviceData: device)
 
                         ),
                       );
@@ -265,14 +276,14 @@ class DashboardScreen extends StatelessWidget {
                   );
                 },),
 
-                SizedBox(height: 20),
+               const SizedBox(height: 20),
                 Row(
                   children: [
-                    Text(
+                  const  Text(
                       "Disconnected Devices",
                       style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(width: 10),
+                   const SizedBox(width: 10),
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: 8),
                       decoration: BoxDecoration(
@@ -289,7 +300,7 @@ class DashboardScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(height: 10),
+               const SizedBox(height: 10),
                 Obx(() {
                   if(controller.disconnectedList == 0){
                     return Container(
@@ -300,7 +311,7 @@ class DashboardScreen extends StatelessWidget {
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      child: Center(child: Text("No devices in this category.")),
+                      child: Center(child: const Text("No devices in this category.")),
                     );
                   }
                   return ListView.builder(
@@ -340,7 +351,7 @@ class DashboardScreen extends StatelessWidget {
       },
       child: const Icon(Icons.map, color: Color(0xff024a06)),
     ),
-          SizedBox(height: 10,),
+         const SizedBox(height: 10,),
           Obx(() {
             if(controller.isLoading.value){
               return FloatingActionButton(

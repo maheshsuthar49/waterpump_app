@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:water_pump/controller/Schduling_controller.dart';
-import 'package:water_pump/controller/mqtt_controller.dart';
 import 'package:water_pump/model/devices.dart';
 import 'package:water_pump/presentation/widgets/scheduleSlot_card.dart';
 

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "426847826706",
+    "project_id": "water-pump-90da0",
+    "storage_bucket": "water-pump-90da0.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:426847826706:android:689f4ca37a2c1c82b9b9cb",
+        "android_client_info": {
+          "package_name": "com.example.water_pump"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBH8Vjt0TnbKLcTNw62iLvj-Ng1zAzVcc8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

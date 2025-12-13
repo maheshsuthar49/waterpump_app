@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:water_pump/controller/controller.dart';
 import 'package:water_pump/model/devices.dart';
 import 'package:water_pump/shared/component.dart';
@@ -31,20 +30,20 @@ class EditDevice extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                   const Text(
                       "Service Expire",
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 10),
+                   const SizedBox(height: 10),
                     Text(
                       controller.formatDate(devicesData.expDate),
                       style: TextStyle(fontSize: 16, color: Colors.grey),
                     ),
-                    SizedBox(height: 10),
-                    Text(
+                    const SizedBox(height: 10),
+                    const Text(
                       "Device Name",
                       style: TextStyle(
                         fontSize: 18,
@@ -56,8 +55,8 @@ class EditDevice extends StatelessWidget {
                       keyboardType: TextInputType.text,
                       prefixIcon: Icons.devices,
                     ),
-                    SizedBox(height: 10),
-                    Text(
+                   const SizedBox(height: 10),
+                   const Text(
                       "Location",
                       style: TextStyle(
                         fontSize: 18,
@@ -69,8 +68,8 @@ class EditDevice extends StatelessWidget {
                       keyboardType: TextInputType.text,
                       prefixIcon: Icons.location_on,
                     ),
-                    SizedBox(height: 10),
-                    Text(
+                   const SizedBox(height: 10),
+                    const Text(
                       "Flow Multiplier",
                       style: TextStyle(
                         fontSize: 18,
@@ -82,7 +81,7 @@ class EditDevice extends StatelessWidget {
                       keyboardType: TextInputType.number,
                       prefixIcon: Icons.water_drop,
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     SizedBox(
                       width: double.infinity,
                       child: CustomButton(text: "Update", onPressed: () {

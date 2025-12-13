@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:water_pump/controller/controller.dart';
 import 'package:water_pump/presentation/screens/dashboard_screen.dart';
 import 'package:water_pump/presentation/screens/signin_screen.dart';
@@ -48,7 +46,7 @@ class WelcomeScreen extends StatelessWidget {
                   SizedBox(height: screenHeight * 0.05),
                   Flexible(
                     fit: FlexFit.tight,
-                    child: Text(
+                    child:const Text(
                       'IoT WATER PUMP\nCONTROLLER\nBY\nAGRROMATION\nINDIA',
                       textAlign: TextAlign.center,
                       style: TextStyle(
@@ -78,16 +76,16 @@ class WelcomeScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(height: 20),
-                      Text(
+                     const SizedBox(height: 20),
+                     const Text(
                         "Wellcome",
                         style: TextStyle(
                           fontSize: 36,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      SizedBox(height: 10,),
-                      Text(
+                     const SizedBox(height: 10,),
+                     const Text(
                         "Thank-you for choosing,\nAgromation India. Hope you have a\ngood experience.",
                         style: TextStyle(fontSize: 16, color: Colors.grey),
                       ),
@@ -96,7 +94,7 @@ class WelcomeScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           if(token == null)...[
-                            Text(
+                           const Text(
                               'Continue',
                               style: TextStyle(
                                 fontWeight: FontWeight.w500,
@@ -104,7 +102,7 @@ class WelcomeScreen extends StatelessWidget {
                               ),
                             ),
                           ],
-                          SizedBox(width: 10),
+                        const  SizedBox(width: 10),
                           if(token == null)...[
                             FloatingActionButton(
                               onPressed: () {
@@ -117,7 +115,7 @@ class WelcomeScreen extends StatelessWidget {
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(50),
                               ),
-                              child: Icon(
+                              child: const Icon(
                                 Icons.arrow_forward,
                                 color: Colors.white,
                               ),

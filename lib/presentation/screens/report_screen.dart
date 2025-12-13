@@ -4,10 +4,8 @@ import 'package:excel/excel.dart';
 import 'package:external_path/external_path.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
 import 'package:open_filex/open_filex.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:water_pump/controller/controller.dart';
 import 'package:water_pump/model/devices.dart';
 import 'package:water_pump/model/reports_data.dart';
@@ -251,8 +249,8 @@ class _ReportScreenState extends State<ReportScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(height: 10),
-                      Text(
+                     const SizedBox(height: 10),
+                     const Text(
                         "Daily Report",
                         style: TextStyle(
                           fontSize: 20,
@@ -291,8 +289,8 @@ class _ReportScreenState extends State<ReportScreen> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 10),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 10),
+                     const SizedBox(height: 20),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
@@ -338,19 +336,19 @@ class _ReportScreenState extends State<ReportScreen> {
                             }
                         )
                           ),
-                          SizedBox(width: 10),
+                         const SizedBox(width: 10),
                           Expanded(
                             child: CustomButton(text: "Export", onPressed: exportToExcel)
 
                           ),
                         ],
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                     ],
                   ),
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Obx(() {
                 if (controller.isReportLoading.value) {
                   return Center(

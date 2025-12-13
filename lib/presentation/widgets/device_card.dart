@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:water_pump/controller/controller.dart';
+
 import 'package:water_pump/model/devices.dart';
-import 'package:water_pump/presentation/screens/device_detail.dart';
+
 import 'package:water_pump/presentation/widgets/gauge2_widget.dart';
 import 'package:water_pump/presentation/widgets/gauge_widget.dart';
 
@@ -16,7 +14,7 @@ class DeviceCard extends StatelessWidget {
   Widget build(BuildContext context) {
     bool isConnected = deviceData.isConnected;
     return Container(
-      padding: EdgeInsets.all(12),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: Colors.grey.shade100,
         borderRadius: BorderRadius.circular(16),
@@ -32,15 +30,15 @@ class DeviceCard extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Icon(Icons.circle, size: 16, color: Colors.grey),
-                      SizedBox(width: 10),
+                      const Icon(Icons.circle, size: 16, color: Colors.grey),
+                      const SizedBox(width: 10),
                       Text(
                         deviceData.name,
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
-                  SizedBox(height: 10),
+                 const SizedBox(height: 10),
                   Text(deviceData.area, style: TextStyle(color: Colors.grey)),
                 ],
               ),
@@ -62,14 +60,14 @@ class DeviceCard extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 8, vertical: 6),
                     decoration: BoxDecoration(
                       color: Colors.grey.shade300,
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    child: Text("Type: MANUAL"),
+                    child: const Text("Type: MANUAL"),
                   ),
                 ],
               ),
@@ -84,7 +82,7 @@ class DeviceCard extends StatelessWidget {
                   child: Stack(
                     alignment: Alignment.center,
                     children: [
-                      GaugeWidget(
+                       GaugeWidget(
                         value: deviceData.ai?[0].toDouble() ?? 0,
                         label: "",
                         height: 95,

@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:water_pump/controller/controller.dart';
 import 'package:water_pump/controller/mqtt_controller.dart';
 import 'package:water_pump/model/devices.dart';
-import 'package:water_pump/presentation/widgets/bottomnav_screen.dart';
 
 import '../widgets/gauge2_widget.dart';
 import '../widgets/gauge_widget.dart';
@@ -67,7 +66,7 @@ class DeviceDetail extends StatelessWidget {
                   ),
                 ),
       
-                SizedBox(height: 10),
+               const SizedBox(height: 10),
               Expanded(child: _buildPhaseCard("Phase 1 (R)", deviceData.ai?[0].toDouble() ?? 0, deviceData.ai?[3].toDouble() ?? 0)),
               Expanded(child: _buildPhaseCard("Phase 2 (Y)", deviceData.ai?[1].toDouble() ?? 0, deviceData.ai?[4].toDouble() ?? 0)),
               Expanded(child: _buildPhaseCard("Phase 3 (B)", deviceData.ai?[2].toDouble() ?? 0, deviceData.ai?[5].toDouble() ?? 0)),
@@ -82,7 +81,7 @@ class DeviceDetail extends StatelessWidget {
   Widget _buildPhaseCard(String title, voltage, current){
     return Card(
       color: Colors.grey.shade100,
-      child: Padding(padding: EdgeInsets.all(16.0),
+      child:  Padding(padding:const EdgeInsets.all(16.0),
       child: LayoutBuilder(builder: (context, constraints) {
         final gaugeSize = (constraints.maxHeight * 0.6).clamp(2.0, double.infinity);
 
@@ -90,7 +89,7 @@ class DeviceDetail extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(title, style:  TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
-            SizedBox(height: 10,),
+           const SizedBox(height: 10,),
             Expanded(child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [

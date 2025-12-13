@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:water_pump/controller/controller.dart';
-import 'package:water_pump/model/devices.dart';
-import 'package:water_pump/presentation/screens/dashboard_screen.dart';
-import 'package:water_pump/presentation/screens/device_detail.dart';
 import 'package:water_pump/presentation/screens/signin_screen.dart';
 
 class DrawerScreen extends StatelessWidget{
@@ -24,9 +19,9 @@ class DrawerScreen extends StatelessWidget{
               children: [CircleAvatar(
                 radius: 24,
                 backgroundImage: AssetImage("assets/images/agromation.jpg")
-              ), SizedBox(width: 10,), Flexible(fit: FlexFit.tight, child: Text("AGROMATION INDIA PVT.LMT.", style: TextStyle(fontWeight: FontWeight.bold),))],
+              ), const SizedBox(width: 10,), Flexible(fit: FlexFit.tight, child: const Text("AGROMATION INDIA PVT.LMT.", style: TextStyle(fontWeight: FontWeight.bold),))],
             ),
-            SizedBox(height: 10,),
+           const SizedBox(height: 10,),
             Row(
               children: [
                 CircleAvatar(
@@ -34,9 +29,9 @@ class DrawerScreen extends StatelessWidget{
                   backgroundColor:Colors.grey.shade600,
                   child: Icon(Icons.person, color: Colors.white,),
                 ), 
-                SizedBox(width: 10,),
-                Flexible(fit: FlexFit.tight, child: Text("MAHESH KUMAR SUTHAR",style: TextStyle(fontWeight: FontWeight.bold),)),
-                Icon(Icons.verified_user, color: Color(0xff024a06),size: 18,)
+               const SizedBox(width: 10,),
+                Flexible(fit: FlexFit.tight, child: const Text("MAHESH KUMAR SUTHAR",style: TextStyle(fontWeight: FontWeight.bold),)),
+                const Icon(Icons.verified_user, color: Color(0xff024a06),size: 18,)
               ],
             ),
             
@@ -45,10 +40,10 @@ class DrawerScreen extends StatelessWidget{
 
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          child: Text("Your app",style: TextStyle(color: Colors.grey.shade600,fontWeight: FontWeight.w500),),
+          child:  Text("Your app",style: TextStyle(color: Colors.grey.shade600,fontWeight: FontWeight.w500),),
         ),
         ListTile(
-          leading: Icon(Icons.history,color: Colors.grey.shade600,),
+          leading:  Icon(Icons.history,color: Colors.grey.shade600,),
           title: Text("Your Activity"),
           onTap: (){},
         ),
@@ -61,7 +56,7 @@ class DrawerScreen extends StatelessWidget{
         //dropdown for devices using expention widget
         ExpansionTile(
          iconColor: Colors.grey.shade600,
-          title: Text("Your Devices"),
+          title:  Text("Your Devices"),
         leading: Icon(Icons.devices,color: Colors.grey.shade600,),
           children: controller.devices.map((device) {
             return  ListTile(
