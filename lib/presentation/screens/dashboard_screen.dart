@@ -1,13 +1,14 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:water_pump/controller/controller.dart';
 import 'package:water_pump/controller/mqtt_controller.dart';
 import 'package:water_pump/presentation/screens/flutter_map.dart';
+import 'package:water_pump/presentation/screens/notification_screen.dart';
 
 import 'package:water_pump/presentation/widgets/device_card.dart';
 import 'package:water_pump/presentation/screens/drawer_screen.dart';
+import 'package:water_pump/services/notification_service.dart';
 
 import '../widgets/bottomnav_screen.dart';
 
@@ -22,28 +23,26 @@ class _DashboardScreenState extends State<DashboardScreen> {
   final controller = Get.find<TaskController>();
 
   final mqttController = Get.find<MqttController>();
-
-  late FirebaseMessaging messaging; //test
-
+  final NotificationService notificationService = NotificationService();
   @override
   void initState() {
-    messaging = FirebaseMessaging.instance;
-    messaging.requestPermission();
-    messaging.getToken().then((token) {print("FCM token is : $token");},);
     super.initState();
+    notificationService.requestNotificationPermission();
+    notificationService.setUpInteractMessage(context);
+    notificationService.firebaseInit(context);
+    notificationService.getDeviceToken().then((value) {
+      print("Device Token := $value");
+
+    });
+    controller.checkBatteryOptimization();
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Color(0xffeafbea),
-      drawer: Drawer(
-
-         backgroundColor: Color(0xffeafbea),
-        child: DrawerScreen(),
-      ),
+      drawer: Drawer(backgroundColor: Color(0xffeafbea), child: DrawerScreen()),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -54,15 +53,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     GestureDetector(
-                      onTap: (){
+                      onTap: () {
                         _scaffoldKey.currentState?.openDrawer();
                       },
-                      child:const CircleAvatar(
+                      child: const CircleAvatar(
                         radius: 24,
-                        backgroundImage: AssetImage("assets/images/agromation.jpg")
+                        backgroundImage: AssetImage(
+                          "assets/images/agromation.jpg",
+                        ),
                       ),
                     ),
-                   const Text(
+                    const Text(
                       "DASHBOARD",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
@@ -71,8 +72,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       ),
                     ),
                     GestureDetector(
-                      onTap: (){
-
+                      onTap: () {
+                        Get.to(
+                          () => NotificationScreen(),
+                          transition: Transition.fadeIn,
+                        );
                       },
                       child: const Icon(
                         Icons.notifications_none,
@@ -82,7 +86,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     ),
                   ],
                 ),
-               const SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Row(
                   children: [
                     Expanded(
@@ -93,7 +97,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           borderRadius: BorderRadius.circular(25),
                         ),
                         child: TextField(
-                          onChanged: (value) => controller.updateSearchQuery(value),
+                          onChanged: (value) =>
+                              controller.updateSearchQuery(value),
                           decoration: InputDecoration(
                             prefixIcon: Icon(CupertinoIcons.search),
                             hintText: "Search..",
@@ -106,46 +111,60 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       ),
                     ),
                     const SizedBox(width: 10),
-                    Obx(() => PopupMenuButton(
-                      onSelected: (value) {
-                        controller.setFillter(value);
-                      },
-                      itemBuilder: (context) => [
-                        const PopupMenuItem(value: "All", child: Text("All")),
-                        const PopupMenuItem(value: "Running", child: Text("Running")),
-                        const PopupMenuItem(value: "Stopped", child: Text("Stopped")),
-                      ],
-                      child: Container(
-                        // height: 45,
-                        // width: 100,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 10
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(25),
-                          border: Border.all(color: Colors.grey.shade300),
-                        ),
-                        child: Row(
-                          children:  [
-                           const Icon(Icons.filter_list, size: 18),
-                          const  SizedBox(width: 4),
-                            Text(controller.selectedFilter.value, style: TextStyle(fontSize: 14),),
-                           const Icon(Icons.arrow_drop_down),
-                          ],
+                    Obx(
+                      () => PopupMenuButton(
+                        onSelected: (value) {
+                          controller.setFillter(value);
+                        },
+                        itemBuilder: (context) => [
+                          const PopupMenuItem(value: "All", child: Text("All")),
+                          const PopupMenuItem(
+                            value: "Running",
+                            child: Text("Running"),
+                          ),
+                          const PopupMenuItem(
+                            value: "Stopped",
+                            child: Text("Stopped"),
+                          ),
+                        ],
+                        child: Container(
+                          // height: 45,
+                          // width: 100,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 10,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(25),
+                            border: Border.all(color: Colors.grey.shade300),
+                          ),
+                          child: Row(
+                            children: [
+                              const Icon(Icons.filter_list, size: 18),
+                              const SizedBox(width: 4),
+                              Text(
+                                controller.selectedFilter.value,
+                                style: TextStyle(fontSize: 14),
+                              ),
+                              const Icon(Icons.arrow_drop_down),
+                            ],
+                          ),
                         ),
                       ),
-                    ),),
+                    ),
                   ],
                 ),
-               const SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
                       //margin: EdgeInsets.symmetric(horizontal: 4),
-                      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+                      padding: EdgeInsets.symmetric(
+                        vertical: 10,
+                        horizontal: 8,
+                      ),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(16),
@@ -153,22 +172,27 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       ),
                       child: Column(
                         children: [
-                        const  Text("Total Devices"),
+                          const Text("Total Devices"),
                           Center(
-                            child: Obx(() =>  Text(
-                              "${controller.devices.length}",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 24,
+                            child: Obx(
+                              () => Text(
+                                "${controller.devices.length}",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 24,
+                                ),
                               ),
-                            ),)
+                            ),
                           ),
                         ],
                       ),
                     ),
                     Container(
                       //margin: EdgeInsets.symmetric(horizontal: 4),
-                      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+                      padding: EdgeInsets.symmetric(
+                        vertical: 10,
+                        horizontal: 8,
+                      ),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(16),
@@ -176,23 +200,28 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       ),
                       child: Column(
                         children: [
-                        const  Text("Connected"),
+                          const Text("Connected"),
                           Center(
-                            child:Obx(() => Text(
-                              "${controller.countConnected.value}",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 24,
-                                color: Colors.green,
+                            child: Obx(
+                              () => Text(
+                                "${controller.countConnected.value}",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 24,
+                                  color: Colors.green,
+                                ),
                               ),
-                            ),)
+                            ),
                           ),
                         ],
                       ),
                     ),
                     Container(
                       //margin: EdgeInsets.symmetric(horizontal: 4),
-                      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+                      padding: EdgeInsets.symmetric(
+                        vertical: 10,
+                        horizontal: 8,
+                      ),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(16),
@@ -200,28 +229,33 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       ),
                       child: Column(
                         children: [
-                         const Text("Disconnected"),
+                          const Text("Disconnected"),
                           Center(
-                            child:Obx(() =>  Text(
-                              "${controller.countDisconnected.value}",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 24,
-                                color: Colors.red,
+                            child: Obx(
+                              () => Text(
+                                "${controller.countDisconnected.value}",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 24,
+                                  color: Colors.red,
+                                ),
                               ),
-                            ),)
+                            ),
                           ),
                         ],
                       ),
                     ),
                   ],
                 ),
-               const SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Row(
                   children: [
                     Text(
                       "Connected Devices",
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     SizedBox(width: 10),
                     Container(
@@ -230,18 +264,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         borderRadius: BorderRadius.circular(16),
                         color: Color(0xffc3f3c3),
                       ),
-                      child:Obx(() =>  Text(
-                        "${controller.countConnected.value}",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                          color: Colors.green,
+                      child: Obx(
+                        () => Text(
+                          "${controller.countConnected.value}",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                            color: Colors.green,
+                          ),
                         ),
-                      ),)
+                      ),
                     ),
                   ],
                 ),
-               const SizedBox(height: 8),
+                const SizedBox(height: 8),
                 Obx(() {
                   if (controller.connectedList.isEmpty) {
                     return Container(
@@ -252,10 +288,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      child: Center(child: Text("No devices in this category.")),
+                      child: Center(
+                        child: Text("No devices in this category."),
+                      ),
                     );
                   }
-                  return  ListView.builder(
+                  return ListView.builder(
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
                     itemCount: controller.filteredConnectedList.length,
@@ -264,45 +302,52 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       return Padding(
                         padding: const EdgeInsets.symmetric(vertical: 6),
                         child: InkWell(
-                            onTap: () {
-                              controller.index.value = 0;
-                              Get.to(() => BottomNavScreen(selectedDevice: device,), transition: Transition.zoom);
-                            },
-                            child:  DeviceCard(deviceData: device)
-
+                          onTap: () {
+                            controller.index.value = 0;
+                            Get.to(
+                              () => BottomNavScreen(selectedDevice: device),
+                              transition: Transition.zoom,
+                            );
+                          },
+                          child: DeviceCard(deviceData: device),
                         ),
                       );
                     },
                   );
-                },),
+                }),
 
-               const SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Row(
                   children: [
-                  const  Text(
+                    const Text(
                       "Disconnected Devices",
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                   const SizedBox(width: 10),
+                    const SizedBox(width: 10),
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: 8),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(16),
                         color: Colors.grey.shade200,
                       ),
-                      child:Obx(() =>  Text(
-                        "${controller.countDisconnected.value}",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
+                      child: Obx(
+                        () => Text(
+                          "${controller.countDisconnected.value}",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
                         ),
-                      ),)
+                      ),
                     ),
                   ],
                 ),
-               const SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Obx(() {
-                  if(controller.disconnectedList == 0){
+                  if (controller.disconnectedList == 0) {
                     return Container(
                       width: double.infinity,
                       padding: EdgeInsets.all(16),
@@ -311,7 +356,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      child: Center(child: const Text("No devices in this category.")),
+                      child: Center(
+                        child: const Text("No devices in this category."),
+                      ),
                     );
                   }
                   return ListView.builder(
@@ -323,16 +370,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       return Padding(
                         padding: const EdgeInsets.symmetric(vertical: 6),
                         child: InkWell(
-                            onTap: () {
-                              controller.index.value = 0;
-                              Get.to(() => BottomNavScreen(selectedDevice: device,), transition: Transition.zoom);
-                            },
-                            child: DeviceCard(deviceData: device),
-                        )
+                          onTap: () {
+                            controller.index.value = 0;
+                            Get.to(
+                              () => BottomNavScreen(selectedDevice: device),
+                              transition: Transition.zoom,
+                            );
+                          },
+                          child: DeviceCard(deviceData: device),
+                        ),
                       );
                     },
                   );
-                },)
+                }),
               ],
             ),
           ),
@@ -343,17 +393,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
         children: [
           FloatingActionButton(
             heroTag: "mapTag",
-          backgroundColor: Colors.green.shade100,
-      onPressed: () {
-
-              Get.to(()=> FMaps(), transition: Transition.fadeIn, );
-
-      },
-      child: const Icon(Icons.map, color: Color(0xff024a06)),
-    ),
-         const SizedBox(height: 10,),
+            backgroundColor: Colors.green.shade100,
+            onPressed: () {
+              Get.to(() => FMaps(), transition: Transition.fadeIn);
+            },
+            child: const Icon(Icons.map, color: Color(0xff024a06)),
+          ),
+          const SizedBox(height: 10),
           Obx(() {
-            if(controller.isLoading.value){
+            if (controller.isLoading.value) {
               return FloatingActionButton(
                 backgroundColor: Colors.grey,
                 onPressed: () {},
@@ -361,30 +409,25 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                 ),
               );
-            }else{
+            } else {
               return FloatingActionButton(
                 heroTag: "refreshTag",
                 backgroundColor: const Color(0xff024a06),
                 onPressed: () async {
                   final token = controller.box.read('token');
-                  print("token is: $token" );
+                  print("token is: $token");
 
-                  if(!mqttController.isConnected.value){
+                  if (!mqttController.isConnected.value) {
                     mqttController.connect();
                   }
                   await controller.fetchDeviceAll(token);
-
-
                 },
                 child: const Icon(Icons.refresh, color: Colors.white),
               );
             }
-
-          },),
+          }),
         ],
-      )
-
-
+      ),
     );
   }
 }

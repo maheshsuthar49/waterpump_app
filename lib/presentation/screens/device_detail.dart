@@ -14,7 +14,6 @@ class DeviceDetail extends StatelessWidget {
   DeviceDetail({required this.deviceData,});
   @override
   Widget build(BuildContext context) {
-
     controller.updatePowerOnOff(deviceData);
     return Scaffold(
       backgroundColor: Colors.white,
@@ -22,55 +21,120 @@ class DeviceDetail extends StatelessWidget {
         child:  Padding(
           padding: const EdgeInsets.all(16.0),
           child: Obx(() {
-      
-            return Column(
-              children: [
-                Card(
-                  color: Colors.grey.shade100,
-                  elevation: 2,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              deviceData.name,
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
+            String faultMsg = controller.buildFaultMessage(deviceData);
+            return SingleChildScrollView(
+              child: Column(
+                children: [
+                  Card(
+                    color: Colors.grey.shade100,
+                    elevation: 2,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                deviceData.name,
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
+                              Text(
+                                deviceData.area,
+                                style: TextStyle(fontSize: 14, color: Colors.grey),
+                              ),
+                            ],
+                          ),
+                          Switch(
+                            activeColor: Color(0xff024a06),
+              
+                            value: controller.power.value,
+                            onChanged: (bool value) {
+                              // controller.powerOnOff(value);
+                              controller.powerOnOff(value, deviceData);
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                      const SizedBox(height: 10),
+                      if(faultMsg.isNotEmpty)...[
+                        Card(
+                          color: Colors.red[100],
+                          elevation: 2,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Padding(padding:  EdgeInsets.all(12.0),
+                            child: Row(
+
+                              children: [
+                                Icon(Icons.warning_amber_outlined, color: Colors.red,),
+                                const SizedBox(width: 10,),
+                                Expanded(
+                                  child: Text(
+                                    "$faultMsg",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                    ),
+                                    maxLines: 3,
+                                    softWrap: true,
+                                    overflow: TextOverflow.visible,
+                                  ),
+                                ),
+                              ],
                             ),
-                            Text(
-                              deviceData.area,
-                              style: TextStyle(fontSize: 14, color: Colors.grey),
-                            ),
-                          ],
+                          ),
                         ),
-                        Switch(
-                          activeColor: Color(0xff024a06),
-      
-                          value: controller.power.value,
-                          onChanged: (bool value) {
-                            // controller.powerOnOff(value);
-                            controller.powerOnOff(value, deviceData);
-                          },
+                      ],
+
+                  const SizedBox(height: 10),
+                if(!deviceData.isConnected)...[
+                  Card(
+                    color: Colors.red[100],
+                    elevation: 2,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Padding(padding:  EdgeInsets.all(12.0),
+                    child: Row(
+              
+                      children: [
+                        Icon(Icons.warning_amber_outlined, color: Colors.red,),
+                        const SizedBox(width: 10,),
+                        Expanded(
+                          child: Text(
+                        "Device is disconnected. Please check power supply or network connection.",
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            maxLines: 3,
+                            softWrap: true,
+                            overflow: TextOverflow.visible,
+                          ),
                         ),
                       ],
                     ),
-                  ),
-                ),
-      
-               const SizedBox(height: 10),
-              Expanded(child: _buildPhaseCard("Phase 1 (R)", deviceData.ai?[0].toDouble() ?? 0, deviceData.ai?[3].toDouble() ?? 0)),
-              Expanded(child: _buildPhaseCard("Phase 2 (Y)", deviceData.ai?[1].toDouble() ?? 0, deviceData.ai?[4].toDouble() ?? 0)),
-              Expanded(child: _buildPhaseCard("Phase 3 (B)", deviceData.ai?[2].toDouble() ?? 0, deviceData.ai?[5].toDouble() ?? 0)),
-              ],
+                    ),
+                  )
+                ],
+                if(deviceData.isConnected)...[
+                SizedBox(height:180 ,child: _buildPhaseCard("Phase 1 (R)", deviceData.ai?[0].toDouble() ?? 0, deviceData.ai?[3].toDouble() ?? 0)),
+                SizedBox(height:180 ,child: _buildPhaseCard("Phase 2 (Y)", deviceData.ai?[1].toDouble() ?? 0, deviceData.ai?[4].toDouble() ?? 0)),
+                SizedBox(height:180 ,child: _buildPhaseCard("Phase 3 (B)", deviceData.ai?[2].toDouble() ?? 0, deviceData.ai?[5].toDouble() ?? 0)),
+                ]
+                ],
+              ),
             );
             },
           ),
@@ -83,7 +147,7 @@ class DeviceDetail extends StatelessWidget {
       color: Colors.grey.shade100,
       child:  Padding(padding:const EdgeInsets.all(16.0),
       child: LayoutBuilder(builder: (context, constraints) {
-        final gaugeSize = (constraints.maxHeight * 0.6).clamp(2.0, double.infinity);
+        final gaugeSize = constraints.maxWidth * 0.30;
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -103,4 +167,7 @@ class DeviceDetail extends StatelessWidget {
       ),
     );
   }
+
+
+
 }

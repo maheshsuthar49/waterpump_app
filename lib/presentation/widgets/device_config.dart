@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -16,14 +18,31 @@ class DeviceConfig extends StatefulWidget {
 class _DeviceConfigState extends State<DeviceConfig> {
   final TextEditingController loopingTimeController = TextEditingController();
   final ConfigController configController = Get.put(ConfigController());
-
-  String formattedTime = DateFormat('dd-MM-yyy HH:mm:ss').format(DateTime.now());
+  late Timer _timer;
+  String currentTime = '';
 
   @override
   void initState() {
     super.initState();
-
     configController.fetchConfig(widget.devicesData.uuid.toString());
+    _updateTime();
+    _startClock();
+  }
+  void _updateTime() {
+    setState(() {
+      currentTime = DateFormat('dd-MM-yyyy HH:mm:ss').format(DateTime.now());
+    });
+  }
+  void _startClock() {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      _updateTime();
+    });
+  }
+  @override
+  void dispose() {
+    _timer.cancel();
+    loopingTimeController.dispose();
+    super.dispose();
   }
   @override
   Widget build(BuildContext context) {
@@ -152,7 +171,7 @@ class _DeviceConfigState extends State<DeviceConfig> {
                                     Row(children: [Icon(Icons.access_time,color: Colors.grey.shade600,),const SizedBox(width: 4,), const Text("Time", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18,),)]),
                                     Padding(
                                       padding: const EdgeInsets.only(top: 10,bottom: 10,),
-                                      child: Text(configController.time.value),
+                                      child: Text( currentTime),
                                     )
                                   ],
                                 ),
@@ -207,5 +226,4 @@ class _DeviceConfigState extends State<DeviceConfig> {
 
     if (result == true) onConfirm();
   }
-
 }

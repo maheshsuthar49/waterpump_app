@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_callkit_incoming/flutter_callkit_incoming.dart';
 import 'package:get/get.dart';
 import 'package:water_pump/controller/controller.dart';
 import 'package:water_pump/presentation/screens/dashboard_screen.dart';
 import 'package:water_pump/presentation/screens/signin_screen.dart';
 import 'package:water_pump/presentation/widgets/wave_clipper.dart';
-
 class WelcomeScreen extends StatelessWidget {
   final controller = Get.find<TaskController>();
 
@@ -13,8 +13,12 @@ class WelcomeScreen extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
     final token = controller.box.read("token");
-    Future.delayed(Duration(seconds: 2), () async {
-
+    Future.delayed(Duration(milliseconds: 500), () async {
+      var calls = await FlutterCallkitIncoming.activeCalls();
+      if(calls is List && calls.isNotEmpty){
+        print("Active call detected via Welcome Screen - Aborting Dashboard navigation");
+      return;
+      }
       if (token != null && token.toString().isNotEmpty) {
         await controller.fetchDeviceAll(token);
         Get.offAll(() => DashboardScreen(), transition: Transition.fadeIn);

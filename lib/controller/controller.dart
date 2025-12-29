@@ -1,10 +1,9 @@
-import 'package:flutter/animation.dart';
+import 'package:battery_optimization_helper/battery_optimization_helper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
-import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart';
+
 import 'package:water_pump/controller/mqtt_controller.dart';
 import 'package:water_pump/model/devices.dart';
 import 'package:water_pump/model/reports_data.dart';
@@ -169,4 +168,86 @@ class TaskController extends GetxController {
         .where((d) => d.name.toLowerCase().contains(searchQuery.value))
         .toList();
   }
+   Map<int, String> faultCodeMessages = {
+    21: "There is under voltage fault in phase 'R'.",
+    22: "There is over voltage fault in phase 'R'.",
+
+    23: "There is under voltage fault in phase 'Y'.",
+    24: "There is over voltage fault in phase 'Y'.",
+
+    25: "There is under voltage fault in phase 'B'.",
+    26: "There is over voltage fault in phase 'B'.",
+
+    31: "There is under current fault in phase 'R'.",
+    32: "There is over current fault in phase 'R'.",
+
+    33: "There is under current fault in phase 'Y'.",
+    34: "There is over current fault in phase 'Y'.",
+
+    35: "There is under current fault in phase 'B'.",
+    36: "There is over current fault in phase 'B'.",
+
+    37: "There is imbalance voltage fault between phase 'R - Y'.",
+    38: "There is imbalance voltage fault between phase 'Y - B'. ",
+    40: "There is technical fault in phase 'R'. ",
+    41: "There is technical fault in phase 'Y'. ",
+    42: "There is technical fault in phase 'B'. ",
+    90: "There is Phase reverse fault.",
+  };
+
+  List<int> buildFaultCodes(DevicesData deviceData){
+    final List<int> codes = [];
+    final flt = deviceData.flt;
+    if (flt == null || flt.length < 20) {
+      return codes;
+    }
+
+      if(flt[0] == 1) codes.add(21);
+      if(flt[0] == 2) codes.add(22);
+
+      if (flt[1] == 1) codes.add(23);
+      if (flt[1] == 2) codes.add(24);
+
+      if (flt[2] == 1) codes.add(25);
+      if (flt[2] == 2) codes.add(26);
+
+      if(deviceData.doo?[0] == 1){
+        if (flt[3] == 1) codes.add(31);
+        if (flt[3] == 2) codes.add(32);
+
+        if (flt[4] == 1) codes.add(33);
+        if (flt[4] == 2) codes.add(34);
+
+        if (flt[5] == 1) codes.add(35);
+        if (flt[5] == 2) codes.add(36);
+      }
+    if (flt[6] == 2) codes.add(37);
+    if (flt[7] == 2) codes.add(38);
+
+    if (flt[12] == 1) codes.add(40);
+    if (flt[13] == 1) codes.add(41);
+    if (flt[14] == 1) codes.add(42);
+
+    if(flt[19] == 1) codes.add(95);
+
+    return codes;
+
+  }
+  String buildFaultMessageFromCodes(List<int> codes){
+    return codes.map((c)=> faultCodeMessages[c]).where((m) => m !=null,).join('');
+  }
+  String buildFaultMessage(DevicesData deviceData){
+    final codes = buildFaultCodes(deviceData);
+    return buildFaultMessageFromCodes(codes);
+  }
+
+  //battery optimization
+  Future<void> checkBatteryOptimization() async{
+    final isIgnoring = await BatteryOptimizationHelper.ensureOptimizationDisabled();
+
+    if(!isIgnoring){
+      await BatteryOptimizationHelper.openBatteryOptimizationSettings();
+    }
+  }
+
 }

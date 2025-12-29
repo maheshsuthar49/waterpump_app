@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:water_pump/controller/controller.dart';
 import 'package:water_pump/model/devices.dart';
+import 'package:water_pump/presentation/screens/dashboard_screen.dart';
 import 'package:water_pump/presentation/screens/device_detail.dart';
 import 'package:water_pump/presentation/screens/report_screen.dart';
 import 'package:water_pump/presentation/screens/scheduling_screen.dart';
@@ -25,6 +26,7 @@ class BottomNavScreen extends StatelessWidget{
     return Scaffold(
       backgroundColor: Color(0xffffffff),
       appBar: AppBar(
+        leading: IconButton(onPressed: (){ Get.to(()=>DashboardScreen());}, icon: Icon(Icons.arrow_back)),
         title: Obx(() =>Text(
           titles[controller.index.value],
           style: TextStyle(fontWeight: FontWeight.w500,color: Color(0xff024a06)),

@@ -13,6 +13,7 @@ class DeviceCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isConnected = deviceData.isConnected;
+    bool hasFault = deviceData.flt != null && deviceData.flt!.any((e) => e != 0,) ;
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -30,7 +31,7 @@ class DeviceCard extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      const Icon(Icons.circle, size: 16, color: Colors.grey),
+                       Icon(Icons.circle, size: 16, color: hasFault ? Colors.red.shade300 : Colors.grey),
                       const SizedBox(width: 10),
                       Text(
                         deviceData.name,

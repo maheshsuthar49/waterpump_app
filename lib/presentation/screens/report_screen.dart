@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:data_table_2/data_table_2.dart';
 import 'package:excel/excel.dart';
 import 'package:external_path/external_path.dart';
 import 'package:flutter/material.dart';
@@ -238,118 +239,118 @@ class _ReportScreenState extends State<ReportScreen> {
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Card(
-                elevation: 2,
-                color: Colors.grey.shade100,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                     const SizedBox(height: 10),
-                     const Text(
-                        "Daily Report",
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Color(0xff024a06),
-                          fontWeight: FontWeight.bold,
-                        ),
+        child: Column(
+          children: [
+            Card(
+              elevation: 2,
+              color: Colors.grey.shade100,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                   const SizedBox(height: 10),
+                   const Text(
+                      "Daily Report",
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Color(0xff024a06),
+                        fontWeight: FontWeight.bold,
                       ),
+                    ),
 
-                      SizedBox(height: 10),
-                      TextFormField(
-                        controller: fromDateController,
-                        keyboardType: TextInputType.datetime,
-                        validator: (String? value) {
-                          if (value!.isEmpty) {
-                            return "Please select date";
-                          }
-                        },
-                        readOnly: true,
-                        onTap: () {
-                          showDatePicker(
-                            context: context,
-                            firstDate: DateTime(2022),
-                            lastDate: DateTime(2050),
-                          ).then((value) {
-                            fromDateController.text = DateFormat.yMMMd().format(
-                              (value!),
-                            );
-                          });
-                        },
-                        decoration: InputDecoration(
-                          labelText: "From Date",
-                          border: OutlineInputBorder(),
-                          suffixIcon: Icon(
-                            Icons.calendar_month,
-                            color: Colors.grey.shade600,
-                          ),
+                    SizedBox(height: 10),
+                    TextFormField(
+                      controller: fromDateController,
+                      keyboardType: TextInputType.datetime,
+                      validator: (String? value) {
+                        if (value!.isEmpty) {
+                          return "Please select date";
+                        }
+                      },
+                      readOnly: true,
+                      onTap: () {
+                        showDatePicker(
+                          context: context,
+                          firstDate: DateTime(2022),
+                          lastDate: DateTime(2050),
+                        ).then((value) {
+                          fromDateController.text = DateFormat.yMMMd().format(
+                            (value!),
+                          );
+                        });
+                      },
+                      decoration: InputDecoration(
+                        labelText: "From Date",
+                        border: OutlineInputBorder(),
+                        suffixIcon: Icon(
+                          Icons.calendar_month,
+                          color: Colors.grey.shade600,
                         ),
                       ),
-                      const SizedBox(height: 10),
-                     const SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Expanded(
-                            child:
-                            CustomButton(text: "Get", onPressed: () async {
-                              if (fromDateController.text.isEmpty) {
-                                Get.snackbar(
-                                  "Error",
-                                  "Please select the Date",
-                                  duration: Duration(seconds: 1),
-                                  colorText: Colors.red,
-                                );
-                              }
-                              final DateTime parsedDate = DateFormat.yMMMd()
-                                  .parse(fromDateController.text);
-                              final DateTime fromDateObj = parsedDate;
-                              final DateTime toFromObj = DateTime(
-                                parsedDate.year,
-                                parsedDate.month,
-                                parsedDate.day,
-                                23,
-                                59,
-                                59,
-                                999,
-                                999,
-                              );
-                              final DateFormat apiFormatter = DateFormat(
-                                "yyyy-MM-dd HH:mm:ss:SSSSSS",
-                              );
-                              final id = widget.deviceData.id.toString();
-                              final String fromDate = apiFormatter.format(
-                                fromDateObj,
-                              );
-                              final String toDate = apiFormatter.format(
-                                toFromObj,
-                              );
-                              await controller.fetchReport(
-                                id: widget.deviceData.id.toString(),
-                                from: fromDate,
-                                to: toDate,
+                    ),
+                    const SizedBox(height: 10),
+                   const SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Expanded(
+                          child:
+                          CustomButton(text: "Get", onPressed: () async {
+                            if (fromDateController.text.isEmpty) {
+                              Get.snackbar(
+                                "Error",
+                                "Please select the Date",
+                                duration: Duration(seconds: 1),
+                                colorText: Colors.red,
                               );
                             }
-                        )
-                          ),
-                         const SizedBox(width: 10),
-                          Expanded(
-                            child: CustomButton(text: "Export", onPressed: exportToExcel)
+                            final DateTime parsedDate = DateFormat.yMMMd()
+                                .parse(fromDateController.text);
+                            final DateTime fromDateObj = parsedDate;
+                            final DateTime toFromObj = DateTime(
+                              parsedDate.year,
+                              parsedDate.month,
+                              parsedDate.day,
+                              23,
+                              59,
+                              59,
+                              999,
+                              999,
+                            );
+                            final DateFormat apiFormatter = DateFormat(
+                              "yyyy-MM-dd HH:mm:ss:SSSSSS",
+                            );
+                            final id = widget.deviceData.id.toString();
+                            final String fromDate = apiFormatter.format(
+                              fromDateObj,
+                            );
+                            final String toDate = apiFormatter.format(
+                              toFromObj,
+                            );
+                            await controller.fetchReport(
+                              id: widget.deviceData.id.toString(),
+                              from: fromDate,
+                              to: toDate,
+                            );
+                          }
+                      )
+                        ),
+                       const SizedBox(width: 10),
+                        Expanded(
+                          child: CustomButton(text: "Export", onPressed: exportToExcel)
 
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                    ],
-                  ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                  ],
                 ),
               ),
-              const SizedBox(height: 10),
-              Obx(() {
+            ),
+            const SizedBox(height: 10),
+            Expanded(
+              child: Obx(() {
                 if (controller.isReportLoading.value) {
                   return Center(
                     child: CircularProgressIndicator(color: Color(0xff024a06)),
@@ -358,143 +359,49 @@ class _ReportScreenState extends State<ReportScreen> {
                 if (controller.reportsDataList.isEmpty) {
                   return SizedBox.shrink();
                 }
-                return SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: DataTableTheme(
-                    data: DataTableThemeData(
-                      headingRowHeight: 40,
-                      dataRowMaxHeight: 20,
-                      dataRowMinHeight: 10,
+                return DataTable2(
+                  columnSpacing: 6,
+                  dataRowHeight: 24,
+                  headingRowHeight: 36,
+                  horizontalMargin: 6,
+                  minWidth: 800,
+                  fixedTopRows: 1,
+                  fixedLeftColumns: 1,
+                  headingRowColor: WidgetStatePropertyAll(Color(0xffeafbea)),
+                  border: TableBorder.all(color: Colors.grey.shade400),
+                  columns: const[
+                    DataColumn2(label: Center(child: Text("Time"),)),
+                    DataColumn2(label: Center(child: Text("R(V)"),)),
+                    DataColumn2(label: Center(child: Text("Y(V)"),)),
+                    DataColumn2(label: Center(child: Text("B(V)"),)),
+                    DataColumn2(label: Center(child: Text("R(A)"),)),
+                    DataColumn2(label: Center(child: Text("Y(A)"),)),
+                    DataColumn2(label: Center(child: Text("B(A)"),)),
+                    DataColumn2(label: Center(child: Text("Status"),)),
+                    DataColumn2(label: Center(child: Text("Fault"),)),
+                  ],
+                  rows: controller.reportsDataList.asMap().entries.map((entry) {
+                    final int index = entry.key;
+                    final ReportsData reportsData = entry.value;
+                    final String timeSlot = (index < _timeList.length) ? _timeList[index]['time'] : "N/A";
+                    return DataRow2(cells:[
+                      DataCell(Center(child: Text(timeSlot),)),
+                      DataCell(Center(child: Text(reportsData.vr.toString()),)),
+                      DataCell(Center(child: Text(reportsData.vy.toString()),)),
+                      DataCell(Center(child: Text(reportsData.vb.toString()),)),
+                      DataCell(Center(child: Text(reportsData.ir.toString()),)),
+                      DataCell(Center(child: Text(reportsData.iy.toString()),)),
+                      DataCell(Center(child: Text(reportsData.ib.toString()),)),
+                      DataCell(Center(child: Text(reportsData.statusText),)),
+                      DataCell(Center(child: Text(reportsData.faultText),)),
+                    ] );
+                  },).toList(),
 
-                    ),
-                    child: DataTable(
-                      columnSpacing: 20.0,
-                      headingRowColor: WidgetStateProperty.all(Color(0xffeafbea)),
-                      border: TableBorder.all(color: Colors.grey.shade400),
-                      columns: const [
-                        DataColumn(
-                          label: Expanded(
-                            child: Text(
-                              "Time",
-                              style: TextStyle(fontSize: 16),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ),
-                        DataColumn(
-                          label: Expanded(
-                            child: Text(
-                              "R(v)",
-                              style: TextStyle(fontSize: 16),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ),
-                        DataColumn(
-                          label: Expanded(
-                            child: Text(
-                              "Y(V)",
-                              style: TextStyle(fontSize: 16),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ),
-                        DataColumn(
-                          label: Expanded(
-                            child: Text(
-                              "B(V)",
-                              style: TextStyle(fontSize: 16),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ),
-                        DataColumn(
-                          label: Expanded(
-                            child: Text(
-                              "R(A)",
-                              style: TextStyle(fontSize: 16),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ),
-                        DataColumn(
-                          label: Expanded(
-                            child: Text(
-                              "Y(A)",
-                              style: TextStyle(fontSize: 16),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ),
-                        DataColumn(
-                          label: Expanded(
-                            child: Text(
-                              "B(A)",
-                              style: TextStyle(fontSize: 16),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ),
-                        DataColumn(
-                          label: Expanded(
-                            child: Text(
-                              "Status",
-                              style: TextStyle(fontSize: 16),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ),
-                        DataColumn(
-                          label: Expanded(
-                            child: Text(
-                              "Fault",
-                              style: TextStyle(fontSize: 16),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ),
-                      ],
-                      rows: controller.reportsDataList.asMap().entries.map((
-                        entry,
-                      ) {
-                        final int index = entry.key;
-                        final ReportsData reportData = entry.value;
-                        final String timeSlot = (index < _timeList.length)
-                            ? _timeList[index]['time']
-                            : "N/A";
-                        return DataRow(
-
-                          cells: [
-                            DataCell(Center(child: Text(timeSlot))),
-                            DataCell(
-                              Center(child: Text(reportData.vr.toString())),
-                            ),
-                            DataCell(
-                              Center(child: Text(reportData.vy.toString())),
-                            ),
-                            DataCell(
-                              Center(child: Text(reportData.vb.toString())),
-                            ),
-                            DataCell(
-                              Center(child: Text(reportData.ir.toString())),
-                            ),
-                            DataCell(
-                              Center(child: Text(reportData.iy.toString())),
-                            ),
-                            DataCell(
-                              Center(child: Text(reportData.ib.toString())),
-                            ),
-                            DataCell(Center(child: Text(reportData.statusText))),
-                            DataCell(Center(child: Text(reportData.faultText))),
-                          ],
-                        );
-                      }).toList(),
-                    ),
-                  ),
                 );
+
               }),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

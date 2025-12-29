@@ -1,121 +1,35 @@
-import 'dart:async';
-import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:water_pump/controller/controller.dart';
 
-class MapScreen extends StatefulWidget {
-  @override
-  State<MapScreen> createState() => _MapScreenState();
-}
-
-class _MapScreenState extends State<MapScreen> {
-  bool isMapLoading = true;
-  final Completer<GoogleMapController> _mapController = Completer();
-  Uint8List? markerIcon;
-
-  final Set<Marker> _marker = {};
-
+class MapScreen extends StatelessWidget {
   final TaskController controller = Get.find<TaskController>();
+  MapScreen({super.key});
 
-  static const CameraPosition _cameraPosition = CameraPosition(
-    target: LatLng(25.7781, 73.3311),
-    zoom: 2
-  );
-
-  @override
-  void initState() {
-    super.initState();
-
-      loadMap();
-
-  }
-
-  Future<void> loadMarker() async{
-
-    if(controller.isLoading == false && controller.devices.isNotEmpty){
-      try{
-        final Uint8List icon = await getBytesFromAssets("assets/images/pump.png", 50);
-        setState(() {
-          markerIcon = icon;
-          addDeviceMarker();
-        });
-      }catch (e){
-          print("Error loading marker icon : $e");
-      }
-    }
-
-  }
-
-  Future<void> loadMap() async{
-    Future.delayed(Duration(seconds: 1));
-
-    Future<void> delayFuture = Future.delayed(Duration(seconds: 1));
-    Future<void> loadFutureMarker = loadMarker();
-    await Future.wait([delayFuture, loadFutureMarker]);
-
-    setState(() {
-      isMapLoading = false;
-    });
-}
-  //convert image assets to unit8List
-  Future<Uint8List> getBytesFromAssets(String path, int width) async {
-    ByteData data = await rootBundle.load(path);
-    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(),
-      targetHeight: width
-    );
-    ui.FrameInfo fi = await codec.getNextFrame();
-    return(await fi.image.toByteData(format: ui.ImageByteFormat.png))!.buffer.asUint8List();
-  }
-
-  //add marker
-  void addDeviceMarker(){
-    if(markerIcon == null) return;
-    _marker.clear();
-
-    for(var i = 0; i < controller.devices.length; i++){
-      final device = controller.devices[i];
-
-      if(device.lat != null && device.lng != null ){
-        _marker.add(
-          Marker(markerId: MarkerId(device.uuid.toString()),
-          position: LatLng(device.lat, device.lng),
-            icon: BitmapDescriptor.bytes(markerIcon!),
-            infoWindow: InfoWindow(title: device.name, snippet: device.area)
-          )
-        );
-        setState(() {
-
-        });
-      }
-    }
-  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            "Devices Location",
-            style: TextStyle(fontWeight: FontWeight.w500,color: Color(0xff024a06), ),
-          ),
-          backgroundColor: Colors.white,
-          centerTitle: true,
-        ),
-        body:
-        isMapLoading ? Center(child: CircularProgressIndicator(color: Color(0xff024a06),),) :
-    SafeArea(
-      child: GoogleMap(initialCameraPosition: _cameraPosition,
-        mapType: MapType.normal,
-        markers: Set<Marker>.of(_marker),
-        zoomControlsEnabled: false,
+      appBar: AppBar(title: const Text("Connected Devices")),
+      body: Obx(() {
+        // Agar list khali hai to loading ya empty message dikhayein
+        if (controller.connectedList.isEmpty) {
+          return const Center(child: Text("No connected devices found."));
+        }
 
-        onMapCreated: (GoogleMapController controller) {
-        _mapController.complete(controller);
-
-        },
-      ),
-    ));
+        // List ko readable format mein print karne ke liye ListView use karein
+        return ListView.builder(
+          itemCount: controller.connectedList.length,
+          itemBuilder: (context, index) {
+            final device = controller.connectedList[index];
+            return ListTile(
+              leading: const Icon(Icons.router, color: Colors.green),
+              title: Text(device.name), // DevicesData model se name field
+              subtitle: Text("UUID: ${device.uuid}"),
+              trailing: const Icon(Icons.check_circle, color: Colors.green),
+            );
+          },
+        );
+      }),
+    );
   }
 }
