@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:water_pump/controller/schduling_controller.dart';
 import 'package:water_pump/model/devices.dart';
-import 'package:water_pump/presentation/widgets/schedule_slot_card.dart';
+
+import '../widgets/schedule_slot_card.dart';
 
 class SchedulingScreen extends StatefulWidget {
   final DevicesData deviceData;
@@ -39,7 +40,7 @@ class _SchedulingScreenState extends State<SchedulingScreen> {
           child: ListView.builder(
             itemCount: schedulingController.slots.length,
             itemBuilder: (context, index) {
-              return scheduleSlotCard(
+              return ScheduleSlotCard(
                 slotIndex: index,
                 deviceUuid: widget.deviceData.uuid.toString(),
                 schedulingController: schedulingController,

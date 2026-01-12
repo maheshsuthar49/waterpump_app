@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:water_pump/controller/schduling_controller.dart';
 import 'package:water_pump/shared/custome_button.dart';
 
-class scheduleSlotCard extends StatelessWidget {
+class ScheduleSlotCard extends StatelessWidget {
   final int slotIndex;
   final String deviceUuid;
   final SchedulingController schedulingController;
 
-  const scheduleSlotCard({super.key, 
+  const ScheduleSlotCard({super.key,
     required this.slotIndex,
     required this.deviceUuid,
     required this.schedulingController,

@@ -21,6 +21,7 @@ jobs:
       # 3. Flutter setup karna
       - uses: subosito/flutter-action@v2
         with:
+          flutter-version: '3.32.8'
           channel: 'stable'
 
       # 4. Packages install karna
