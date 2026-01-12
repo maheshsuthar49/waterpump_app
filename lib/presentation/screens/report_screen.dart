@@ -223,14 +223,14 @@ class _ReportScreenState extends State<ReportScreen> {
 
         await file.create(recursive: true);
         await file.writeAsBytes(fileBytes);
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Report Download Successful",style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),backgroundColor: Colors.white,));
+        //ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Report Download Successful",style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),backgroundColor: Colors.white,));
 
         await OpenFilex.open(filePath);
       } else {
         throw Exception("Failed to encode excel file");
       }
     } catch (e) {
-      print("Error during export: $e");
+      //print("Error during export: $e");
     }
   }
 

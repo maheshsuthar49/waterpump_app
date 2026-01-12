@@ -36,7 +36,7 @@ class SchedulingController extends GetxController {
   //fetch schedule initial
   void fetchSchedule (String uuid){
     isLoading.value = true;
-    mqttController.get_time(uuid);
+    mqttController.getTime(uuid);
   }
 
   //Process data receive fromm mqtt
@@ -62,7 +62,7 @@ void processScheduleData(List<dynamic> scheduleValues){
         }
       }
     }catch(e){
-      print("Error to processing data:$e");
+      //print("Error to processing data:$e");
     }finally{
       isLoading.value = false;
     }
@@ -74,10 +74,10 @@ void processScheduleData(List<dynamic> scheduleValues){
     final fromTime = fromTimeController[slotIndex].text;
     final toTime = toTimeController[slotIndex].text;
 
-    final fromMinutes = _HHmmToMinutes(fromTime);
-    final toMinutes = _HHmmToMinutes(toTime);
+    final fromMinutes = _hhmmToMinutes(fromTime);
+    final toMinutes = _hhmmToMinutes(toTime);
 
-    mqttController.set_Time(uuid: uuid, slotIndex: slotIndex, isEnable: slot.isEnable.value, fromMinutes: fromMinutes, toMinutes: toMinutes);
+    mqttController.setTime(uuid: uuid, slotIndex: slotIndex, isEnable: slot.isEnable.value, fromMinutes: fromMinutes, toMinutes: toMinutes);
 
     await Future.delayed(Duration(seconds: 1));
     fetchSchedule(uuid);
@@ -94,7 +94,7 @@ String _minutesToHHmm(int minutes){
 }
 
 ///Helper font convert HH:mm into total minutes
-int _HHmmToMinutes(String time){
+int _hhmmToMinutes(String time){
     try{
       final parts = time.split(':');
       if(parts.length != 2) return 0;

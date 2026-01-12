@@ -11,7 +11,7 @@ class ConfigController extends GetxController {
   var lpt = ''.obs;
   var time = ''.obs;
   void fetchConfig(String uuid) {
-    mqttController.get_config(uuid);
+    mqttController.getConfig(uuid);
   }
 
   void updateConfig(Map<String, dynamic> jsonData) {

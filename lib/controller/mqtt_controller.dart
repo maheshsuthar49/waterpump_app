@@ -4,8 +4,8 @@ import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
-import 'package:water_pump/controller/Schduling_controller.dart';
-import 'package:water_pump/controller/configController.dart';
+import 'package:water_pump/controller/schduling_controller.dart';
+import 'package:water_pump/controller/config_controller.dart';
 import 'package:water_pump/controller/controller.dart';
 
 import 'analoglimit_controller.dart';
@@ -67,9 +67,9 @@ class MqttController extends GetxController {
       final fullTopic = '$maintopic/$topic/$uuid/data';
       try {
         client.subscribe(fullTopic, MqttQos.atLeastOnce);
-       // print("Subscribed to $fullTopic");
+        // print("Subscribed to $fullTopic");
       } catch (e) {
-       // print("Subscribed data error: $e");
+        // print("Subscribed data error: $e");
       }
     } else {
       //print('Mqtt not connected, cannot Subscribed');
@@ -78,16 +78,16 @@ class MqttController extends GetxController {
       final fullTopic = '$maintopic/$topic/$uuid/config';
       try {
         client.subscribe(fullTopic, MqttQos.atLeastOnce);
-       // print("Subscribed to $fullTopic");
+        // print("Subscribed to $fullTopic");
       } catch (e) {
-       // print("Subscribed data error: $e");
+        // print("Subscribed data error: $e");
       }
     } else {
       //print('Mqtt not connected, cannot Subscribed');
     }
   }
 
-  void get_time(String uuid) {
+  void getTime(String uuid) {
     if (isConnected.value) {
       final fullTopic = '$maintopic/$topic/$uuid';
       final Map<String, dynamic> command = {
@@ -100,14 +100,14 @@ class MqttController extends GetxController {
       builder.addString(payload);
       try {
         client.publishMessage(fullTopic, MqttQos.atLeastOnce, builder.payload!);
-       // print("Published command to $fullTopic : $payload");
+        // print("Published command to $fullTopic : $payload");
       } catch (e) {
         //print("Published is Failed: $e");
       }
     }
   }
 
-  void set_Time({
+  void setTime({
     required String uuid,
     required int slotIndex,
     required bool isEnable,
@@ -131,7 +131,7 @@ class MqttController extends GetxController {
         client.publishMessage(fullTopic, MqttQos.atLeastOnce, builder.payload!);
         //print("Published Command to $fullTopic : $payload");
       } catch (e) {
-       // print("Published is Failed: $e");
+        // print("Published is Failed: $e");
       }
     }
   }
@@ -150,17 +150,17 @@ class MqttController extends GetxController {
       builder.addString(payload);
       try {
         client.publishMessage(fullTopic, MqttQos.atLeastOnce, builder.payload!);
-       // print("Published command to $fullTopic : $payload");
+        // print("Published command to $fullTopic : $payload");
       } catch (e) {
-       // print("Published failed : $e");
+        // print("Published failed : $e");
       }
     } else {
-    //  print("Mqtt not Connected , Cannot published Command");
+      //  print("Mqtt not Connected , Cannot published Command");
     }
   }
 
   ///Device Config
-  void get_config(String uuid) {
+  void getConfig(String uuid) {
     if (isConnected.value) {
       final fullTopic = '$maintopic/$topic/$uuid';
       final Map<String, dynamic> command = {
@@ -175,7 +175,7 @@ class MqttController extends GetxController {
         client.publishMessage(fullTopic, MqttQos.atLeastOnce, builder.payload!);
         //print("Published command to $fullTopic : $payload");
       } catch (e) {
-       // print("Published is Failed: $e");
+        // print("Published is Failed: $e");
       }
     }
   }
@@ -194,12 +194,12 @@ class MqttController extends GetxController {
       builder.addString(payload);
       try {
         client.publishMessage(fullTopic, MqttQos.atLeastOnce, builder.payload!);
-       // print("Published config command to $fullTopic : $payload");
+        // print("Published config command to $fullTopic : $payload");
       } catch (e) {
-       // print("Config published failed: $e");
+        // print("Config published failed: $e");
       }
     } else {
-     // print("Mqtt not connected, cannot send config command");
+      // print("Mqtt not connected, cannot send config command");
     }
   }
 
@@ -218,12 +218,12 @@ class MqttController extends GetxController {
     if (isConnected.value) {
       try {
         client.publishMessage(fullTopic, MqttQos.atLeastOnce, builder.payload!);
-       // print("Published config command to $fullTopic : $payload");
+        // print("Published config command to $fullTopic : $payload");
       } catch (e) {
-        print("Config published failed: $e");
+        //print("Config published failed: $e");
       }
     } else {
-     // print("Mqtt not connected, cannot send config command");
+      // print("Mqtt not connected, cannot send config command");
     }
   }
 
@@ -241,12 +241,12 @@ class MqttController extends GetxController {
     if (isConnected.value) {
       try {
         client.publishMessage(fullTopic, MqttQos.atLeastOnce, builder.payload!);
-       // print("Publish Config command to $fullTopic : $payload");
+        // print("Publish Config command to $fullTopic : $payload");
       } catch (e) {
-      //  print("Config published failed: $e ");
+        //  print("Config published failed: $e ");
       }
     } else {
-     // print("Mqtt is not connected, cannot send config command");
+      // print("Mqtt is not connected, cannot send config command");
     }
   }
 
@@ -259,14 +259,14 @@ class MqttController extends GetxController {
   }
 
   void onConnected() {
-    print("Connected to Mqtt broker!");
+   // print("Connected to Mqtt broker!");
     isConnected.value = true;
     client.updates!.listen((List<MqttReceivedMessage<MqttMessage>> c) {
       final MqttPublishMessage recMess = c[0].payload as MqttPublishMessage;
       final String message = MqttPublishPayload.bytesToStringAsString(
         recMess.payload.message,
       );
-      print("Message String = $message");
+     // print("Message String = $message");
       try {
         final jsonData = jsonDecode(message);
         if (jsonData["type"] == 'data') {
@@ -323,21 +323,21 @@ class MqttController extends GetxController {
           }
         }
       } catch (e) {
-       // print("Mqtt message parse error: $e");
+        // print("Mqtt message parse error: $e");
       }
     });
   }
 
   void onDisconnected() {
-   // print("Disconnected form Mqtt Broker!");
+    // print("Disconnected form Mqtt Broker!");
     isConnected.value = false;
   }
 
   void onSubscribed(String fulltopic) {
-  //  print("Subscribed to topic: $fulltopic");
+    //  print("Subscribed to topic: $fulltopic");
   }
 
   void pong() {
-   // print('Ping response received');
+    // print('Ping response received');
   }
 }

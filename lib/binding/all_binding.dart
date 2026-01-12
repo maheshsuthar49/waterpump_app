@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
-import 'package:water_pump/controller/Schduling_controller.dart';
+import 'package:water_pump/controller/schduling_controller.dart';
 import 'package:water_pump/controller/analoglimit_controller.dart';
-import 'package:water_pump/controller/configController.dart';
+import 'package:water_pump/controller/config_controller.dart';
 import 'package:water_pump/controller/controller.dart';
 import 'package:water_pump/controller/mqtt_controller.dart';
 

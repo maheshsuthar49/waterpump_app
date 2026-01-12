@@ -38,7 +38,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       final isEnabled = await controller.isBatteryOptimizationOn();
       if (isEnabled) {
-        showBatteryOptimizationDialog(context);
+        showBatteryOptimizationDialog();
       }
     });
   }
@@ -437,7 +437,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  void showBatteryOptimizationDialog(BuildContext context) {
+  void showBatteryOptimizationDialog() {
     showDialog(
       barrierDismissible: false,
       context: context,

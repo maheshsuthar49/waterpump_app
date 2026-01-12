@@ -6,8 +6,8 @@ import 'package:water_pump/presentation/screens/dashboard_screen.dart';
 
 class SignInScreen extends StatelessWidget {
   final controller =  Get.find<TaskController>();
-  TextEditingController usernameController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   SignInScreen({super.key});
   @override

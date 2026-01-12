@@ -204,8 +204,8 @@ class _OngoingCallScreenState extends State<OngoingCallScreen>  with SingleTicke
           height: size,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: Colors.green.withOpacity(
-              1.0 - _animationController.value,
+            color: Colors.green.withValues(
+              alpha: 1.0 - _animationController.value,
             ),
           ),
         ),

@@ -7,7 +7,7 @@ import 'package:flutter_callkit_incoming/flutter_callkit_incoming.dart';
 import 'package:get/get.dart';
 import 'package:uuid/uuid.dart';
 import '../controller/controller.dart';
-import '../presentation/screens/ongoing_call_Screen.dart';
+import '../presentation/screens/ongoing_call_screen.dart';
 import '../presentation/widgets/bottomnav_screen.dart';
 
 class CallingService{
