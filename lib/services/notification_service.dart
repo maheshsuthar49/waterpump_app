@@ -38,7 +38,7 @@ class NotificationService {
     }
   }
 
-  void initialNotification(BuildContext context, RemoteMessage message) async {
+  void initialNotification(RemoteMessage message) async {
     var androidInitialization = AndroidInitializationSettings(
       '@mipmap/ic_launcher',
     );
@@ -64,7 +64,7 @@ class NotificationService {
       //print(message.data["id"]);
 
       if (Platform.isAndroid) {
-        initialNotification(context, message);
+        initialNotification(message);
         showNotification(message);
         CallingService().showCallKitIncoming(message.data['uuid'], message);
       } else {
