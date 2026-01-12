@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-Widget CustomTextFormField({
+Widget customTextFormField({
   required TextEditingController? controller,
   required TextInputType? keyboardType,
   ValueChanged<String>? submit,

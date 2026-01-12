@@ -11,12 +11,13 @@ class Device {
   }
 
   Map<String, dynamic> toJson() {
-    final data = <String, dynamic>{};
-    data['success'] = success;
-    data['msg'] = msg;
-    data['data'] = data.map((e) => e.toJson()).toList();
-    return data;
+    final Map<String, dynamic> json = {};
+    json['success'] = success;
+    json['msg'] = msg;
+    json['data'] = data.map((e) => e.toJson()).toList();
+    return json;
   }
+
 }
 
 class DevicesData {

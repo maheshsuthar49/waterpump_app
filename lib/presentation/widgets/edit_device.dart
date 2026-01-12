@@ -50,7 +50,7 @@ class EditDevice extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    CustomTextFormField(
+                    customTextFormField(
                       controller: DeviceNameController,
                       keyboardType: TextInputType.text,
                       prefixIcon: Icons.devices,
@@ -63,7 +63,7 @@ class EditDevice extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    CustomTextFormField(
+                    customTextFormField(
                       controller: DeviceLocController,
                       keyboardType: TextInputType.text,
                       prefixIcon: Icons.location_on,
@@ -76,7 +76,7 @@ class EditDevice extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    CustomTextFormField(
+                    customTextFormField(
                       controller: DeviceFlowController,
                       keyboardType: TextInputType.number,
                       prefixIcon: Icons.water_drop,
