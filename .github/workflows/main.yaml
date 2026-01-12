@@ -25,6 +25,8 @@ jobs:
           channel: 'stable'
 
       # 4. Packages install karna
+      - run: flutter config --no-analytics
+      - run: flutter config --no-cli-animations
       - run: flutter pub get
 
       # 5. APK Build karna (Debug version jaldi banta hai aur testing ke liye sahi hai)
