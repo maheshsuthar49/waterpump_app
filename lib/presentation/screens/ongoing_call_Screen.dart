@@ -4,11 +4,10 @@ import 'package:flutter_callkit_incoming/flutter_callkit_incoming.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get/get.dart';
 import 'package:water_pump/controller/controller.dart';
-import 'package:water_pump/services/notification_service.dart';
 
 class OngoingCallScreen extends StatefulWidget {
   final Map<dynamic, dynamic> data;
-  OngoingCallScreen({super.key, required this.data});
+  const OngoingCallScreen({super.key, required this.data});
 
   @override
   State<OngoingCallScreen> createState() => _OngoingCallScreenState();
@@ -21,7 +20,7 @@ class _OngoingCallScreenState extends State<OngoingCallScreen>  with SingleTicke
   Timer? _timer;
   Timer? _speakTimer;
   bool _callActive = true;
-  bool _isLoadingData = false;
+  final bool _isLoadingData = false;
 
   final FlutterTts _flutterTts = FlutterTts();
   String faultMag = '';

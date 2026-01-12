@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:water_pump/shared/custom_theme.dart';
 
@@ -14,7 +13,7 @@ class CustomButton extends StatelessWidget{
   final bool isOutlined;
 
   const CustomButton({
-   Key? key,
+   super.key,
    required this.text,
     required this.onPressed,
     this.color,
@@ -24,7 +23,7 @@ class CustomButton extends StatelessWidget{
     this.icon,
     this.isOutlined = false,
     this.textColor
-}): super(key: key);
+});
   @override
   Widget build(BuildContext context) {
     final btnColor = color ??AppColors.primaryGreen;

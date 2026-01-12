@@ -6,7 +6,7 @@ import 'package:water_pump/presentation/widgets/scheduleSlot_card.dart';
 
 class SchedulingScreen extends StatefulWidget {
   final DevicesData deviceData;
-  SchedulingScreen({required this.deviceData});
+  const SchedulingScreen({super.key, required this.deviceData});
 
   @override
   State<SchedulingScreen> createState() => _SchedulingScreenState();

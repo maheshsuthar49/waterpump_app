@@ -7,7 +7,7 @@ class scheduleSlotCard extends StatelessWidget {
   final String deviceUuid;
   final SchedulingController schedulingController;
 
-  scheduleSlotCard({
+  const scheduleSlotCard({super.key, 
     required this.slotIndex,
     required this.deviceUuid,
     required this.schedulingController,

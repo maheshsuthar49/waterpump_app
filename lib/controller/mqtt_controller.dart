@@ -118,7 +118,6 @@ class MqttController extends GetxController {
       final fullTopic = '$maintopic/$topic/$uuid';
       final valuePayload =
           "${slotIndex.toString().padLeft(2, '0')},${isEnable ? 1 : 0},${fromMinutes.toString().padLeft(4, "0")},${toMinutes.toString().padLeft(4, "0")}";
-      ;
       final Map<String, dynamic> command = {
         "type": "config",
         "id": 1,

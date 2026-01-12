@@ -5,11 +5,10 @@ import 'package:water_pump/model/devices.dart';
 import 'package:water_pump/presentation/widgets/gauge2_widget.dart';
 import 'package:water_pump/presentation/widgets/gauge_widget.dart';
 
-import 'bottomnav_screen.dart';
 
 class DeviceCard extends StatelessWidget {
   final DevicesData deviceData;
-  const DeviceCard({required this.deviceData, Key? key}) : super(key: key);
+  const DeviceCard({required this.deviceData, super.key});
   @override
   Widget build(BuildContext context) {
     bool isConnected = deviceData.isConnected;

@@ -4,19 +4,12 @@ import 'package:app_settings/app_settings.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_callkit_incoming/entities/android_params.dart';
-import 'package:flutter_callkit_incoming/entities/call_kit_params.dart';
-import 'package:flutter_callkit_incoming/entities/entities.dart';
-import 'package:flutter_callkit_incoming/flutter_callkit_incoming.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:water_pump/controller/controller.dart';
-import 'package:uuid/uuid.dart';
 import 'package:water_pump/presentation/widgets/bottomnav_screen.dart';
 import 'package:water_pump/services/calling_service.dart';
 
-import '../presentation/screens/ongoing_call_Screen.dart';
 
 class NotificationService {
   FirebaseMessaging messaging = FirebaseMessaging.instance;

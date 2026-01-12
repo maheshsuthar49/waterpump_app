@@ -8,6 +8,8 @@ class SignInScreen extends StatelessWidget {
   final controller =  Get.find<TaskController>();
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+
+  SignInScreen({super.key});
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
@@ -21,7 +23,7 @@ class SignInScreen extends StatelessWidget {
           children: [
             Column(
               children: [
-                Container(
+                SizedBox(
                   height: screenHeight * 0.5,
                   width: double.infinity,
                   child: Image.asset("assets/images/sigin.jpg",fit: BoxFit.cover,)

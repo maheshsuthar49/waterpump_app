@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 class GaugeTwoWidget extends StatelessWidget {
-  GaugeTwoWidget({required this.value1, required this.label2, this.height, this.width });
+  const GaugeTwoWidget({super.key, required this.value1, required this.label2, this.height, this.width });
   final double value1;
   final String label2;
   final double? height;
@@ -12,7 +12,7 @@ class GaugeTwoWidget extends StatelessWidget {
     Color pointerColor = value1 > 320 ? Colors.red : Colors.blue;
     return Column(
       children: [
-        Container(
+        SizedBox(
           height:height ,
           width: width ,
           child: SfRadialGauge(

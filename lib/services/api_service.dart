@@ -1,9 +1,6 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:water_pump/controller/controller.dart';
 import 'package:water_pump/model/devices.dart';
 
 class ApiService {

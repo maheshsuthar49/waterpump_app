@@ -14,7 +14,7 @@ class BottomNavScreen extends StatelessWidget{
  final controller =  Get.find<TaskController>();
   final pageController = PageController();
   final DevicesData selectedDevice;
-  BottomNavScreen({required this.selectedDevice});
+  BottomNavScreen({super.key, required this.selectedDevice});
   final List<String> titles = [
     "Device Detail",
     "Schedule",

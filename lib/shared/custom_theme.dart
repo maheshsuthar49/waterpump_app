@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class AppColors{
 
@@ -18,7 +17,6 @@ class CustomAppTheme{
       colorScheme: ColorScheme.light(
         primary: AppColors.primaryGreen,
         secondary: AppColors.accentColor,
-        background: AppColors.lightBackground,
         surface: AppColors.cardBackground,
         error: AppColors.errorColor
       ),

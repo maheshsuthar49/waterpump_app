@@ -8,6 +8,8 @@ import 'package:water_pump/presentation/widgets/wave_clipper.dart';
 class WelcomeScreen extends StatelessWidget {
   final controller = Get.find<TaskController>();
 
+   WelcomeScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;

@@ -9,7 +9,7 @@ import 'package:water_pump/model/devices.dart';
 
 class DeviceConfig extends StatefulWidget {
   final DevicesData devicesData;
-  DeviceConfig({required this.devicesData});
+  const DeviceConfig({super.key, required this.devicesData});
 
   @override
   State<DeviceConfig> createState() => _DeviceConfigState();
@@ -185,7 +185,7 @@ class _DeviceConfigState extends State<DeviceConfig> {
                   ),
                   if(isUpdating)
                     Positioned.fill(child: Center(
-                      child: Container(
+                      child: SizedBox(
                         width: 30,height: 30,
                         child: CircularProgressIndicator(color: Color(0xff024a06),),
                       ),

@@ -48,7 +48,7 @@ class ReportsData {
   }
 
   String get faultText{
-    if(fault == null || fault.isEmpty){
+    if(fault.isEmpty){
       return "No Fault";
     }
     return fault.replaceAll("_", " ");

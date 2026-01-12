@@ -11,7 +11,7 @@ class DeviceDetail extends StatelessWidget {
   final controller = Get.find<TaskController>();
   final mqttController = Get.find<MqttController>();
   final DevicesData deviceData;
-  DeviceDetail({required this.deviceData,});
+  DeviceDetail({super.key, required this.deviceData,});
   @override
   Widget build(BuildContext context) {
     controller.updatePowerOnOff(deviceData);
@@ -82,7 +82,7 @@ class DeviceDetail extends StatelessWidget {
                                 const SizedBox(width: 10,),
                                 Expanded(
                                   child: Text(
-                                    "$faultMsg",
+                                    faultMsg,
                                     style: TextStyle(
                                       fontSize: 16,
                                     ),

@@ -13,6 +13,8 @@ import 'package:water_pump/shared/custom_theme.dart';
 import '../widgets/bottomnav_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
+  const DashboardScreen({super.key});
+
   @override
   State<DashboardScreen> createState() => _DashboardScreenState();
 }

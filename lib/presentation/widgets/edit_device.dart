@@ -11,7 +11,7 @@ class EditDevice extends StatelessWidget {
   TextEditingController DeviceFlowController = TextEditingController();
   final controller = Get.find<TaskController>();
   final DevicesData devicesData;
-  EditDevice({required this.devicesData});
+  EditDevice({super.key, required this.devicesData});
   @override
   Widget build(BuildContext context) {
     DeviceNameController.text = devicesData.name;

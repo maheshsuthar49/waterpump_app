@@ -39,18 +39,16 @@ class _FlutterMapsState extends State<FMaps> {
       return markers;
     }
     for(var device in controller.devices){
-      if(device.lat != null && device.lng != null){
-        markers.add(
-         Marker(point: LatLng(device.lat, device.lng), width: 50, height: 50, child: GestureDetector(
-             onTap: () {
-               ScaffoldMessenger.of(context).showSnackBar(
-                 SnackBar(content: Text("${device.name}, ${device.area}",style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),),backgroundColor: Colors.white, duration: Duration(seconds: 3),)
-               );
-             },
-             child: Image.asset("assets/images/pump.png",fit: BoxFit.contain,)))
-        );
-      }
-    }
+      markers.add(
+       Marker(point: LatLng(device.lat, device.lng), width: 50, height: 50, child: GestureDetector(
+           onTap: () {
+             ScaffoldMessenger.of(context).showSnackBar(
+               SnackBar(content: Text("${device.name}, ${device.area}",style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),),backgroundColor: Colors.white, duration: Duration(seconds: 3),)
+             );
+           },
+           child: Image.asset("assets/images/pump.png",fit: BoxFit.contain,)))
+      );
+        }
     return markers;
   }
   @override

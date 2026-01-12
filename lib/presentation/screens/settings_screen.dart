@@ -6,7 +6,7 @@ import 'package:water_pump/presentation/widgets/edit_device.dart';
 
 class SettingsScreen extends StatefulWidget {
   final DevicesData deviceData;
-  SettingsScreen({required this.deviceData});
+  const SettingsScreen({super.key, required this.deviceData});
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
 }

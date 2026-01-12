@@ -9,7 +9,7 @@ import '../../model/devices.dart';
 
 class AnalogLimits extends StatefulWidget {
   final DevicesData devicesData;
-  AnalogLimits({required this.devicesData});
+  const AnalogLimits({super.key, required this.devicesData});
   @override
   State<AnalogLimits> createState() => _AnalogLimitsState();
 }

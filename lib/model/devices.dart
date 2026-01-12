@@ -11,11 +11,11 @@ class Device {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['success'] = success;
-    _data['msg'] = msg;
-    _data['data'] = data.map((e) => e.toJson()).toList();
-    return _data;
+    final data = <String, dynamic>{};
+    data['success'] = success;
+    data['msg'] = msg;
+    data['data'] = data.map((e) => e.toJson()).toList();
+    return data;
   }
 }
 
@@ -83,23 +83,23 @@ class DevicesData {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['id'] = id;
-    _data['uuid'] = uuid;
-    _data['alert_mode'] = alertMode;
-    _data['mobile'] = mobile;
-    _data['exp_date'] = expDate;
-    _data['registered_date'] = registeredDate;
-    _data['version'] = version;
-    _data['model'] = model;
-    _data['lat'] = lat;
-    _data['lng'] = lng;
-    _data['user_id'] = userId;
-    _data['name'] = name;
-    _data['area'] = area;
-    _data['flow_multiplier'] = flowMultiplier;
-    _data['underload_limit'] = underloadLimit;
-    _data['isConnected'] = isConnected; //temprory
-    return _data;
+    final data = <String, dynamic>{};
+    data['id'] = id;
+    data['uuid'] = uuid;
+    data['alert_mode'] = alertMode;
+    data['mobile'] = mobile;
+    data['exp_date'] = expDate;
+    data['registered_date'] = registeredDate;
+    data['version'] = version;
+    data['model'] = model;
+    data['lat'] = lat;
+    data['lng'] = lng;
+    data['user_id'] = userId;
+    data['name'] = name;
+    data['area'] = area;
+    data['flow_multiplier'] = flowMultiplier;
+    data['underload_limit'] = underloadLimit;
+    data['isConnected'] = isConnected; //temprory
+    return data;
   }
 }

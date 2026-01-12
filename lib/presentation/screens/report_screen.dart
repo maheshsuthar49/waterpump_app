@@ -14,7 +14,7 @@ import 'package:water_pump/shared/custome_button.dart';
 
 class ReportScreen extends StatefulWidget {
   final DevicesData deviceData;
-  ReportScreen({required this.deviceData});
+  const ReportScreen({super.key, required this.deviceData});
 
   @override
   State<ReportScreen> createState() => _ReportScreenState();
@@ -222,7 +222,7 @@ class _ReportScreenState extends State<ReportScreen> {
         final file = File(filePath);
 
         await file.create(recursive: true);
-        await file.writeAsBytes(fileBytes!);
+        await file.writeAsBytes(fileBytes);
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Report Download Successful",style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),backgroundColor: Colors.white,));
 
         await OpenFilex.open(filePath);
@@ -267,6 +267,7 @@ class _ReportScreenState extends State<ReportScreen> {
                         if (value!.isEmpty) {
                           return "Please select date";
                         }
+                        return null;
                       },
                       readOnly: true,
                       onTap: () {

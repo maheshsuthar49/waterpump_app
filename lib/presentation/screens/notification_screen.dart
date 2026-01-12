@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:water_pump/controller/controller.dart';
-import 'package:water_pump/model/devices.dart';
 class NotificationScreen extends StatelessWidget {
    NotificationScreen({super.key});
   final TaskController controller = Get.find<TaskController>();

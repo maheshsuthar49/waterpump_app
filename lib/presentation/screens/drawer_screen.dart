@@ -6,6 +6,8 @@ import 'package:water_pump/presentation/screens/signin_screen.dart';
 class DrawerScreen extends StatelessWidget{
   final controller = Get.find<TaskController>();
 
+  const DrawerScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return ListView(

@@ -16,7 +16,7 @@ class AnalogLimitCard extends StatefulWidget{
   final bool isCardUpdate;
 
   const AnalogLimitCard({
-    Key? key,
+    super.key,
     this.title,
     this.icon,
     this.titleColor,
@@ -30,7 +30,7 @@ class AnalogLimitCard extends StatefulWidget{
     required this.maxController,
     required this.multiController,
     required this.isCardUpdate
-}) : super(key: key);
+});
 
   @override
   State<AnalogLimitCard> createState() => _AnalogLimitCardState();
@@ -77,17 +77,17 @@ class _AnalogLimitCardState extends State<AnalogLimitCard> {
                           widget.onSwitchChanged!(value);
                         }
                       },
-                      thumbColor: MaterialStateProperty.resolveWith<Color?>(
+                      thumbColor: WidgetStateProperty.resolveWith<Color?>(
                             (states) {
-                          if (states.contains(MaterialState.selected)) {
+                          if (states.contains(WidgetState.selected)) {
                             return const Color(0xff024a06);
                           }
                           return Colors.grey.shade400;
                         },
                       ),
-                      trackColor: MaterialStateProperty.resolveWith<Color?>(
+                      trackColor: WidgetStateProperty.resolveWith<Color?>(
                             (states) {
-                          if (states.contains(MaterialState.selected)) {
+                          if (states.contains(WidgetState.selected)) {
                             return const Color(0xff024a06).withOpacity(0.4);
                           }
                           return Colors.grey.shade300;
