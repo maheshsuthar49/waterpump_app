@@ -54,10 +54,10 @@ class MqttController extends GetxController {
     client.connectionMessage = connMessage;
 
     try {
-      print("Connecting to $broker...");
+      //print("Connecting to $broker...");
       await client.connect();
     } catch (e) {
-      print('Mqtt Connection failed: $e');
+      //print('Mqtt Connection failed: $e');
       client.disconnect();
     }
   }
@@ -67,23 +67,23 @@ class MqttController extends GetxController {
       final fullTopic = '$maintopic/$topic/$uuid/data';
       try {
         client.subscribe(fullTopic, MqttQos.atLeastOnce);
-        print("Subscribed to $fullTopic");
+       // print("Subscribed to $fullTopic");
       } catch (e) {
-        print("Subscribed data error: $e");
+       // print("Subscribed data error: $e");
       }
     } else {
-      print('Mqtt not connected, cannot Subscribed');
+      //print('Mqtt not connected, cannot Subscribed');
     }
     if (isConnected.value) {
       final fullTopic = '$maintopic/$topic/$uuid/config';
       try {
         client.subscribe(fullTopic, MqttQos.atLeastOnce);
-        print("Subscribed to $fullTopic");
+       // print("Subscribed to $fullTopic");
       } catch (e) {
-        print("Subscribed data error: $e");
+       // print("Subscribed data error: $e");
       }
     } else {
-      print('Mqtt not connected, cannot Subscribed');
+      //print('Mqtt not connected, cannot Subscribed');
     }
   }
 
@@ -100,9 +100,9 @@ class MqttController extends GetxController {
       builder.addString(payload);
       try {
         client.publishMessage(fullTopic, MqttQos.atLeastOnce, builder.payload!);
-        print("Published command to $fullTopic : $payload");
+       // print("Published command to $fullTopic : $payload");
       } catch (e) {
-        print("Published is Failed: $e");
+        //print("Published is Failed: $e");
       }
     }
   }
@@ -130,9 +130,9 @@ class MqttController extends GetxController {
       builder.addString(payload);
       try {
         client.publishMessage(fullTopic, MqttQos.atLeastOnce, builder.payload!);
-        print("Published Command to $fullTopic : $payload");
+        //print("Published Command to $fullTopic : $payload");
       } catch (e) {
-        print("Published is Failed: $e");
+       // print("Published is Failed: $e");
       }
     }
   }
@@ -151,12 +151,12 @@ class MqttController extends GetxController {
       builder.addString(payload);
       try {
         client.publishMessage(fullTopic, MqttQos.atLeastOnce, builder.payload!);
-        print("Published command to $fullTopic : $payload");
+       // print("Published command to $fullTopic : $payload");
       } catch (e) {
-        print("Published failed : $e");
+       // print("Published failed : $e");
       }
     } else {
-      print("Mqtt not Connected , Cannot published Command");
+    //  print("Mqtt not Connected , Cannot published Command");
     }
   }
 
@@ -174,9 +174,9 @@ class MqttController extends GetxController {
       builder.addString(payload);
       try {
         client.publishMessage(fullTopic, MqttQos.atLeastOnce, builder.payload!);
-        print("Published command to $fullTopic : $payload");
+        //print("Published command to $fullTopic : $payload");
       } catch (e) {
-        print("Published is Failed: $e");
+       // print("Published is Failed: $e");
       }
     }
   }
@@ -195,12 +195,12 @@ class MqttController extends GetxController {
       builder.addString(payload);
       try {
         client.publishMessage(fullTopic, MqttQos.atLeastOnce, builder.payload!);
-        print("Published config command to $fullTopic : $payload");
+       // print("Published config command to $fullTopic : $payload");
       } catch (e) {
-        print("Config published failed: $e");
+       // print("Config published failed: $e");
       }
     } else {
-      print("Mqtt not connected, cannot send config command");
+     // print("Mqtt not connected, cannot send config command");
     }
   }
 
@@ -219,12 +219,12 @@ class MqttController extends GetxController {
     if (isConnected.value) {
       try {
         client.publishMessage(fullTopic, MqttQos.atLeastOnce, builder.payload!);
-        print("Published config command to $fullTopic : $payload");
+       // print("Published config command to $fullTopic : $payload");
       } catch (e) {
         print("Config published failed: $e");
       }
     } else {
-      print("Mqtt not connected, cannot send config command");
+     // print("Mqtt not connected, cannot send config command");
     }
   }
 
@@ -242,12 +242,12 @@ class MqttController extends GetxController {
     if (isConnected.value) {
       try {
         client.publishMessage(fullTopic, MqttQos.atLeastOnce, builder.payload!);
-        print("Publish Config command to $fullTopic : $payload");
+       // print("Publish Config command to $fullTopic : $payload");
       } catch (e) {
-        print("Config published failed: $e ");
+      //  print("Config published failed: $e ");
       }
     } else {
-      print("Mqtt is not connected, cannot send config command");
+     // print("Mqtt is not connected, cannot send config command");
     }
   }
 
@@ -324,21 +324,21 @@ class MqttController extends GetxController {
           }
         }
       } catch (e) {
-        print("Mqtt message parse error: $e");
+       // print("Mqtt message parse error: $e");
       }
     });
   }
 
   void onDisconnected() {
-    print("Disconnected form Mqtt Broker!");
+   // print("Disconnected form Mqtt Broker!");
     isConnected.value = false;
   }
 
   void onSubscribed(String fulltopic) {
-    print("Subscribed to topic: $fulltopic");
+  //  print("Subscribed to topic: $fulltopic");
   }
 
   void pong() {
-    print('Ping response received');
+   // print('Ping response received');
   }
 }

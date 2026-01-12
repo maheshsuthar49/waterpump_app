@@ -35,13 +35,13 @@ class NotificationService {
       sound: true,
     );
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-      print("User granted Permission ");
+      //print("User granted Permission ");
     } else if (settings.authorizationStatus ==
         AuthorizationStatus.provisional) {
-      print("User granted provisional permission");
+      //print("User granted provisional permission");
     } else {
       AppSettings.openAppSettings();
-      print("User permission denied");
+     // print("User permission denied");
     }
   }
 
@@ -64,11 +64,11 @@ class NotificationService {
 
   void firebaseInit(BuildContext context) {
     FirebaseMessaging.onMessage.listen((message) {
-      print(message.notification!.title.toString());
-      print(message.notification!.body.toString());
-      print(message.data.toString());
-      print(message.data["type"]);
-      print(message.data["id"]);
+      //print(message.notification!.title.toString());
+      //print(message.notification!.body.toString());
+      //print(message.data.toString());
+      //print(message.data["type"]);
+      //print(message.data["id"]);
 
       if (Platform.isAndroid) {
         initialNotification(context, message);
@@ -159,7 +159,7 @@ class NotificationService {
       if (token != null) {
         await controller.fetchDeviceAll(token);
       } else {
-        debugPrint("token not found");
+        //debugPrint("token not found");
       }
     }
     try {
@@ -170,7 +170,7 @@ class NotificationService {
 
       Get.to(() => BottomNavScreen(selectedDevice: device));
     } catch (e) {
-      debugPrint("Device not found:= $e");
+      //debugPrint("Device not found:= $e");
     }
   }
 

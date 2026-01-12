@@ -19,14 +19,14 @@ class ApiService {
       if (response.statusCode == 200) {
         final data = jsonDecode(response.data);
         String token = data['token'];
-        print(data);
+        //print(data);
 
         return token;
       } else {
-        print("Login failed : ${response.data}");
+        //print("Login failed : ${response.data}");
       }
     } catch (e) {
-      print("login error: $e");
+      //print("login error: $e");
     }
 
     return null;
@@ -42,15 +42,15 @@ class ApiService {
       );
       
       if (response.statusCode == 200) {
-        print("Get Devices Success: ${response.data}");
+       // print("Get Devices Success: ${response.data}");
         final jsonData = response.data is String
         ? jsonDecode(response.data) : response.data;
         return Device.fromJson(jsonData);
       } else {
-        print("Get Devices failed :${response.data}");
+       // print("Get Devices failed :${response.data}");
       }
     }catch (e){
-      print("Get devices error: $e");
+      //print("Get devices error: $e");
     }
     return null;
   }
@@ -69,7 +69,7 @@ Future<List<Map<String, dynamic>>?> getReport ({required String token, required 
       );
 
       if(response.statusCode == 200){
-        print("Report get from: ${response.data}");
+       // print("Report get from: ${response.data}");
         final responseData =  response.data is String
         ? jsonDecode(response.data) : response.data;
         if(responseData['success'] == true && responseData['data'] != null){
@@ -77,10 +77,10 @@ Future<List<Map<String, dynamic>>?> getReport ({required String token, required 
           return dataList;
         }
       }else{
-        print("Failed to get report:  ${response.statusCode}");
+        //print("Failed to get report:  ${response.statusCode}");
       }
     }catch (e){
-      print("Error to get report: $e");
+      //print("Error to get report: $e");
     }
     return null;
 }

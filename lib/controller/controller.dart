@@ -1,5 +1,4 @@
 import 'package:battery_optimization_helper/battery_optimization_helper.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
@@ -22,10 +21,10 @@ class TaskController extends GetxController {
     final token = box.read('token');
 
     if (token != null && token.toString().isNotEmpty) {
-      print("Auto fetching devices with token: $token");
+     // print("Auto fetching devices with token: $token");
       fetchDeviceAll(token);
     } else {
-      print("No token found in GetStorage");
+     // print("No token found in GetStorage");
     }
   }
   ///navbar
@@ -101,12 +100,12 @@ class TaskController extends GetxController {
       if(result != null && result.success == true){
         devices.assignAll(result.data);
         updateCount();
-        print("device All: ${devices.length}",);
+       // print("device All: ${devices.length}",);
       }else{
-        print("failed to fetch device");
+      //  print("failed to fetch device");
       }
     }catch(e){
-      debugPrint("fetch error $e");
+      //debugPrint("fetch error $e");
     }finally{
       isLoading.value = false;
     }
@@ -135,10 +134,10 @@ class TaskController extends GetxController {
       if(result != null){
         reportsDataList.value = result.map((json) => ReportsData.fromjson(json)).toList();
       }else{
-        print("Failed to fetch or Report was empty");
+     //   print("Failed to fetch or Report was empty");
       }
     }catch (e){
-      print("Error in fetch report : $e");
+     // print("Error in fetch report : $e");
     }finally{
       isReportLoading.value = false;
     }
@@ -262,7 +261,7 @@ class TaskController extends GetxController {
     try {
       await BatteryOptimizationHelper.ensureOptimizationDisabled();
     } catch (e) {
-      debugPrint("Open settings error: $e");
+     // debugPrint("Open settings error: $e");
     }
   }
 
@@ -270,7 +269,7 @@ class TaskController extends GetxController {
     try {
       await BatteryOptimizationHelper.openAutoStartSettings();
     } catch (e) {
-      debugPrint("Autostart error: $e");
+     // debugPrint("Autostart error: $e");
     }
   }
 

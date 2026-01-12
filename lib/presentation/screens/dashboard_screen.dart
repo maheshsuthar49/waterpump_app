@@ -1,4 +1,3 @@
-import 'package:battery_optimization_helper/battery_optimization_helper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -11,8 +10,6 @@ import 'package:water_pump/presentation/widgets/device_card.dart';
 import 'package:water_pump/presentation/screens/drawer_screen.dart';
 import 'package:water_pump/services/notification_service.dart';
 import 'package:water_pump/shared/custom_theme.dart';
-import 'package:water_pump/shared/custome_button.dart';
-
 import '../widgets/bottomnav_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -34,7 +31,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     notificationService.setUpInteractMessage(context);
     notificationService.firebaseInit(context);
     notificationService.getDeviceToken().then((value) {
-      print("Device Token := $value");
+      //print("Device Token := $value");
     });
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       final isEnabled = await controller.isBatteryOptimizationOn();
@@ -422,7 +419,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 backgroundColor: const Color(0xff024a06),
                 onPressed: () async {
                   final token = controller.box.read('token');
-                  print("token is: $token");
+                 // print("token is: $token");
 
                   if (!mqttController.isConnected.value) {
                     mqttController.connect();

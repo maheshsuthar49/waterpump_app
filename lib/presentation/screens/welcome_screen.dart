@@ -16,14 +16,14 @@ class WelcomeScreen extends StatelessWidget {
     Future.delayed(Duration(milliseconds: 500), () async {
       var calls = await FlutterCallkitIncoming.activeCalls();
       if(calls is List && calls.isNotEmpty){
-        print("Active call detected via Welcome Screen - Aborting Dashboard navigation");
+       // print("Active call detected via Welcome Screen - Aborting Dashboard navigation");
       return;
       }
       if (token != null && token.toString().isNotEmpty) {
         await controller.fetchDeviceAll(token);
         Get.offAll(() => DashboardScreen(), transition: Transition.fadeIn);
       } else {
-        print("Token not found");
+       // print("Token not found");
       }
     });
     return Scaffold(
