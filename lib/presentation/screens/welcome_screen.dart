@@ -13,7 +13,7 @@ class WelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
-    final screenWidth = MediaQuery.of(context).size.width;
+   // final screenWidth = MediaQuery.of(context).size.width;
     final token = controller.box.read("token");
     Future.delayed(Duration(milliseconds: 500), () async {
       var calls = await FlutterCallkitIncoming.activeCalls();

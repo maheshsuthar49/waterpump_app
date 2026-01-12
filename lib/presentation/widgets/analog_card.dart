@@ -88,7 +88,7 @@ class _AnalogLimitCardState extends State<AnalogLimitCard> {
                       trackColor: WidgetStateProperty.resolveWith<Color?>(
                             (states) {
                           if (states.contains(WidgetState.selected)) {
-                            return const Color(0xff024a06).withOpacity(0.4);
+                            return const Color(0xff024a06).withValues(alpha: 0.4);
                           }
                           return Colors.grey.shade300;
                         },

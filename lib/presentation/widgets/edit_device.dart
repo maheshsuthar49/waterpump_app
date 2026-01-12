@@ -6,17 +6,17 @@ import 'package:water_pump/shared/component.dart';
 import 'package:water_pump/shared/custome_button.dart';
 
 class EditDevice extends StatelessWidget {
-  TextEditingController DeviceNameController = TextEditingController();
-  TextEditingController DeviceLocController = TextEditingController();
-  TextEditingController DeviceFlowController = TextEditingController();
+ final  TextEditingController deviceNameController = TextEditingController();
+  final TextEditingController deviceLocController = TextEditingController();
+  final TextEditingController deviceFlowController = TextEditingController();
   final controller = Get.find<TaskController>();
   final DevicesData devicesData;
   EditDevice({super.key, required this.devicesData});
   @override
   Widget build(BuildContext context) {
-    DeviceNameController.text = devicesData.name;
-    DeviceLocController.text = devicesData.area;
-    DeviceFlowController.text = devicesData.flowMultiplier.toString();
+    deviceNameController.text = devicesData.name;
+    deviceLocController.text = devicesData.area;
+    deviceFlowController.text = devicesData.flowMultiplier.toString();
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: ListView(
@@ -51,7 +51,7 @@ class EditDevice extends StatelessWidget {
                       ),
                     ),
                     customTextFormField(
-                      controller: DeviceNameController,
+                      controller: deviceNameController,
                       keyboardType: TextInputType.text,
                       prefixIcon: Icons.devices,
                     ),
@@ -64,7 +64,7 @@ class EditDevice extends StatelessWidget {
                       ),
                     ),
                     customTextFormField(
-                      controller: DeviceLocController,
+                      controller: deviceLocController,
                       keyboardType: TextInputType.text,
                       prefixIcon: Icons.location_on,
                     ),
@@ -77,7 +77,7 @@ class EditDevice extends StatelessWidget {
                       ),
                     ),
                     customTextFormField(
-                      controller: DeviceFlowController,
+                      controller: deviceFlowController,
                       keyboardType: TextInputType.number,
                       prefixIcon: Icons.water_drop,
                     ),

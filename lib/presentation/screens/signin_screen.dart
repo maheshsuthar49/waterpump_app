@@ -79,11 +79,11 @@ class SignInScreen extends StatelessWidget {
             
                                     if(token != null){
                                       await controller.box.write("token", token);
-                                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Login successfully",style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),backgroundColor: Colors.white,));
+                                      //ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Login successfully",style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),backgroundColor: Colors.white,));
                                       await controller.fetchDeviceAll(token);
                                       Get.offAll(DashboardScreen());
                                     }else{
-                                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Invalid credentials",style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),backgroundColor: Colors.white,));
+                                      //ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Invalid credentials",style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),backgroundColor: Colors.white,));
                                     }
                                   },
                                   style: ElevatedButton.styleFrom(
