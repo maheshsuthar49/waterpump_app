@@ -46,7 +46,6 @@ class _DeviceConfigState extends State<DeviceConfig> {
   }
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<TaskController>();
     return Padding(
       padding: EdgeInsets.all(16.0),
       child:

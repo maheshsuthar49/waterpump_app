@@ -353,7 +353,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ),
                 const SizedBox(height: 10),
                 Obx(() {
-                  if (controller.disconnectedList == 0) {
+                  if (controller.disconnectedList.isEmpty) {
                     return Container(
                       width: double.infinity,
                       padding: EdgeInsets.all(16),

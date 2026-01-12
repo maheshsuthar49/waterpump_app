@@ -14,7 +14,6 @@ class scheduleSlotCard extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
-    final slot = schedulingController.slots[slotIndex];
     return Card(
       elevation: 2,
       color: Colors.grey.shade100,

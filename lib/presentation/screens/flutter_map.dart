@@ -15,8 +15,7 @@ class FMaps extends StatefulWidget {
 class _FlutterMapsState extends State<FMaps> {
   final TaskController controller = Get.find<TaskController>();
   bool isFMapLoading = true;
-  static const LatLng _initialCenter  = LatLng(25.7781, 73.3311);
-  static const double _initialZoom = 4.0;
+
 
   @override
   void initState() {

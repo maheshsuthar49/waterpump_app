@@ -20,7 +20,6 @@ class _OngoingCallScreenState extends State<OngoingCallScreen>  with SingleTicke
   Timer? _timer;
   Timer? _speakTimer;
   bool _callActive = true;
-  final bool _isLoadingData = false;
 
   final FlutterTts _flutterTts = FlutterTts();
   String faultMag = '';

@@ -322,7 +322,6 @@ class _ReportScreenState extends State<ReportScreen> {
                             final DateFormat apiFormatter = DateFormat(
                               "yyyy-MM-dd HH:mm:ss:SSSSSS",
                             );
-                            final id = widget.deviceData.id.toString();
                             final String fromDate = apiFormatter.format(
                               fromDateObj,
                             );

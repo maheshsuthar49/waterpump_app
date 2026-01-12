@@ -49,7 +49,6 @@ class MqttController extends GetxController {
     final connMessage = MqttConnectMessage()
         .withClientIdentifier(clientIdentifier)
         .startClean()
-        .keepAliveFor(20)
         .withWillQos(MqttQos.atLeastOnce);
     client.connectionMessage = connMessage;
 
