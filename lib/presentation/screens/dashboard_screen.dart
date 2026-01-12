@@ -1,3 +1,4 @@
+import 'package:battery_optimization_helper/battery_optimization_helper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -9,6 +10,8 @@ import 'package:water_pump/presentation/screens/notification_screen.dart';
 import 'package:water_pump/presentation/widgets/device_card.dart';
 import 'package:water_pump/presentation/screens/drawer_screen.dart';
 import 'package:water_pump/services/notification_service.dart';
+import 'package:water_pump/shared/custom_theme.dart';
+import 'package:water_pump/shared/custome_button.dart';
 
 import '../widgets/bottomnav_screen.dart';
 
@@ -32,9 +35,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
     notificationService.firebaseInit(context);
     notificationService.getDeviceToken().then((value) {
       print("Device Token := $value");
-
     });
-    controller.checkBatteryOptimization();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final isEnabled = await controller.isBatteryOptimizationOn();
+      if (isEnabled) {
+        showBatteryOptimizationDialog(context);
+      }
+    });
   }
 
   @override
@@ -428,6 +435,48 @@ class _DashboardScreenState extends State<DashboardScreen> {
           }),
         ],
       ),
+    );
+  }
+
+  void showBatteryOptimizationDialog(BuildContext context) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          icon: Icon(Icons.battery_alert, color: Colors.grey, size: 50),
+          title: const Text("Battery Optimization Required"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                "For proper call alerts and device connection, please disable battery optimization for this app.",
+              ),
+            ],
+          ),
+          actions: [
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+
+                onPressed: () async {
+                  Get.back();
+                  await controller.requestDisableBatteryOptimization();
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primaryGreen,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                child: Text("Disable", style: TextStyle(fontSize: 16)),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

@@ -208,6 +208,7 @@ class _DeviceConfigState extends State<DeviceConfig> {
     final result = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
+
         title: Text(title),
         content: Text(message),
         actions: [

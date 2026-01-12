@@ -242,12 +242,37 @@ class TaskController extends GetxController {
   }
 
   //battery optimization
-  Future<void> checkBatteryOptimization() async{
-    final isIgnoring = await BatteryOptimizationHelper.ensureOptimizationDisabled();
-
-    if(!isIgnoring){
-      await BatteryOptimizationHelper.openBatteryOptimizationSettings();
+  Future<bool> isBatteryOptimizationOn()async{
+    try{
+      return await BatteryOptimizationHelper.isBatteryOptimizationEnabled();
+    }catch(_){
+     return true;
     }
   }
+  Future<void> requestDisableBatteryOptimization() async{
+    try{
+      await BatteryOptimizationHelper.requestDisableBatteryOptimization();
+    }
+    catch(_){
+
+    }
+  }
+
+  Future<void> openBatteryOptimizationSettings() async {
+    try {
+      await BatteryOptimizationHelper.ensureOptimizationDisabled();
+    } catch (e) {
+      debugPrint("Open settings error: $e");
+    }
+  }
+
+  Future<void> openAutoStartSettings() async {
+    try {
+      await BatteryOptimizationHelper.openAutoStartSettings();
+    } catch (e) {
+      debugPrint("Autostart error: $e");
+    }
+  }
+
 
 }
