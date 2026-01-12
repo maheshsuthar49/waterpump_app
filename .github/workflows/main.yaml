@@ -21,7 +21,6 @@ jobs:
       # 3. Flutter setup karna
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.19.0' # Aap apna flutter version yahan likh sakte hain
           channel: 'stable'
 
       # 4. Packages install karna
